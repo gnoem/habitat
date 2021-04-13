@@ -41,7 +41,7 @@ const Login = () => {
       <h2>login</h2>
       <p>or click <Link href="/register">here</Link> to register</p>
       <Form onSubmit={handleSubmit} onSuccess={handleSuccess} handleFormError={handleFormError}
-            behavior={{ checkmarkStick: false }}
+            behavior={{ showSuccess: false }}
             delay={1000}
             submit={<Submit value="continue" cancel="go back" onCancel={() => router.back()} />}>
         <Input type="text" name="email" label="email address:" {...inputProps} />

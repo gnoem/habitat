@@ -19,11 +19,13 @@ const Form = ({ children, title, submit, delay, onSubmit, onSuccess, warnError, 
     }, 500); /* length of checkmark-shrink duration */
   }, [successAnimation]);
   const handleSuccess = (result) => {
-    onSuccess(result);
-    if (!checkmarkStick) {
-      setSuccessAnimation('fade');
-      setClicked(false);
-    }
+    setTimeout(() => {
+      onSuccess(result);
+      if (showSuccess && !checkmarkStick) {
+        setSuccessAnimation('fade');
+        setClicked(false);
+      }
+    }, showSuccess ? 1400 : 0);
   }
   const handleError = (result) => {
     const { __typename, message, location } = Object.values(result)[0];
@@ -46,9 +48,7 @@ const Form = ({ children, title, submit, delay, onSubmit, onSuccess, warnError, 
           setSuccessAnimation('check');
           setSuccessPending(false);
         }
-        setTimeout(() => {
-          handleSuccess(result);
-        }, showSuccess ? 1400 : 0);
+        handleSuccess(result);
       }, delay ?? 0);
     }).catch(err => {
       if (warnError) return warnError(err);

@@ -40,5 +40,16 @@ export const resolvers = {
         ...user
       };
     }
+  },
+  UserResult: {
+    __resolveType(obj) {
+      if (obj.__typename === 'FormError') {
+        return 'FormError';
+      }
+      if (obj.__typename === 'User') {
+        return 'User';
+      }
+      return null;
+    }
   }
 }
