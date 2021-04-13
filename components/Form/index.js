@@ -3,7 +3,7 @@ import { Button } from "./Button";
 import { Input } from "./Input";
 import { Submit } from "./Submit";
 
-const Form = ({ children, title, submit, delay, onSubmit, onSuccess, behavior }) => {
+const Form = ({ children, title, submit, delay, onSubmit, onSuccess, warnError, behavior }) => {
   const defaultBehavior = {
     showLoading: true,
     showSuccess: true,
@@ -18,6 +18,21 @@ const Form = ({ children, title, submit, delay, onSubmit, onSuccess, behavior })
       setSuccessAnimation(false);
     }, 500); /* length of checkmark-shrink duration */
   }, [successAnimation]);
+  const handleSuccess = (result) => {
+    onSuccess(result);
+    if (!checkmarkStick) {
+      setSuccessAnimation('fade');
+      setClicked(false);
+    }
+  }
+  const handleError = (result) => {
+    const { __typename, message, location } = Object.values(result)[0];
+    if (__typename === 'FormError') {
+      setSuccessPending(false);
+      setClicked(false);
+      throw { message, location }
+    }
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
     if (clicked) return; // prevent multiple form submission
@@ -25,20 +40,18 @@ const Form = ({ children, title, submit, delay, onSubmit, onSuccess, behavior })
     if (!onSubmit) return console.log('missing onSubmit handler!');
     if (showLoading) setSuccessPending(true);
     onSubmit().then(result => {
+      handleError(result);
       setTimeout(() => {
         if (showSuccess) {
           setSuccessAnimation('check');
           setSuccessPending(false);
         }
         setTimeout(() => {
-          onSuccess?.(result);
-          if (!checkmarkStick) {
-            setSuccessAnimation('fade');
-            setClicked(false);
-          }
+          handleSuccess(result);
         }, showSuccess ? 1400 : 0);
       }, delay ?? 0);
     }).catch(err => {
+      if (warnError) return warnError(err);
       console.error(err);
     });
   }

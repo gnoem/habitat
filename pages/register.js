@@ -1,12 +1,15 @@
 import { useRouter } from "next/router";
-import Link from "next/link";
 import Form, { Input, Submit } from "../components/Form";
 import { Footer } from "../components/Footer";
-import { useForm } from "../hooks";
-import { handleFetch } from "./api";
+import { useForm, useUser } from "../hooks";
+import { handleQuery, handleFetch } from "./api";
 
 const Register = () => {
   const router = useRouter();
+  const { setUser } = useUser({
+    redirectTo: '/dashboard',
+    redirectIfFound: true,
+  });
   const { formData, handleFormError, inputProps } = useForm();
   const handleSubmit = async () => {
     const mutation = `
@@ -17,9 +20,13 @@ const Register = () => {
         }
       }
     `;
-    return await handleFetch(mutation, formData);
+    return await handleQuery(mutation, formData);
   }
-  const handleSuccess = (result) => console.log(result);
+  const handleSuccess = async ({ createUser }) => {
+    const user = Object.assign(createUser, { isLoggedIn: true });
+    const body = await handleFetch('/api/auth/login', { user });
+    setUser(body.user);
+  }
   return (
     <>
       <h2>register</h2>

@@ -1,4 +1,4 @@
-export const handleFetch = async (params, variables) => {
+export const handleQuery = async (params = {}, variables = {}) => {
   const response = await fetch('/api/server', {
     method: 'POST',
     headers: {
@@ -9,4 +9,18 @@ export const handleFetch = async (params, variables) => {
   const body = await response.json();
   if (body.data) return body.data;
   throw new Error(`Something went wrong`);
+}
+
+export const handleFetch = async (route, body) => {
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  };
+  const response = await fetch(route, options);
+  const data = await response.json();
+  if (response.ok) return data;
+  console.dir(response.statusText);
 }

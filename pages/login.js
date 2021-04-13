@@ -1,28 +1,40 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Form, { Input, Submit } from "../components/Form";
-import { useForm } from "../hooks";
-import { handleFetch } from "./api";
+import { useForm, useUser } from "../hooks";
+import { handleFetch, handleQuery } from "./api";
+import { auth } from "./api/auth";
 
 const Login = () => {
   const router = useRouter();
+  const { setUser } = useUser({
+    redirectTo: '/dashboard',
+    redirectIfFound: true,
+  });
   const { formData, handleFormError, inputProps } = useForm();
-  const query = `
-    query ($email: String, $password: String) {
-      user(email: $email, password: $password) {
-        ... on FormError {
-          message
-          location
-        }
-        ... on User {
-          id
-          password
+  const handleSubmit = async () => {
+    const query = `
+      query ($email: String, $password: String) {
+        user(email: $email, password: $password) {
+          ... on FormError {
+            __typename
+            message
+            location
+          }
+          ... on User {
+            id
+            email
+          }
         }
       }
-    }
-  `;
-  const handleSubmit = async () => await handleFetch(query, formData);
-  const handleSuccess = (result) => console.log(result);
+    `;
+    return await handleQuery(query, formData);
+  }
+  const handleSuccess = async ({ user }) => {
+    const loggedInUser = Object.assign(user, { isLoggedIn: true });
+    const body = await handleFetch('/api/auth/login', { user: loggedInUser });
+    setUser(body.user);
+  }
   const forgotPasswordNote = <Link href="/">forgot your password?</Link>;
   return (
     <>
@@ -38,5 +50,7 @@ const Login = () => {
     </>
   );
 }
+
+export const getServerSideProps = auth({ shield: false, redirect: '/dashboard' });
 
 export default Login;
