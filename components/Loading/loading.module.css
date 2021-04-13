@@ -1,0 +1,11 @@
+.Loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.Loading svg {
+  height: 100%;
+}
+.Loading circle {
+  stroke: var(--loading-icon-color);
+}

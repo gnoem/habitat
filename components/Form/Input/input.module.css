@@ -1,0 +1,17 @@
+.Input + .Input {
+  margin-top: 1rem;
+}
+.Input {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.Input > div {
+  display: inline-block;
+}
+.Input > div + span {
+  display: inline-block;
+  margin-top: 0.3rem;
+  font-size: 0.7rem;
+  letter-spacing: 0ch;
+}
