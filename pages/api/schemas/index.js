@@ -1,13 +1,42 @@
 import { gql } from "apollo-server-micro"; 
 
 export const typeDefs = gql`
-  type User {
-    id: ID
-    login: String
-    avatar_url: String
+  input UserInput {
+    email: String
+    password: String
   }
+
+  type User {
+    id: Int
+    name: String
+    email: String
+    password: String
+  }
+
+  type Habit {
+    id: Int
+    name: String
+    icon: String
+    color: String
+    label: String
+    unit: String
+  }
+
+  type FormError {
+    message: String
+    location: String
+  }
+
+  union UserResult = User | FormError
+
   type Query {
-    getUsers: [User]
-    getUser(name: String!): User!
+    users: [User]
+    user(email: String, password: String): UserResult
+  }
+  
+  type Mutation {
+    createUser(email: String, password: String): User
+    editUser(id: ID!, input: UserInput): User
+    createHabit(name: String, icon: String, color: String, label: String): Habit
   }
 `
