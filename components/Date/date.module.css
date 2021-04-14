@@ -1,0 +1,24 @@
+.Date {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 2rem 3rem 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.Date .dd {
+  font-family: var(--header-font);
+  font-size: 5rem;
+  line-height: 1;
+}
+.Date .mm {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.Date .Time {
+  margin-top: 1.5rem;
+  font-family: var(--mono-font);
+  font-size: 1.2rem;
+}

@@ -1,0 +1,104 @@
+.MyHabits {
+  display: inline-flex;
+  flex-direction: column;
+  width: 300px;
+  margin-bottom: 5rem;
+}
+
+.HabitBox + .HabitBox {
+  margin-top: 1rem;
+}
+
+
+.HabitHeader {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.HabitHeader h3 {
+  font-family: var(--mono-font);
+  font-size: 1.2rem;
+  font-weight: 300;
+  margin: 0;
+}
+.HabitIcon {
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  background: #000;
+  margin-right: 0.75rem;
+}
+.HabitIcon::before {
+  content: '.';
+  font-size: 0.8rem;
+  opacity: 0;
+}
+.HabitIcon::after {
+  content: '+';
+  color: #000;
+  font-size: 0.8rem;
+  line-height: 0.75rem;
+  position: absolute;
+  bottom: 0;
+  left: 75%;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
+}
+.HabitBox.expanded .HabitIcon::after {
+  content: '-'
+}
+
+.HabitBody {
+  font-size: 0.8rem;
+  margin-left: 0.5rem;
+  width: calc(100% - 0.5rem);
+  border-left: 1px solid #000;
+  background: #fff;
+  max-height: 0;
+  overflow: hidden;
+  transform-origin: top left;
+  opacity: 0;
+  transform: scaleX(0);
+  transition: max-height 0.2s, opacity 0.2s, transform 0.2s, border-radius 0.5s;
+  margin-top: 0.5rem;
+  border-radius: 0 0 4rem 0;
+}
+.HabitBox.expanded .HabitBody {
+  opacity: 1;
+  transform: scaleX(1);
+  border-radius: 0;
+}
+.HabitBody > form {
+  padding: 1rem;
+}
+.HabitBody label {
+  font-size: 0.8rem;
+}
+.HabitBody input {
+  border: 0;
+  background: #f7f7f7;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.HabitFormTopRow {
+  display: flex;
+}
+.HabitFormTopRow > div:first-child {
+  flex: 1 0 auto;
+}
+.HabitFormTopRow > div:last-child {
+  flex: 0 1 auto;
+}

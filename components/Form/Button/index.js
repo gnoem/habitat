@@ -1,3 +1,4 @@
+import styles from "./button.module.css";
 import { useRouter } from "next/router";
 
 export const Button = ({ children, type, onClick, href, className }) => {
@@ -7,7 +8,7 @@ export const Button = ({ children, type, onClick, href, className }) => {
     if (href) router.push(href);
   }
   return (
-    <button type={type ?? 'button'} className={className} onClick={handleClick}>
+    <button type={type ?? 'button'} className={`${styles.Button} ${className}`} onClick={handleClick}>
       {children}
     </button>
   );

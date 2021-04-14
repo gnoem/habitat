@@ -1,0 +1,36 @@
+.Button {
+  display: inline-block;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.9rem;
+  color: #fff;
+  position: relative;
+  z-index: 0;
+  transition: 0.2s;
+}
+.Button:hover {
+  color: #000;
+}
+.Button:hover svg, .Button:hover svg * {
+  stroke: #000;
+}
+.Button::before, .Button::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #000;
+  transform: skewX(-12deg);
+  transition: 0.2s;
+}
+.Button::before {
+  background: #000;
+}
+.Button:hover::before {
+  opacity: 0;
+}
+.Button:hover::after {
+  border-color: #000 !important; /* fuck it lol */
+}

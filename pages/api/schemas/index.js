@@ -20,6 +20,7 @@ export const typeDefs = gql`
     color: String
     label: String
     unit: String
+    userId: Int
   }
 
   type FormError {
@@ -32,6 +33,7 @@ export const typeDefs = gql`
   type Query {
     users: [User]
     user(email: String, password: String): UserResult
+    habits(userId: Int): [Habit]
   }
   
   type Mutation {

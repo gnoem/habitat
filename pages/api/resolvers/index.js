@@ -39,6 +39,15 @@ export const resolvers = {
         __typename: 'User',
         ...user
       };
+    },
+    habits: async (_, args) => {
+      const { userId } = args;
+      const habits = await prisma.habit.findMany({
+        where: {
+          userId: 2
+        }
+      });
+      return habits;
     }
   },
   UserResult: {

@@ -9,3 +9,16 @@
 .Loading circle {
   stroke: var(--loading-icon-color);
 }
+.PageLoading {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 20%;
+}
+.PageLoading .Loading {
+  height: 2rem;
+}
+.PageLoading circle {
+  stroke: #000;
+}

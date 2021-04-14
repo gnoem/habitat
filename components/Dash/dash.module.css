@@ -1,0 +1,35 @@
+.Dash {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+.Dash h1 {
+  font-size: 3rem;
+  position: relative;
+}
+.Dash h1::after {
+  display: inline-block;
+  position: absolute;
+  top: 100%;
+  left: 2rem;
+  margin-top: 1.5rem;
+  width: 100px;
+  height: 0.4rem;
+  background: #000;
+}
+.Dash > div {
+  flex: 0 0 calc(100% - (3 * var(--dashboard-sidebar-width)));
+  text-align: left;
+}
+.Dash > div p {
+  text-align: inherit;
+}
+.Dash > img {
+  position: fixed;
+  bottom: 0;
+  left: calc(0.5 * var(--dashboard-sidebar-width));
+  width: auto;
+  height: 40%;
+}

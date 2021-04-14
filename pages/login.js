@@ -37,7 +37,7 @@ const Login = () => {
   }
   const forgotPasswordNote = <Link href="/">forgot your password?</Link>;
   return (
-    <>
+    <div>
       <h2>login</h2>
       <p>or click <Link href="/register">here</Link> to register</p>
       <Form onSubmit={handleSubmit} onSuccess={handleSuccess} handleFormError={handleFormError}
@@ -47,7 +47,7 @@ const Login = () => {
         <Input type="text" name="email" label="email address:" {...inputProps} />
         <Input type="password" name="password" label="password:" note={forgotPasswordNote} {...inputProps} />
       </Form>
-    </>
+    </div>
   );
 }
 

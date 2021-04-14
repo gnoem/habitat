@@ -8,7 +8,7 @@ export const handleQuery = async (params = {}, variables = {}) => {
   });
   const body = await response.json();
   if (body.data) return body.data;
-  throw new Error(`Something went wrong`);
+  console.dir(body);
 }
 
 export const handleFetch = async (route, body) => {

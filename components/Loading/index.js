@@ -11,3 +11,11 @@ export const Loading = ({ className }) => {
     </div>
   );
 }
+
+export const PageLoading = () => {
+  return (
+    <div className={styles.PageLoading}>
+      <Loading />
+    </div>
+  );
+}

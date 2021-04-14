@@ -1,5 +1,9 @@
-.Input + .Input {
+.Input + .Input, form > div + .Input {
   margin-top: 1rem;
+}
+form > div > .Input + .Input {
+  margin-top: 0;
+  margin-left: 1rem;
 }
 .Input {
   display: flex;

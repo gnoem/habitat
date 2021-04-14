@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-export const Link = ({ children, onClick, href }) => {
+export const LinkButton = ({ children, onClick, href }) => {
   const router = useRouter();
   const handleClick = () => {
     if (onClick) return onClick();

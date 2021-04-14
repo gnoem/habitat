@@ -1,6 +1,6 @@
 import styles from "./input.module.css";
 
-export const Input = ({ type, name, label, defaultValue, disabled, onChange, onInput, note }) => {
+export const Input = ({ type, name, label, defaultValue, placeholder, disabled, onChange, onInput, note }) => {
   return (
     <div className={styles.Input}>
       {label && <label>{label}</label>}
@@ -9,6 +9,7 @@ export const Input = ({ type, name, label, defaultValue, disabled, onChange, onI
           type,
           name,
           defaultValue,
+          placeholder,
           disabled,
           onChange,
           onInput

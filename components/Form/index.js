@@ -63,7 +63,7 @@ const Form = ({ children, title, submit, delay, onSubmit, onSuccess, warnError, 
       {children}
       {(submit === false) || (customSubmit ?? <Submit {...submitProps} cancel={false} />)}
     </form>
-  )
+  );
 }
 
 export default Form;

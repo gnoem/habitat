@@ -1,0 +1,7 @@
+.Sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--dashboard-sidebar-width);
+  height: 100vh;
+}

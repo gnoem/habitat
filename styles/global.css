@@ -20,6 +20,7 @@
   --link-bg: #000;
   --button-cancel-color: #767578;
   --loading-icon-color: #9FF7E7;
+  --dashboard-sidebar-width: 7rem;
 }
 
 * {
@@ -30,6 +31,11 @@ html, body, #__next {
   width: 100%;
   height: 100%;
   margin: 0;
+}
+
+#__next > div {
+  width: 100%;
+  height: 100%;
 }
 
 body {
@@ -84,47 +90,11 @@ button {
   background: 0;
   border: 0;
   padding: 0;
+  cursor: pointer;
 }
 button, input {
   font-family: var(--mono-font);
   outline: none;
-}
-button:not(.link) {
-  display: inline-block;
-  padding: 0.7rem 1.4rem;
-  font-size: 0.9rem;
-  color: #fff;
-  position: relative;
-  z-index: 0;
-  cursor: pointer;
-  transition: 0.2s;
-}
-button:not(.link):hover {
-  color: #000;
-}
-button:not(.link):hover svg, button:not(.link):hover svg * {
-  stroke: #000;
-}
-button:not(.link)::before, button:not(.link)::after {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  bottom: -1px;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 1px solid #000;
-  transform: skewX(-12deg);
-  transition: 0.2s;
-}
-button:not(.link)::before {
-  background: #000;
-}
-button:not(.link):hover::before {
-  opacity: 0;
-}
-button:not(.link):hover::after {
-  border-color: #000 !important; /* fuck it lol */
 }
 button.cancel::before, button.cancel::after {
   border-color: var(--button-cancel-color);
@@ -162,6 +132,10 @@ button span[data-ghost=true] + * {
 .SuccessAnimation.fade svg {
   stroke-dashoffset: 0;
   animation: 0.5s checkmark-shrink 1 forwards;
+}
+
+div.sbs {
+  display: flex;
 }
 
 label {
