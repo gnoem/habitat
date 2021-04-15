@@ -12,9 +12,9 @@ export const Loading = ({ className }) => {
   );
 }
 
-export const PageLoading = () => {
+export const PageLoading = ({ className }) => {
   return (
-    <div className={styles.PageLoading}>
+    <div className={`${styles.PageLoading} ${styles[className] ?? ''} ${className ?? ''}`}>
       <Loading />
     </div>
   );

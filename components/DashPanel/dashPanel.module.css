@@ -5,6 +5,7 @@
   grid-template:
     'nav'     auto
     'content' 1fr / 100%;
+  justify-items: flex-end;
 }
 .DashPanel nav {
   text-align: right;
@@ -37,6 +38,7 @@
   height: 1rem;
   background: #fff;
   transform: skew(-12deg);
+  /* box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1); */
 }
 .DashPanel nav button > span:last-child {
   width: 2rem;
@@ -50,6 +52,7 @@
   align-items: center;
   justify-content: center;
   margin-left: 0.75rem;
+  transition: 0.2s;
 }
 .DashPanel nav button + button {
   margin-top: 1rem;
@@ -61,6 +64,9 @@
   font-size: 1.4rem;
   font-weight: 300;
 }
+.DashPanel nav button.active > span:last-child {
+  transform: rotate(-45deg);
+}
 .DashPanel nav button.inactive {
   opacity: 0;
   margin-top: 0;
@@ -69,15 +75,60 @@
   overflow: visible;
   pointer-events: none;
 }
+
 .PanelContent {
   opacity: 0;
   margin-top: 1rem;
-  background: #fff;
-  padding: 1rem;
-  transform: translate3d(0, 50%, 0);
+  transform: scale(0) translate3d(0, 50%, 0);
+  transform-origin: top right;
+  max-height: 100%;
   transition: 0.2s;
 }
 .PanelContent.active {
-  transform: translate3d(0, 0, 0);
+  transform: scale(1) translate3d(0, 0, 0);
   opacity: 1;
+}
+
+.DataForm {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #000;
+  padding-top: 1rem;
+}
+.DataFormField {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.DataFormField + .DataFormField {
+  margin-top: 0.5rem;
+}
+.DataFormField > span:first-child {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+  align-self: flex-start;
+  filter: grayscale();
+  transition: 0.2s;
+}
+.DataFormField > span.check:first-child {
+  filter: none;
+}
+.DataFormField > span:last-child {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.DataForm input {
+  border: 0;
+  background: #fff;
+}
+.DataForm input[type=date] {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.DataForm input[type=number] {
+  width: 4rem;
+  padding-right: 0;
+  margin: 0 0.4rem;
+  line-height: 1.4rem;
 }

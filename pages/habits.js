@@ -26,7 +26,7 @@ const Habits = ({ user }) => {
     })();
   }, []);
   const content = () => {
-    if (habits == null) return <PageLoading />;
+    if (habits == null) return <PageLoading className="jcfs" />;
     if (!habits.length) return 'No habits found, add some';
     const boxes = habits.map(habit => (
       <HabitBox userId={user.id} {...habit} />

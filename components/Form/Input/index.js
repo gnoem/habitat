@@ -1,8 +1,8 @@
 import styles from "./input.module.css";
 
-export const Input = ({ type, name, label, defaultValue, placeholder, disabled, onChange, onInput, note }) => {
+export const Input = ({ type, name, label, defaultValue, placeholder, disabled, onChange, onInput, note, className, min }) => {
   return (
-    <div className={styles.Input}>
+    <div className={`${styles.Input} ${styles[className] ?? ''} ${className ?? ''}`}>
       {label && <label>{label}</label>}
       <div>
         <input {...{
@@ -12,7 +12,8 @@ export const Input = ({ type, name, label, defaultValue, placeholder, disabled, 
           placeholder,
           disabled,
           onChange,
-          onInput
+          onInput,
+          min
         }} />
       </div>
       {note && <span>{note}</span>}

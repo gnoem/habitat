@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "./Button";
+import { Checkbox } from "./Checkbox";
 import { Input } from "./Input";
 import { Submit } from "./Submit";
 
@@ -67,4 +68,4 @@ const Form = ({ children, title, submit, delay, onSubmit, onSuccess, warnError, 
 }
 
 export default Form;
-export { Button, Input, Submit }
+export { Button, Checkbox, Input, Submit }

@@ -19,3 +19,10 @@ form > div > .Input + .Input {
   font-size: 0.7rem;
   letter-spacing: 0ch;
 }
+
+.Input.inline {
+  display: inline-flex;
+}
+.Input.stretch > div, .Input > div + span {
+  width: 100%;
+}

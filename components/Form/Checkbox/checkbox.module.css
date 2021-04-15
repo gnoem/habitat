@@ -1,6 +1,5 @@
 .Checkbox {
-  margin-top: 1rem;
-  display: flex;
+  display: inline-flex;
   align-items: center;
 }
 .Checkbox + .Checkbox {
@@ -10,7 +9,7 @@
   font-family: var(--default-font);
   font-weight: normal;
   font-size: 0.9rem;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0;
   text-transform: none;
   line-height: 1.3;
 }
@@ -92,14 +91,26 @@
 .checkboxElement:hover span.svg {
   border-color: #000;
 }
+
 .Checkbox.detailed {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
+}
+.Checkbox.detailed label {
+  margin-bottom: 0.2rem;
 }
 .Checkbox.detailed .label span {
   display: block;
   font-size: 0.7rem;
   line-height: 1.2;
   color: #666;
+}
+
+.Checkbox.checkboxAfter {
+  flex-direction: row-reverse;
+}
+.Checkbox.checkboxAfter .checkboxElement {
+  margin-right: 0;
+  margin-left: 0.4rem;
 }

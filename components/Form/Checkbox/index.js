@@ -1,8 +1,8 @@
 import styles from "./checkbox.module.css";
 
-export const Checkbox = ({ label, name, detailedLabel, checked, onChange }) => {
+export const Checkbox = ({ label, name, detailedLabel, checkboxAfter, checked, onChange }) => {
   return (
-      <div className={`${styles.Checkbox} ${detailedLabel ? styles.detailed : ''}`}>
+      <div className={`${styles.Checkbox} ${detailedLabel ? styles.detailed : ''} ${checkboxAfter ? styles.checkboxAfter : ''}`}>
           <div className={styles.checkboxElement}>
               <input type="checkbox" name={name} onChange={onChange} checked={checked} />
               <span className={styles.svg}>
