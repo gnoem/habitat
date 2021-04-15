@@ -6,3 +6,7 @@
 .Submit button {
   margin: 0 1rem 1rem 0;
 }
+.Submit.compact {
+  margin-top: 1rem;
+  justify-content: center;
+}

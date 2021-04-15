@@ -2,13 +2,23 @@ import { useState } from 'react';
 
 export const useFormData = (initialState = {}) => {
     const [formData, setFormData] = useState(initialState);
-    const updateFormData = (e) => setFormData(prevState => ({ ...prevState, [e.target.name]: e.target.value }));
-    return [formData, updateFormData];
+    const updateFormData = (e) => setFormData(prevState => ({
+      ...prevState,
+      [e.target.name]: e.target.value
+    }));
+    const updateFormDataCheckbox = (e) => setFormData(prevState => ({
+      ...prevState,
+      [e.target.name]: e.target.checked
+    }));
+    return [formData, updateFormData, updateFormDataCheckbox];
 }
 
 export const useFormError = (initialState = {}) => {
     const [formError, setFormError] = useState(initialState);
-    const updateFormError = (errors) => setFormError(prevState => ({ ...prevState, ...errors }));
+    const updateFormError = (errors) => setFormError(prevState => ({
+      ...prevState,
+      ...errors
+    }));
     const resetFormError = (e) => setFormError(prevState => {
         if (!prevState?.[e.target.name]) return prevState;
         const newState = {...prevState};
@@ -16,22 +26,29 @@ export const useFormError = (initialState = {}) => {
         return newState;
     });
     const warnFormError = (inputName) => {
-        if (formError?.[inputName]) return { type: 'error', message: formError[inputName] };
+        if (formError?.[inputName]) return {
+          type: 'error',
+          message: formError[inputName]
+        }
     }
     return [updateFormError, resetFormError, warnFormError];
 }
 
 export const useForm = (initialFormData = {}) => {
-  const [formData, updateFormData] = useFormData(initialFormData);
+  const [formData, updateFormData, updateFormDataCheckbox] = useFormData(initialFormData);
   const [updateFormError, resetFormError, warnFormError] = useFormError({});
   const inputProps = {
     onChange: updateFormData,
     onInput: resetFormError,
     alert: warnFormError
-  };
+  }
+  const checkboxProps = {
+    onChange: updateFormDataCheckbox
+  }
   return {
     formData,
     handleFormError: updateFormError,
-    inputProps
+    inputProps,
+    checkboxProps
   }
 }

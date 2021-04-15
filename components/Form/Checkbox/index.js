@@ -1,10 +1,10 @@
 import styles from "./checkbox.module.css";
 
-export const Checkbox = ({ label, detailedLabel, checked, onChange }) => {
+export const Checkbox = ({ label, name, detailedLabel, checked, onChange }) => {
   return (
       <div className={`${styles.Checkbox} ${detailedLabel ? styles.detailed : ''}`}>
           <div className={styles.checkboxElement}>
-              <input type="checkbox" onChange={onChange} checked={checked} />
+              <input type="checkbox" name={name} onChange={onChange} checked={checked} />
               <span className={styles.svg}>
                   <svg viewBox="0 0 16 16"><polyline points="3 9 6 12 13 5"></polyline></svg>
               </span>

@@ -2,11 +2,11 @@ import styles from "./submit.module.css";
 import { Button } from "../Button";
 import { Loading } from "../../Loading";
 
-export const Submit = ({ value, onClick, cancel, onCancel, successPending, successAnimation }) => {
+export const Submit = ({ value, onClick, cancel, onCancel, successPending, successAnimation, className }) => {
   const hideText = !!successPending || !!successAnimation;
   return (
-    <div className={styles.Submit}>
-      <Button type="submit" onClick={onClick}>
+    <div className={`${styles.Submit} ${styles[className]}`}>
+      <Button type="submit" onClick={onClick} className={className}>
         <span data-ghost={hideText}>{value ?? 'submit'}</span>
         <StatusIcon {...{ successPending, successAnimation }} />
       </Button>

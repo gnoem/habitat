@@ -17,6 +17,7 @@ const Habits = ({ user }) => {
             icon
             color
             label
+            complex
           }
         }
       `;
@@ -28,10 +29,10 @@ const Habits = ({ user }) => {
     if (habits == null) return <PageLoading />;
     if (!habits.length) return 'No habits found, add some';
     const boxes = habits.map(habit => (
-      <HabitBox {...habit} />
+      <HabitBox userId={user.id} {...habit} />
     ));
     return (
-      <MyHabits>
+      <MyHabits userId={user.id}>
         {boxes}
       </MyHabits>
     );

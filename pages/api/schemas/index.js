@@ -19,7 +19,7 @@ export const typeDefs = gql`
     icon: String
     color: String
     label: String
-    unit: String
+    complex: Boolean
     userId: Int
   }
 
@@ -39,6 +39,6 @@ export const typeDefs = gql`
   type Mutation {
     createUser(email: String, password: String): User
     editUser(id: ID!, input: UserInput): User
-    createHabit(name: String, icon: String, color: String, label: String): Habit
+    createHabit(name: String, icon: String, label: String, complex: Boolean, userId: Int): Habit
   }
 `

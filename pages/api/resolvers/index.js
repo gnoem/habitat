@@ -11,6 +11,19 @@ export const resolvers = {
         }
       });
       return user;
+    },
+    createHabit: async (_, args) => {
+      const { name, icon, label, complex, userId } = args;
+      const habit = await prisma.habit.create({
+        data: {
+          name,
+          icon,
+          label,
+          complex,
+          userId
+        }
+      });
+      return habit;
     }
   },
   Query: {
@@ -44,7 +57,7 @@ export const resolvers = {
       const { userId } = args;
       const habits = await prisma.habit.findMany({
         where: {
-          userId: 2
+          userId
         }
       });
       return habits;

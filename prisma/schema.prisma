@@ -12,10 +12,10 @@ model Habit {
   name          String
   icon          String?
   color         String?
-  label         String
-  unit          String?
-  user          User          @relation(fields: [userId], references: [id])
-  userId        Int
+  label         String?
+  complex       Boolean?
+  user          User?          @relation(fields: [userId], references: [id])
+  userId        Int?
   @@map(name: "habits")
 }
 

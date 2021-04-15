@@ -6,11 +6,12 @@
 }
 
 .HabitBox + .HabitBox {
-  margin-top: 1rem;
+  margin-top: 1.4rem;
 }
 
 
 .HabitHeader {
+  position: relative;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -19,26 +20,43 @@
 .HabitHeader h3 {
   font-family: var(--mono-font);
   font-size: 1.2rem;
-  font-weight: 300;
-  margin: 0;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  margin-left: 0.75rem;
+  margin-bottom: 0;
 }
 .HabitIcon {
+  position: relative;
+  z-index: 9;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+.HabitIcon::before {
+  content: '';
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  position: absolute;
+  z-index: -1;
+  bottom: 0;
+  left: 0;
   width: 2rem;
   height: 2rem;
   border-radius: 999px;
   background: #000;
+  background: transparent;
   margin-right: 0.75rem;
 }
-.HabitIcon::before {
+/* .HabitIcon::before {
   content: '.';
   font-size: 0.8rem;
   opacity: 0;
-}
+} */
 .HabitIcon::after {
   content: '+';
   color: #000;

@@ -7,6 +7,9 @@
   z-index: 0;
   transition: 0.2s;
 }
+.Button.compact {
+  padding: 0.5rem 1rem;
+}
 .Button:hover {
   color: #000;
 }
