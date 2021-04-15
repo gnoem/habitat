@@ -1,0 +1,51 @@
+.Dashboard {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  font-size: 0.9rem;
+}
+.Dashboard h1 {
+  font-size: 3rem;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+.Dashboard h1::after {
+  display: inline-block;
+  position: absolute;
+  top: 100%;
+  left: 2rem;
+  margin-top: 1.5rem;
+  width: 100px;
+  height: 0.4rem;
+  background: #000;
+}
+.Main {
+  display: grid;
+  grid-template: 'nav content sidebar' 100% / calc(2 * var(--dashboard-nav-width)) 1fr 300px;
+  flex: 0 0 calc(100% - (3 * var(--dashboard-nav-width)));
+  text-align: left;
+  overflow: hidden;
+}
+.Content {
+  grid-area: content;
+  margin: 5rem 0;
+}
+.Sidebar {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  height: calc(100% - 250px);
+  padding: 0 3rem 3rem 0;
+}
+
+.Dashboard > div p {
+  text-align: inherit;
+}
+.Dashboard > img {
+  position: fixed;
+  bottom: 0;
+  left: calc(0.5 * var(--Dashboardboard-sidebar-width));
+  width: auto;
+  height: 40%;
+}

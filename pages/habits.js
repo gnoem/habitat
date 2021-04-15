@@ -1,6 +1,6 @@
 import { handleQuery } from "./api";
 import { auth } from "./api/auth";
-import { Dash } from "../components/Dash";
+import Dashboard, { Content } from "../components/Dashboard";
 import { useEffect, useState } from "react";
 import { MyHabits, HabitBox } from "../components/MyHabits";
 import { PageLoading } from "../components/Loading";
@@ -38,10 +38,12 @@ const Habits = ({ user }) => {
     );
   }
   return (
-    <Dash>
-      <h1>my habits</h1>
-      {content()}
-    </Dash>
+    <Dashboard>
+      <Content>
+        <h1>my habits</h1>
+        {content()}
+      </Content>
+    </Dashboard>
   );
 }
 

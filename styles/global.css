@@ -11,6 +11,14 @@
       transform: translate3d(0, 0, 0) rotate(45deg) scale(0);
   }
 }
+@keyframes dashPanelAnimation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
 :root {
   --header-font: 'Dela Gothic One', sans-serif;
@@ -20,7 +28,7 @@
   --link-bg: #000;
   --button-cancel-color: #767578;
   --loading-icon-color: #9FF7E7;
-  --dashboard-sidebar-width: 7rem;
+  --dashboard-nav-width: 7rem;
 }
 
 * {
@@ -48,9 +56,12 @@ body {
 p, h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
 }
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1;
+}
 h2 {
   font-size: 2rem;
-  margin-bottom: 0.7rem;
+  margin-bottom: 1rem;
 }
 
 a, a:visited, button.link {

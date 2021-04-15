@@ -8,7 +8,7 @@ export const Button = ({ children, type, onClick, href, className }) => {
     if (href) router.push(href);
   }
   return (
-    <button type={type ?? 'button'} className={`${styles.Button} ${styles[className]}`} onClick={handleClick}>
+    <button type={type ?? 'button'} className={`${styles.Button} ${styles[className] ?? ''} ${className ?? ''}`} onClick={handleClick}>
       {children}
     </button>
   );

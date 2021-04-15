@@ -1,6 +1,8 @@
 import {  handleQuery } from "./api";
 import { auth } from "./api/auth";
-import { Dash } from "../components/Dash";
+import Dash, { Content, Sidebar } from "../components/Dashboard";
+import { Button } from "../components/Form";
+import DashPanel from "../components/DashPanel";
 
 const Dashboard = ({ user }) => {
   const getUsers = async () => {
@@ -9,7 +11,8 @@ const Dashboard = ({ user }) => {
   }
   return (
     <Dash>
-      <h1>dashboard</h1>
+      <Content><h1>dashboard</h1></Content>
+      <DashPanel />
     </Dash>
   );
 }

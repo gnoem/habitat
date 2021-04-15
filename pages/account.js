@@ -1,14 +1,16 @@
 import { auth } from "./api/auth";
-import { Dash } from "../components/Dash";
+import Dashboard, { Content } from "../components/Dashboard";
 import Form, { Input, Submit } from "../components/Form";
 import { useForm } from "../hooks";
 
 const Account = ({ user }) => {
   return (
-    <Dash>
-      <h1>my account</h1>
-      <AccountDetails {...{ user }} />
-    </Dash>
+    <Dashboard>
+      <Content>
+        <h1>my account</h1>
+        <AccountDetails {...{ user }} />
+      </Content>
+    </Dashboard>
   );
 }
 

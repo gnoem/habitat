@@ -1,0 +1,36 @@
+.Homepage {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  display: grid;
+  grid-template: 'main spacer' 100% / minmax(auto, 700px) calc(500px + 5rem);
+}
+.Main {
+  grid-area: main;
+  padding: 5rem;
+}
+.Homepage h1 {
+  font-family: var(--header-font);
+  font-weight: normal;
+  font-size: 5rem;
+  line-height: 1;
+  margin-bottom: 2rem;
+  text-transform: lowercase;
+}
+.Homepage p {
+  text-align: justify;
+}
+.Homepage nav {
+  margin-top: 1.5rem;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.Homepage nav button + button {
+  margin-top: 1rem;
+  margin-left: 3rem;
+}
+.Footer {
+  margin-top: 2rem;
+}

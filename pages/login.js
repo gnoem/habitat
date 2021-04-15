@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Form, { Input, Submit } from "../components/Form";
+import { Homepage } from "../components/Homepage";
 import { useForm, useUser } from "../hooks";
 import { handleFetch, handleQuery } from "./api";
 import { auth } from "./api/auth";
@@ -37,7 +38,7 @@ const Login = () => {
   }
   const forgotPasswordNote = <Link href="/">forgot your password?</Link>;
   return (
-    <div>
+    <Homepage>
       <h2>login</h2>
       <p>or click <Link href="/register">here</Link> to register</p>
       <Form onSubmit={handleSubmit} onSuccess={handleSuccess} handleFormError={handleFormError}
@@ -47,7 +48,7 @@ const Login = () => {
         <Input type="text" name="email" label="email address:" {...inputProps} />
         <Input type="password" name="password" label="password:" note={forgotPasswordNote} {...inputProps} />
       </Form>
-    </div>
+    </Homepage>
   );
 }
 

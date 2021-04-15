@@ -8,20 +8,15 @@ import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 config.autoAddCss = false; /* eslint-disable import/first */
 
-export const Layout = ({ children, title }) => {
+export const Layout = ({ children }) => {
   const { pathname } = useRouter();
   const homepage = ['/', '/login', '/register'].includes(pathname);
   return (
     <div className={styles.Layout}>
       <Header />
       <Backdrop {...{ pathname }} />
-      <div className={styles.Wrapper}>
-        {homepage && <Image alt="" src="/decor/hmmm.png" width={500} height={500} priority={true} />}
-        <div className={homepage ? styles.Homepage : styles.full}>
-          {homepage && <h1>{title ?? 'habitat'}</h1>}
-          {children}
-        </div>
-      </div>
+      {homepage && <img alt="" src="/decor/hmmm.png" />}
+      {children}
     </div>
   );
 }
