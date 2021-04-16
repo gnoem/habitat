@@ -1,30 +1,12 @@
-import { handleQuery } from "./api";
 import { auth } from "./api/auth";
 import Dashboard, { Content } from "../components/Dashboard";
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import { MyHabits, HabitBox } from "../components/MyHabits";
 import { PageLoading } from "../components/Loading";
+import { DataContext } from "../contexts";
 
 const Habits = ({ user }) => {
-  const [habits, setHabits] = useState(null);
-  useEffect(() => {
-    (async () => {
-      const query = `
-        query ($userId: Int) {
-          habits(userId: $userId) {
-            id
-            name
-            icon
-            color
-            label
-            complex
-          }
-        }
-      `;
-      const { habits } = await handleQuery(query, { userId: user.id });
-      setHabits(habits);
-    })();
-  }, []);
+  const { habits } = useContext(DataContext);
   const content = () => {
     if (habits == null) return <PageLoading className="jcfs" />;
     if (!habits.length) return 'No habits found, add some';
@@ -38,7 +20,7 @@ const Habits = ({ user }) => {
     );
   }
   return (
-    <Dashboard>
+    <Dashboard userId={user.id}>
       <Content>
         <h1>my habits</h1>
         {content()}

@@ -1,38 +1,22 @@
-import { handleQuery } from "./api";
 import { auth } from "./api/auth";
-import Dash, { Content, Sidebar } from "../components/Dashboard";
-import { Button } from "../components/Form";
+import Dash, { Content } from "../components/Dashboard";
 import DashPanel from "../components/DashPanel";
-import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { DataContext } from "../contexts";
 import { PageLoading } from "../components/Loading";
 
 const Dashboard = ({ user }) => {
-  const [habits, setHabits] = useState(null);
-  const getUsers = async () => {
-    const { users } = await handleQuery('{ users { id name email } }');
-    console.dir(users);
+  const { habits, entries } = useContext(DataContext);
+  const dashboardContent = () => {
+    if (!habits || !entries) return <PageLoading className="jcfs" />;
+    return 'going to have a pretty graph here'
   }
-  useEffect(() => {
-    (async () => {
-      const query = `
-        query ($userId: Int) {
-          habits(userId: $userId) {
-            id
-            name
-            icon
-            color
-            label
-            complex
-          }
-        }
-      `;
-      const { habits } = await handleQuery(query, { userId: user.id });
-      setHabits(habits);
-    })();
-  }, []);
   return (
-    <Dash>
-      <Content><h1>dashboard</h1></Content>
+    <Dash userId={user.id}>
+      <Content>
+        <h1>dashboard</h1>
+        {dashboardContent()}
+      </Content>
       <DashPanel {...{ habits }} />
     </Dash>
   );

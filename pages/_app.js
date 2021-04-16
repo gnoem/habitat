@@ -1,11 +1,14 @@
 import "../styles/global.css";
 import { Layout } from "../components/Layout";
+import { AppContextProvider } from "../contexts";
 
 const App = ({ Component, pageProps }) => {
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <AppContextProvider>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </AppContextProvider>
   );
 }
 

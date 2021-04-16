@@ -5,7 +5,7 @@ import { useForm } from "../hooks";
 
 const Account = ({ user }) => {
   return (
-    <Dashboard>
+    <Dashboard userId={user.id}>
       <Content>
         <h1>my account</h1>
         <AccountDetails {...{ user }} />

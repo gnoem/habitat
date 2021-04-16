@@ -11,6 +11,8 @@ export const typeDefs = gql`
     name: String
     email: String
     password: String
+    habits: [Habit]
+    entries: [Entry]
   }
 
   type Habit {
@@ -23,6 +25,21 @@ export const typeDefs = gql`
     userId: Int
   }
 
+  type Entry {
+    id: Int
+    date: String
+    records: [Record]
+    userId: Int
+  }
+
+  type Record {
+    id: Int
+    habitId: Int
+    amount: Int
+    check: Boolean
+    entryId: Int
+  }
+
   type FormError {
     message: String
     location: String
@@ -32,8 +49,10 @@ export const typeDefs = gql`
 
   type Query {
     users: [User]
-    user(email: String, password: String): UserResult
+    login(email: String, password: String): UserResult
+    user(id: Int): User
     habits(userId: Int): [Habit]
+    entries(userId: Int): [Entry]
   }
   
   type Mutation {

@@ -31,12 +31,10 @@ export const resolvers = {
       const users = await prisma.user.findMany();
       return users;
     },
-    user: async (_, args) => {
+    login: async (_, args) => {
       const { email, password } = args;
       const user = await prisma.user.findUnique({
-        where: {
-          email
-        }
+        where: { email }
       });
       if (!user) return {
         __typename: 'FormError',
@@ -51,16 +49,28 @@ export const resolvers = {
       return {
         __typename: 'User',
         ...user
-      };
+      }
+    },
+    user: async (_, args) => {
+      const { id } = args;
+      const user = await prisma.user.findUnique({
+        where: { id }
+      });
+      return user;
     },
     habits: async (_, args) => {
       const { userId } = args;
       const habits = await prisma.habit.findMany({
-        where: {
-          userId
-        }
+        where: { userId }
       });
       return habits;
+    },
+    entries: async (_, args) => {
+      const { userId } = args;
+      const entries = await prisma.entry.findMany({
+        where: { userId }
+      });
+      return entries;
     }
   },
   UserResult: {

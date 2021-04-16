@@ -2,21 +2,20 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Form, { Input, Submit } from "../components/Form";
 import { Homepage } from "../components/Homepage";
-import { useForm, useUser } from "../hooks";
+import { useForm } from "../hooks";
 import { handleFetch, handleQuery } from "./api";
 import { auth } from "./api/auth";
+import { useContext } from "react";
+import { DataContext } from "../contexts";
 
 const Login = () => {
   const router = useRouter();
-  const { setUser } = useUser({
-    redirectTo: '/dashboard',
-    redirectIfFound: true,
-  });
+  const { setUser } = useContext(DataContext);
   const { formData, handleFormError, inputProps } = useForm();
   const handleSubmit = async () => {
     const query = `
       query ($email: String, $password: String) {
-        user(email: $email, password: $password) {
+        login(email: $email, password: $password) {
           ... on FormError {
             __typename
             message
@@ -24,6 +23,7 @@ const Login = () => {
           }
           ... on User {
             id
+            name
             email
           }
         }
@@ -31,10 +31,11 @@ const Login = () => {
     `;
     return await handleQuery(query, formData);
   }
-  const handleSuccess = async ({ user }) => {
-    const loggedInUser = Object.assign(user, { isLoggedIn: true });
-    const body = await handleFetch('/api/auth/login', { user: loggedInUser });
-    setUser(body.user);
+  const handleSuccess = async ({ login: foundUser }) => {
+    const user = Object.assign(foundUser, { isLoggedIn: true });
+    const result = await handleFetch('/api/auth/login', { user });
+    setUser(result.user);
+    router.push('/dashboard');
   }
   const forgotPasswordNote = <Link href="/">forgot your password?</Link>;
   return (

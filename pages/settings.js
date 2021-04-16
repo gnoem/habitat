@@ -1,9 +1,9 @@
 import { auth } from "./api/auth";
 import Dashboard, { Content } from "../components/Dashboard";
 
-const Settings = () => {
+const Settings = ({ user }) => {
   return (
-    <Dashboard>
+    <Dashboard userId={user.id}>
       <Content>
         <h1>settings</h1>
         <h2>appearance</h2>

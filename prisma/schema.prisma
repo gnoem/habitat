@@ -7,6 +7,16 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model User {
+  id            Int           @default(autoincrement()) @id
+  name          String?
+  email         String        @unique
+  password      String?
+  habits        Habit[]
+  entries       Entry[]
+  @@map(name: "users")
+}
+
 model Habit {
   id            Int           @default(autoincrement()) @id
   name          String
@@ -19,14 +29,13 @@ model Habit {
   @@map(name: "habits")
 }
 
-model User {
+model Entry {
   id            Int           @default(autoincrement()) @id
-  name          String?
-  email         String        @unique
-  password      String?
-  habits        Habit[]
-  entries       Entry[]
-  @@map(name: "users")
+  date          DateTime
+  records       Record[]
+  user          User          @relation(fields: [userId], references: [id])
+  userId        Int
+  @@map(name: "entries")
 }
 
 model Record {
@@ -37,13 +46,4 @@ model Record {
   entry         Entry         @relation(fields: [entryId], references: [id])
   entryId       Int
   @@map(name: "records")
-}
-
-model Entry {
-  id            Int           @default(autoincrement()) @id
-  date          DateTime
-  records       Record[]
-  user          User          @relation(fields: [userId], references: [id])
-  userId        Int
-  @@map(name: "entries")
 }
