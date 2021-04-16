@@ -24,6 +24,19 @@ export const resolvers = {
         }
       });
       return habit;
+    },
+    createEntry: async (_, args) => {
+      const { userId, date, records } = args;
+      const entry = await prisma.entry.create({
+        data: {
+          userId,
+          date,
+          records: {
+            create: records
+          }
+        }
+      });
+      return entry;
     }
   },
   Query: {
@@ -71,6 +84,18 @@ export const resolvers = {
         where: { userId }
       });
       return entries;
+    },
+    records: async (_, args) => {
+      const { entryId } = args;
+      const records = await prisma.record.findMany({
+        where: { entryId }
+      });
+      return records;
+    }
+  },
+  Entry: {
+    records: (parent) => {
+      return resolvers.Query.records(null, { entryId: parent.id })
     }
   },
   UserResult: {

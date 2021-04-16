@@ -45,6 +45,11 @@ const DataContextProvider = ({ children }) => {
         entries(userId: $userId) {
           id
           date
+          records {
+            habitId
+            amount
+            check
+          }
         }
       }
     `;

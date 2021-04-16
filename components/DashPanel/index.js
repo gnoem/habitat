@@ -1,25 +1,28 @@
 import styles from "./dashPanel.module.css";
-import { useEffect, useState } from "react";
+import dayjs from "dayjs";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useForm } from "../../hooks";
 import { Sidebar } from "../Dashboard";
 import Form, { Input, Checkbox, Submit } from "../Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBacon, faCalendarAlt, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { PageLoading } from "../Loading";
+import { DataContext } from "../../contexts";
+import { handleQuery } from "../../pages/api";
 
 const DashPanel = ({ habits }) => {
-  const [view, setView] = useState(null);
-  const handleNavClick = (newView) => {
-    if (view === newView) setView(null);
-    else setView(newView);
+  const [panelName, setPanelName] = useState(null);
+  const handleNavClick = (newPanelName) => {
+    if (panelName === newPanelName) setPanelName(null);
+    else setPanelName(newPanelName);
   }
   const isActiveClassName = (name) => {
-    if (view == null) return '';
-    return view === name ? styles.active : styles.inactive;
+    if (panelName == null) return '';
+    return panelName === name ? styles.active : styles.inactive;
   }
   const isActive = (name) => {
-    if (view === null) return false;
-    return view === name;
+    if (panelName === null) return false;
+    return panelName === name;
   }
   return (
     <Sidebar>
@@ -38,7 +41,7 @@ const DashPanel = ({ habits }) => {
               <span><FontAwesomeIcon icon={isActive('test') ? faPlus : faBacon} /></span>
             </button>
           </nav>
-        <PanelContent {...{ view, habits }} />
+        <PanelContent {...{ view: panelName, habits }} />
         </div>
     </Sidebar>
   );
@@ -61,23 +64,20 @@ const PanelContent = ({ view, habits }) => {
 }
 
 const DataForm = ({ habits }) => {
-  // get data; if data exists for current date (DashPanel level state, possibly higher), it'll be passed to DataForm as 'existingData'
-  const existingData = { // sample data
-    date: '2021-04-20',
-    records: [ /* this will initially be an array of string/int IDs that each correspond to a row in the 'Record' db table
-    which will then be used to query the db again to retrieve that information? or actually doesn't graphQL let you skip the round trip and just get all the info at once?? i think so right?
-    in any case the data's probably going to be a mess when it gets here so these objects will have to be prepared/packaged behind the scenes as soon as the data is fetched from the server and then made available via const { data } = useContext or whatever
-    and probably should look pretty much like this, i like this  */
-      { habitId: 1, amount: 64, check: true },
-      { habitId: 5, amount: null, check: true }
-    ]
-  }
+  const { entries, getEntries } = useContext(DataContext);
+  const [currentDate, setCurrentDate] = useState(dayjs().format('YYYY-MM-DD'));
+  const existingData = (() => {
+    const index = entries?.findIndex(entry => entry.date === currentDate);
+    return entries?.[index] ?? null;
+  })();
   const { formData, inputProps } = useForm({
     userId: 2,
-    date: existingData?.date ?? ''
+    date: existingData?.date ?? currentDate
   });
-  // when submitting, first will create entry and get the new ID back, then add that ID to each record?
   const [records, setRecords] = useState(existingData?.records ?? []);
+  useEffect(() => {
+    setRecords(existingData?.records ?? []);
+  }, [currentDate]);
   const updateRecords = (newRecord) => {
     setRecords(prevArray => {
       const arrayToReturn = [...prevArray];
@@ -91,13 +91,25 @@ const DataForm = ({ habits }) => {
       return arrayToReturn;
     });
   }
-  const handleSubmit = () => {
-    console.log(formData);
-    console.log(records);
-    return Promise.resolve('nice');
+  const handleSubmit = async () => {
+    const mutation = `
+      mutation ($userId: Int, $date: String, $records: [RecordInput]) {
+        createEntry(userId: $userId, date: $date, records: $records) {
+          id
+          date
+          records {
+            habitId
+            amount
+            check
+          }
+        }
+      }
+    `;
+    return await handleQuery(mutation, {...formData, records});
   }
-  const handleSuccess = () => {
-    return;
+  const handleSuccess = (result) => {
+    console.log(result);
+    getEntries();
   }
   const fields = habits?.map(habit => {
     let record = {};
@@ -106,18 +118,22 @@ const DataForm = ({ habits }) => {
       const index = existingData.records.findIndex(item => item.habitId === id);
       record = (index !== -1) ? existingData.records[index] : {};
     }
-    return <DataFormField {...habit} {...{ record, updateRecords }} />;
+    return <DataFormField {...habit} {...{ currentDate, record, updateRecords }} />;
   });
-  if (!habits) return <PageLoading />;
+  if (!habits || !entries) return <PageLoading />;
   return (
     <div className={styles.DataForm}>
-      <Form onSubmit={handleSubmit} onSuccess={handleSuccess} behavior={{ checkmarkStick: false }} submit={<Submit className="compact" cancel={false} />}>
+      <Form onSubmit={handleSubmit} onSuccess={handleSuccess}
+            behavior={{ checkmarkStick: false }}
+            submit={<Submit value="save changes" cancel={false} className="compact" />}>
         <Input
           type="date"
           name="date"
-          label={existingData ? 'Edit existing data for:' : 'Add new data for:'}
+          label={existingData ? 'Edit existing entry for:' : 'Create a new entry for:'}
           defaultValue={formData.date}
-          className="stretch" {...inputProps}
+          className="stretch"
+          {...inputProps}
+          onInput={(e) => setCurrentDate(e.target.value)}
         />
         {fields}
       </Form>
@@ -125,12 +141,16 @@ const DataForm = ({ habits }) => {
   );
 }
 
-const DataFormField = ({ id, icon, label, complex, record, updateRecords }) => {
-  const { formData, inputProps, checkboxProps, setFormData } = useForm({
+const DataFormField = ({ currentDate, id, icon, label, complex, record, updateRecords }) => {
+  const defaultFormData = useMemo(() => ({
     habitId: id,
-    amount: record?.amount ?? null,
+    amount: record?.amount ?? (complex ? '' : null),
     check: record?.check ?? false
-  });
+  }), [record]);
+  const { formData, inputProps, checkboxProps, setFormData } = useForm(defaultFormData);
+  useEffect(() => {
+    setFormData(defaultFormData);
+  }, [currentDate]);
   useEffect(() => {
     updateRecords(formData);
     // fires on first render and whenever a field is updated
@@ -139,14 +159,20 @@ const DataFormField = ({ id, icon, label, complex, record, updateRecords }) => {
   }, [formData.check]);
   useEffect(() => {
     if (!complex) return;
+    const parsedInt = (value) => {
+      if (isNaN(parseInt(value))) return null;
+      return parseInt(value);
+    }
     if (!formData.amount || parseInt(formData.amount) === 0) {
       setFormData(prevData => ({
         ...prevData,
+        amount: parsedInt(prevData.amount),
         check: false
       }));
     } else {
       setFormData(prevData => ({
         ...prevData,
+        amount: parsedInt(prevData.amount),
         check: true
       }));
     }
@@ -163,12 +189,12 @@ const DataFormFieldInput = ({ label, complex, formData, inputProps, checkboxProp
   if (complex) {
     const pre = label.split('{{')[0];
     const post = label.split('}}')[1];
-    const unit = label.split('{{')[1].split('}}')[0];
+    const unit = ' ' + label.split('{{')[1].split('}}')[0];
     return (
       <span>
         <div>
           {pre}
-          <Input type="number" name="amount" min="0" defaultValue={formData.amount} className="inline" {...inputProps} />
+          <Input type="number" name="amount" min="0" value={formData.amount} className="inline" {...inputProps} />
           {unit}
           {post}
         </div>

@@ -29,6 +29,7 @@ const Form = ({ children, title, submit, delay, onSubmit, onSuccess, warnError, 
     }, showSuccess ? 1400 : 0);
   }
   const handleError = (result) => {
+    if (Object.values(result)[0] == null) throw new Error('result is null');
     const { __typename, message, location } = Object.values(result)[0];
     if (__typename === 'FormError') {
       setSuccessPending(false);

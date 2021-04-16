@@ -167,6 +167,9 @@ input {
 input:focus {
   box-shadow: inset 3px 0 0 #000;
 }
+input[type=date] {
+  cursor: pointer;
+}
 
 .bb {
   font-size: 0.8rem;

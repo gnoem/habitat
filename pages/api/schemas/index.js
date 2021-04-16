@@ -6,15 +6,6 @@ export const typeDefs = gql`
     password: String
   }
 
-  type User {
-    id: Int
-    name: String
-    email: String
-    password: String
-    habits: [Habit]
-    entries: [Entry]
-  }
-
   type Habit {
     id: Int
     name: String
@@ -25,10 +16,20 @@ export const typeDefs = gql`
     userId: Int
   }
 
+  type User {
+    id: Int
+    name: String
+    email: String
+    password: String
+    habits: [Habit]
+    entries: [Entry]
+  }
+
   type Entry {
     id: Int
     date: String
     records: [Record]
+    user: User
     userId: Int
   }
 
@@ -45,6 +46,12 @@ export const typeDefs = gql`
     location: String
   }
 
+  input RecordInput {
+    habitId: Int
+    amount: Int
+    check: Boolean
+  }
+
   union UserResult = User | FormError
 
   type Query {
@@ -53,11 +60,13 @@ export const typeDefs = gql`
     user(id: Int): User
     habits(userId: Int): [Habit]
     entries(userId: Int): [Entry]
+    records(entryId: Int): [Record]
   }
   
   type Mutation {
     createUser(email: String, password: String): User
     editUser(id: ID!, input: UserInput): User
     createHabit(name: String, icon: String, label: String, complex: Boolean, userId: Int): Habit
+    createEntry(userId: Int, date: String, records: [RecordInput]): Entry
   }
 `

@@ -31,7 +31,7 @@ model Habit {
 
 model Entry {
   id            Int           @default(autoincrement()) @id
-  date          DateTime
+  date          String
   records       Record[]
   user          User          @relation(fields: [userId], references: [id])
   userId        Int
