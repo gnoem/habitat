@@ -25,6 +25,19 @@ export const resolvers = {
       });
       return habit;
     },
+    editHabit: async (_, args) => {
+      const { id, name, icon, label, complex } = args;
+      const habit = await prisma.habit.update({
+        where: { id },
+        data: {
+          name,
+          icon,
+          label,
+          complex
+        }
+      });
+      return habit;
+    },
     createEntry: async (_, args) => {
       const { userId, date, records } = args;
       const entry = await prisma.entry.create({
@@ -88,6 +101,7 @@ export const resolvers = {
     habits: async (_, args) => {
       const { userId } = args;
       const habits = await prisma.habit.findMany({
+        orderBy: { id: 'asc' }, // order of creation i guess
         where: { userId }
       });
       return habits;
@@ -95,6 +109,7 @@ export const resolvers = {
     entries: async (_, args) => {
       const { userId } = args;
       const entries = await prisma.entry.findMany({
+        orderBy: { date: 'desc' },
         where: { userId }
       });
       return entries;
@@ -102,6 +117,7 @@ export const resolvers = {
     records: async (_, args) => {
       const { entryId } = args;
       const records = await prisma.record.findMany({
+        orderBy: { habitId: 'asc' },
         where: { entryId }
       });
       return records;

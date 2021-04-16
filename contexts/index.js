@@ -46,6 +46,7 @@ const DataContextProvider = ({ children }) => {
           id
           date
           records {
+            id
             habitId
             amount
             check

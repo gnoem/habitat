@@ -16,13 +16,25 @@ const Dashboard = ({ user }) => {
       }
     }
     return entries.map(entry => {
-      const recordsList = entry.records.map(record => (
-        <li key={`dashboardContent-recordsListID-${record.id}`}>
-          {getHabitObject.fromId(record.habitId).name}:
-          {record.check ? ' ✔️' : ' ✗'}
-          {(record.check && getHabitObject.fromId(record.habitId).complex) && ` (${record.amount} units)`}
-        </li>
-      ));
+      const recordsList = entry.records.map(record => {
+        if (!record.check) return null;
+        const currentHabit = getHabitObject.fromId(record.habitId);
+        const label = () => {
+          if (!currentHabit.complex) return currentHabit.label;
+          const pre = currentHabit.label.split('{{')[0].trim();
+          const post = currentHabit.label.split('}}')[1].trim();
+          const unit = currentHabit.label.split('{{')[1].split('}}')[0];
+          const amount = record.amount ?? 'some';
+          return (
+            <>{pre} {amount} {unit} {post}</>
+          );
+        }
+        return (
+          <li key={`dashboardContent-recordsListID-${record.id}`}>
+            {label()}
+          </li>
+        )
+      });
       return (
         <div key={`dashboardContent-entryID-${entry.id}`}>
           <h3>{entry.date}</h3>

@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import { DataContext } from "../../contexts";
 import { useForm } from "../../hooks";
 import { handleQuery } from "../../pages/api";
 import Form, { Input, Submit } from "../Form";
@@ -33,7 +34,8 @@ export const HabitBox = ({ addingNew, userId, id, name, icon, label, complex }) 
         icon,
         label,
         complex,
-        expanded
+        expanded,
+        updateExpanded: setExpanded
       }} />
     </div>
   );
@@ -48,9 +50,11 @@ const HabitHeader = ({ name, icon, color, toggleExpanded }) => {
   );
 }
 
-const HabitBody = ({ addingNew, userId, id, name, icon, label, complex, expanded }) => {
+const HabitBody = ({ addingNew, userId, id, name, icon, label, complex, expanded, updateExpanded }) => {
+  const { getHabits } = useContext(DataContext);
   const { formData, warnFormError, inputProps, checkboxProps } = useForm({
     userId,
+    id: addingNew ? '' : id,
     name: addingNew ? '' : name,
     icon: addingNew ? '' : icon,
     label: label ?? '',
@@ -67,7 +71,7 @@ const HabitBody = ({ addingNew, userId, id, name, icon, label, complex, expanded
     }
   }, [expanded]);
   const handleSubmit = async () => {
-    const mutation = `
+    const createHabit = `
       mutation ($name: String, $icon: String, $label: String, $complex: Boolean, $userId: Int) {
         createHabit(name: $name, icon: $icon, label: $label, complex: $complex, userId: $userId) {
           name
@@ -78,11 +82,29 @@ const HabitBody = ({ addingNew, userId, id, name, icon, label, complex, expanded
         }
       }
     `;
-    //return Promise.resolve(formData);
+    const editHabit = `
+      mutation ($id: Int, $name: String, $icon: String, $label: String, $complex: Boolean) {
+        editHabit(id: $id, name: $name, icon: $icon, label: $label, complex: $complex) {
+          id
+          name
+          icon
+          label
+          complex
+        }
+      }
+    `;
+    const mutation = addingNew ? createHabit : editHabit;
     return await handleQuery(mutation, formData);
   }
   const handleSuccess = (result) => {
     console.log(result);
+    getHabits();
+    updateExpanded(false);
+    if (addingNew) {
+      // clear form
+      // maybe everytime state changes from expanded to closed, add habit form is reset?
+      // also do form reset via useForm hook since it's all already there
+    }
   }
   return (
     <div className={styles.HabitBody} ref={habitBodyRef}>
@@ -93,7 +115,7 @@ const HabitBody = ({ addingNew, userId, id, name, icon, label, complex, expanded
           <Input type="text" name="name" label="Habit name:" defaultValue={formData.name} {...inputProps} />
           <Input type="text" name="icon" label="Icon:" defaultValue={formData.icon} {...inputProps} />
         </div>
-        <Input type="text" name="label" label="Display label:" defaultValue={formData.label} {...inputProps} />
+        <Input type="text" name="label" label="Display label:" className="stretch" defaultValue={formData.label} {...inputProps} />
         <Gap />
         <Checkbox name="complex" checked={formData.complex} detailedLabel={[
           "enable complex tracking",

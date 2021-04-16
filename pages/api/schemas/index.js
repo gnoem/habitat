@@ -47,6 +47,7 @@ export const typeDefs = gql`
   }
 
   input RecordInput {
+    id: Int
     habitId: Int
     amount: Int
     check: Boolean
@@ -67,6 +68,7 @@ export const typeDefs = gql`
     createUser(email: String, password: String): User
     editUser(id: ID!, input: UserInput): User
     createHabit(name: String, icon: String, label: String, complex: Boolean, userId: Int): Habit
+    editHabit(id: Int, name: String, icon: String, label: String, complex: Boolean): Habit
     createEntry(userId: Int, date: String, records: [RecordInput]): Entry
     editEntry(id: Int, date: String, records: [RecordInput]): Entry
   }
