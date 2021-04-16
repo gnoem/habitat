@@ -68,5 +68,6 @@ export const typeDefs = gql`
     editUser(id: ID!, input: UserInput): User
     createHabit(name: String, icon: String, label: String, complex: Boolean, userId: Int): Habit
     createEntry(userId: Int, date: String, records: [RecordInput]): Entry
+    editEntry(id: Int, date: String, records: [RecordInput]): Entry
   }
 `

@@ -70,29 +70,37 @@ const DataForm = ({ habits }) => {
     const index = entries?.findIndex(entry => entry.date === currentDate);
     return entries?.[index] ?? null;
   })();
-  const { formData, inputProps } = useForm({
+  const defaultFormData = {
     userId: 2,
-    date: existingData?.date ?? currentDate
-  });
-  const [records, setRecords] = useState(existingData?.records ?? []);
+    id: existingData?.id,
+    date: existingData?.date ?? currentDate,
+    records: existingData?.records ?? []
+  }
+  const { formData, setFormData, inputProps } = useForm(defaultFormData);
+  const setRecords = (data) => {
+    setFormData(prevData => ({
+      ...prevData,
+      records: data
+    }));
+  }
   useEffect(() => {
-    setRecords(existingData?.records ?? []);
+    setFormData(defaultFormData);
   }, [currentDate]);
-  const updateRecords = (newRecord) => {
-    setRecords(prevArray => {
-      const arrayToReturn = [...prevArray];
-      const { habitId } = newRecord;
-      const index = prevArray.findIndex(item => item.habitId === habitId);
-      if (index === -1) {
-        arrayToReturn.push(newRecord);
-        return arrayToReturn;
-      }
+  const updateRecordsArray = (newRecord) => {
+    const { records } = formData;
+    const arrayToReturn = [...records];
+    const { habitId } = newRecord;
+    const index = records.findIndex(item => item.habitId === habitId);
+    if (index === -1) {
+      arrayToReturn.push(newRecord);
+    }
+    else {
       arrayToReturn[index] = newRecord;
-      return arrayToReturn;
-    });
+    }
+    setRecords(arrayToReturn);
   }
   const handleSubmit = async () => {
-    const mutation = `
+    const createEntry = `
       mutation ($userId: Int, $date: String, $records: [RecordInput]) {
         createEntry(userId: $userId, date: $date, records: $records) {
           id
@@ -105,7 +113,22 @@ const DataForm = ({ habits }) => {
         }
       }
     `;
-    return await handleQuery(mutation, {...formData, records});
+    const editEntry = `
+      mutation ($id: Int, $date: String, $records: [RecordInput]) {
+        editEntry(id: $id, date: $date, records: $records) {
+          id
+          date
+          records {
+            habitId
+            amount
+            check
+          }
+        }
+      }
+    `;
+    console.dir(formData);
+    const mutation = existingData ? editEntry : createEntry;
+    return await handleQuery(mutation, {...formData});
   }
   const handleSuccess = (result) => {
     console.log(result);
@@ -118,7 +141,7 @@ const DataForm = ({ habits }) => {
       const index = existingData.records.findIndex(item => item.habitId === id);
       record = (index !== -1) ? existingData.records[index] : {};
     }
-    return <DataFormField {...habit} {...{ currentDate, record, updateRecords }} />;
+    return <DataFormField {...habit} {...{ currentDate, record, updateRecordsArray }} />;
   });
   if (!habits || !entries) return <PageLoading />;
   return (
@@ -141,7 +164,7 @@ const DataForm = ({ habits }) => {
   );
 }
 
-const DataFormField = ({ currentDate, id, icon, label, complex, record, updateRecords }) => {
+const DataFormField = ({ currentDate, id, icon, label, complex, record, updateRecordsArray }) => {
   const defaultFormData = useMemo(() => ({
     habitId: id,
     amount: record?.amount ?? (complex ? '' : null),
@@ -152,11 +175,11 @@ const DataFormField = ({ currentDate, id, icon, label, complex, record, updateRe
     setFormData(defaultFormData);
   }, [currentDate]);
   useEffect(() => {
-    updateRecords(formData);
+    updateRecordsArray(formData);
     // fires on first render and whenever a field is updated
     // so really 'records' gets set twice - first when it's initialized, eithr with existingData?.records ?? []
     // and then again as soon as fields render
-  }, [formData.check]);
+  }, [formData.check, formData.amount]);
   useEffect(() => {
     if (!complex) return;
     const parsedInt = (value) => {

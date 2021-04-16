@@ -37,6 +37,20 @@ export const resolvers = {
         }
       });
       return entry;
+    },
+    editEntry: async (_, args) => {
+      const { id, date, records } = args;
+      const entry = await prisma.entry.update({
+        where: { id },
+        data: {
+          date,
+          records: {
+            deleteMany: {},
+            create: records
+          }
+        }
+      });
+      return entry;
     }
   },
   Query: {
