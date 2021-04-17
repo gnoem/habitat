@@ -1,14 +1,15 @@
 import styles from "./dashPanel.module.css";
 import dayjs from "dayjs";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "../../hooks";
 import { Sidebar } from "../Dashboard";
-import Form, { Input, Checkbox, Submit } from "../Form";
+import Form, { Input, Checkbox, Submit, Button } from "../Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBacon, faCalendarAlt, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { PageLoading } from "../Loading";
 import { DataContext } from "../../contexts";
 import { handleQuery } from "../../pages/api";
+import { LinkButton } from "../LinkButton";
 
 const DashPanel = ({ habits }) => {
   const [panelName, setPanelName] = useState(null);
@@ -64,26 +65,25 @@ const PanelContent = ({ view, habits }) => {
 const DataForm = ({ habits }) => {
   const { entries, getEntries } = useContext(DataContext);
   const [currentDate, setCurrentDate] = useState(dayjs().format('YYYY-MM-DD'));
-  const existingData = (() => {
+  const existingData = useMemo(() => {
     const index = entries?.findIndex(entry => entry.date === currentDate);
     return entries?.[index] ?? null;
-  })();
-  const defaultFormData = {
+  }, [entries, currentDate]);
+  const { formData, resetForm, setFormData, inputProps } = useForm({
     userId: 2,
     id: existingData?.id,
     date: existingData?.date ?? currentDate,
     records: existingData?.records ?? []
-  }
-  const { formData, setFormData, inputProps } = useForm(defaultFormData);
+  });
+  useEffect(() => {
+    resetForm();
+  }, [entries, currentDate]);
   const setRecords = (data) => {
     setFormData(prevData => ({
       ...prevData,
       records: data
     }));
   }
-  useEffect(() => {
-    setFormData(defaultFormData);
-  }, [currentDate]);
   const updateRecordsArray = (newRecord) => {
     const { records } = formData;
     const arrayToReturn = [...records];
@@ -124,15 +124,39 @@ const DataForm = ({ habits }) => {
         }
       }
     `;
-    console.dir(formData);
     const mutation = existingData ? editEntry : createEntry;
+    //console.dir(formData);
     return await handleQuery(mutation, {...formData});
   }
   const handleSuccess = (result) => {
-    console.log(result);
-    getEntries();
+    const { editEntry, createEntry } = result;
+    const newEntry = editEntry ?? createEntry;
+    getEntries().then(() => setCurrentDate(newEntry?.date));
+    // and then somehow change [editingDate] and [jumpingToDate] to false
+    // probably just set useEffect on that component
+    // with entire entries array as dependency? i guess.... or maybe currentDate would be better... or both
   }
-  const fields = habits?.map(habit => {
+  if (!habits || !entries) return <PageLoading />;
+  return (
+    <div className={styles.DataForm}>
+      <Form onSubmit={handleSubmit} onSuccess={handleSuccess}
+            behavior={{ checkmarkStick: false }}
+            submit={<Submit value="save changes" cancel={false} className="compact mt15" />}>
+        <DataFormDateInput {...{
+          existingData,
+          formData,
+          inputProps,
+          currentDate,
+          setCurrentDate
+        }} />
+        <DataFormFields {...{ habits, existingData, currentDate, updateRecordsArray }} />
+      </Form>
+    </div>
+  );
+}
+
+const DataFormFields = ({ habits, existingData, currentDate, updateRecordsArray }) => {
+  return habits?.map(habit => {
     let record = {};
     if (existingData?.records) {
       const { id } = habit;
@@ -140,40 +164,101 @@ const DataForm = ({ habits }) => {
       record = (index !== -1) ? existingData.records[index] : {};
     }
     return <DataFormField {...habit} {...{ currentDate, record, updateRecordsArray }} />;
-  });
-  if (!habits || !entries) return <PageLoading />;
+  })
+}
+
+const DataFormDateInput = ({ existingData, formData, inputProps, currentDate, setCurrentDate }) => {
+  const [editingDate, setEditingDate] = useState(false);
+  const [jumpingToDate, setJumpingToDate] = useState(false);
+  const inputAttributes = () => {
+    let label = 'Edit existing entry for:',
+        readOnly = true,
+        onClick = () => setEditingDate(true),
+        note;
+    if (!existingData) {
+      label = 'Create a new entry for:';
+      readOnly = false;
+      onClick = null;
+    }
+    else if (editingDate) {
+      const jumpToDate = () => {
+        setJumpingToDate(true);
+        setEditingDate(false);
+      }
+      label = (
+        <span>
+          Edit the date on this entry:
+        </span>
+      );
+      note = (
+        <div className="tar">
+          ...or <button type="button" className="link" onClick={jumpToDate}>jump to a different date</button>
+        </div>
+      );
+      readOnly = false;
+      onClick = null;
+    }
+    else if (jumpingToDate) {
+      label = (<span>Jump to date:</span>)
+      readOnly = false;
+      onClick = null;
+    }
+    return { label, readOnly, onClick, note }
+  }
+  // todo add useEffect for jumpingToDate - if true, open up calendar box
+  // probably can do this when i set up custom calendar component
+  useEffect(() => {
+    if (editingDate) setEditingDate(false);
+    if (jumpingToDate) setJumpingToDate(false);
+  }, [currentDate]);
+  useEffect(() => {
+    // this is for when the user edits the date in the box but then decides they want to jump to the date they typed in
+    // if existingData.date !== formData.date (indicates that the user has typed into the box)
+    // and then jumpingToDate is set to true, set currentDate equal to formData.date
+    if (!jumpingToDate) return;
+    if (existingData.date !== formData.date) {
+      setCurrentDate(formData.date)
+    }
+  }, [jumpingToDate])
+  const dateInputOnChange = (jumpingToDate || !existingData)
+    ? (e) => updateCurrentDate(e.target.value)
+    : inputProps.onChange;
+  const updateCurrentDate = (date) => {
+    setCurrentDate(date);
+    setJumpingToDate(false);
+  }
   return (
-    <div className={styles.DataForm}>
-      <Form onSubmit={handleSubmit} onSuccess={handleSuccess}
-            behavior={{ checkmarkStick: false }}
-            submit={<Submit value="save changes" cancel={false} className="compact mt15" />}>
-        <Input
-          type="date"
-          name="date"
-          label={existingData ? 'Edit existing entry for:' : 'Create a new entry for:'}
-          defaultValue={formData.date}
-          className="stretch"
-          {...inputProps}
-          onInput={(e) => setCurrentDate(e.target.value)} // probably if viewing an existing entry, this should change the date on formData
-        />
-        {fields}
-      </Form>
-    </div>
+    <Input
+      type="date"
+      name="date"
+      label={inputAttributes().label}
+      defaultValue={formData.date}
+      readOnly={inputAttributes().readOnly}
+      className="stretch mb10"
+      {...inputProps}
+      onChange={dateInputOnChange}
+      onClick={inputAttributes().onClick}
+      note={inputAttributes().note}
+    />
   );
 }
 
 const DataFormField = ({ currentDate, id, icon, label, complex, record, updateRecordsArray }) => {
-  const defaultFormData = useMemo(() => ({
+  const defaultFormData = (record) => ({
     habitId: id,
-    amount: record?.amount ?? (complex ? '' : false),
+    amount: record?.amount ?? '',
     check: record?.check ?? false
-  }), [record]);
-  const { formData, inputProps, checkboxProps, setFormData } = useForm(defaultFormData);
+  });
+  const { formData, inputProps, checkboxProps, setFormData } = useForm(defaultFormData(record));
   useEffect(() => {
-    setFormData(defaultFormData);
+    setFormData(defaultFormData(record));
   }, [currentDate]);
   useEffect(() => {
-    updateRecordsArray(formData);
+    const formDataCopy = {...formData};
+    if (formDataCopy.amount === '') formDataCopy.amount = null;
+    // would just set defaultFormData.amount: record?.amount but eslint warning is like no null value for input
+    // so that's why i have to do this before I send it back up
+    updateRecordsArray(formDataCopy);
     // fires on first render and whenever a field is updated
     // so really 'records' gets set twice - first when it's initialized, eithr with existingData?.records ?? []
     // and then again as soon as fields render

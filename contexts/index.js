@@ -20,6 +20,7 @@ const DataContextProvider = ({ children }) => {
     `;
     const { user } = await handleQuery(query, { id: userId });
     setUser(user);
+    return user;
   }
   const getHabits = async () => {
     if (!user) return console.log('User not stored');
@@ -37,6 +38,7 @@ const DataContextProvider = ({ children }) => {
     `;
     const { habits } = await handleQuery(query, { userId: user.id });
     setHabits(habits);
+    return habits;
   }
   const getEntries = async () => {
     if (!user) return console.log('User not stored');
@@ -56,6 +58,7 @@ const DataContextProvider = ({ children }) => {
     `;
     const { entries } = await handleQuery(query, { userId: user.id });
     setEntries(entries);
+    return entries;
   }
   const dataContext = {
     user, setUser, getUser,

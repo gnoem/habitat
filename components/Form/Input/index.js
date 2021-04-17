@@ -1,8 +1,23 @@
+import React from "react";
+import { fancyClassName } from "../../../utils";
 import styles from "./input.module.css";
 
-export const Input = ({ type, name, label, value, defaultValue, placeholder, disabled, onChange, onInput, note, className, min }) => {
+export const Input = ({
+    type,
+    name,
+    label,
+    value,
+    defaultValue,
+    placeholder,
+    disabled,
+    readOnly,
+    onChange, onInput, onClick,
+    note,
+    className,
+    min
+  }) => {
   return (
-    <div className={`${styles.Input} ${styles[className] ?? ''} ${className ?? ''}`}>
+    <div className={`${styles.Input} ${fancyClassName({ styles, className })}`}>
       {label && <label>{label}</label>}
       <div>
         <input {...{
@@ -12,8 +27,10 @@ export const Input = ({ type, name, label, value, defaultValue, placeholder, dis
           defaultValue,
           placeholder,
           disabled,
+          readOnly,
           onChange,
           onInput,
+          onClick,
           min
         }} />
       </div>

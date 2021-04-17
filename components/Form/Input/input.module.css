@@ -23,6 +23,6 @@ form > div > .Input + .Input {
 .Input.inline {
   display: inline-flex;
 }
-.Input.stretch > div, .Input > div + span {
+.Input.stretch > div, .Input.stretch > div > input, .Input > div + span {
   width: 100%;
 }

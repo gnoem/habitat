@@ -87,7 +87,7 @@ a::before, button.link::before {
   z-index: -1;
   bottom: 0;
   left: 0;
-  width: calc(100% + 1rem);
+  width: calc(100% + 1em);
   max-width: 100%;
   height: 100%;
   max-height: 0px;
@@ -98,8 +98,8 @@ a::before, button.link::before {
 a:hover::before, button.link:hover::before {
   border-width: 1px;
   max-height: 100%;
-  max-width: calc(100% + 1rem);
-  transform: skewX(-12deg) translate3d(-0.5rem, 1px, 0);
+  max-width: calc(100% + 1em);
+  transform: skewX(-12deg) translate3d(-0.5em, 1px, 0);
 }
 
 button {
@@ -174,6 +174,7 @@ input:focus {
 }
 input[type=date] {
   cursor: pointer;
+  user-select: none;
 }
 
 .bb {
@@ -185,6 +186,12 @@ input[type=date] {
 .mt10 {
   margin-top: 1rem !important;
 }
+.mb10 {
+  margin-bottom: 1rem !important;
+}
 .mt15 {
   margin-top: 1.5rem !important;
+}
+.tar {
+  text-align: right;
 }
