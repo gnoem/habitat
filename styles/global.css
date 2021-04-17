@@ -172,6 +172,11 @@ input {
 input:focus {
   box-shadow: inset 3px 0 0 #000;
 }
+input:disabled, button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  user-select: none;
+}
 input[type=date] {
   cursor: pointer;
   user-select: none;

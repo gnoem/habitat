@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { fancyClassName } from "../../utils";
 import { Button } from "./Button";
 import { Checkbox } from "./Checkbox";
 import { Input } from "./Input";
 import { Submit } from "./Submit";
 
-const Form = ({ children, title, submit, delay, onSubmit, onSuccess, warnError, behavior }) => {
+const Form = ({ children, title, submit, delay, onSubmit, onSuccess, warnError, behavior, className }) => {
   const defaultBehavior = {
     showLoading: true,
     showSuccess: true,
@@ -60,7 +61,7 @@ const Form = ({ children, title, submit, delay, onSubmit, onSuccess, warnError, 
   const submitProps = { successPending, successAnimation };
   const customSubmit = submit ? React.cloneElement(submit, submitProps) : null;
   return (
-    <form onSubmit={handleSubmit} autoComplete="off">
+    <form onSubmit={handleSubmit} className={fancyClassName({ className })} autoComplete="off">
       {title && <h2>{title}</h2>}
       {children}
       {(submit === false) || (customSubmit ?? <Submit {...submitProps} cancel={false} />)}

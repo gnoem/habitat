@@ -49,3 +49,7 @@
   width: auto;
   height: 40%;
 }
+
+.Content.Account form + form {
+  margin-top: 2rem;
+}

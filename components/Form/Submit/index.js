@@ -3,11 +3,11 @@ import { Button } from "../Button";
 import { Loading } from "../../Loading";
 import { fancyClassName } from "../../../utils";
 
-export const Submit = ({ value, onClick, cancel, onCancel, successPending, successAnimation, className }) => {
+export const Submit = ({ value, onClick, cancel, onCancel, successPending, successAnimation, className, disabled }) => {
   const hideText = !!successPending || !!successAnimation;
   return (
     <div className={`${styles.Submit} ${fancyClassName({ styles, className })}`}>
-      <Button type="submit" onClick={onClick}>
+      <Button type="submit" onClick={onClick} disabled={disabled}>
         <span data-ghost={hideText}>{value ?? 'submit'}</span>
         <StatusIcon {...{ successPending, successAnimation }} />
       </Button>

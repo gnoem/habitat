@@ -1,30 +1,84 @@
+import { useContext } from "react";
+import { User } from "./api";
 import { auth } from "./api/auth";
+import { DataContext } from "../contexts";
+import { useForm } from "../hooks";
 import Dashboard from "../components/Dashboard";
 import Form, { Input, Submit } from "../components/Form";
-import { useForm } from "../hooks";
 
 const Account = ({ user }) => {
   return (
-    <Dashboard userId={user.id}>
+    <Dashboard userId={user.id} className="Account">
       <h1>my account</h1>
       <AccountDetails {...{ user }} />
+      <ChangePassword {...{ user }} />
     </Dashboard>
   );
 }
 
 const AccountDetails = ({ user }) => {
+  const { setUser } = useContext(DataContext);
   const { formData, warnFormError, inputProps } = useForm({
+    id: user.id,
     name: user.name,
     email: user.email
   });
-  const handleSubmit = () => Promise.resolve('heyyyy');
-  const handleSuccess = (result) => console.log(result);
+  const handleSubmit = () => User.edit(formData);
+  const handleSuccess = ({ editUser }) => setUser(editUser);
   return (
     <Form onSubmit={handleSubmit} onSuccess={handleSuccess}
+          behavior={{ checkmarkStick: false }}
           submit={<Submit value="save changes" cancel={false} />}
           title="account details">
       <Input type="text" name="name" label="your name:" defaultValue={formData.name} {...inputProps} />
       <Input type="text" name="email" label="your email address:" defaultValue={formData.email} {...inputProps} />
+    </Form>
+  );
+}
+
+const ChangePassword = ({ user }) => {
+  const { formData, warnFormError, inputProps, resetForm } = useForm({
+    id: user.id,
+    password: '',
+    confirmPassword: ''
+  });
+  const handleSubmit = () => User.editPassword(formData);
+  const handleSuccess = (result) => {
+    console.log(result);
+    resetForm();
+  }
+  const passwordIsValid = (() => {
+    if (!formData.password || !formData.confirmPassword) return false;
+    if (formData.password.length < 6) return false;
+    return formData.password === formData.confirmPassword;
+  })();
+  return (
+    <Form onSubmit={handleSubmit} onSuccess={handleSuccess}
+          behavior={{ checkmarkStick: false }}
+          submit={(
+            <Submit
+              value="save changes"
+              disabled={!passwordIsValid}
+              cancel={passwordIsValid ? 'cancel' : false}
+              onCancel={passwordIsValid ? resetForm : false}
+            />
+          )}
+          title="change password">
+      <Input
+        type="password"
+        name="password"
+        label="new password:"
+        value={formData.password}
+        {...inputProps}
+        note="*must be at least 6 characters"
+      />
+      <Input
+        type="password"
+        name="confirmPassword"
+        label="confirm new password:"
+        value={formData.confirmPassword}
+        {...inputProps}
+      />
     </Form>
   );
 }

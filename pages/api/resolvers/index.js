@@ -12,6 +12,27 @@ export const resolvers = {
       });
       return user;
     },
+    editUser: async (_, args) => {
+      const { id, name, email } = args;
+      const user = await prisma.user.update({
+        where: { id },
+        data: {
+          name,
+          email
+        }
+      });
+      return user;
+    },
+    editPassword: async (_, args) => {
+      const { id, password } = args;
+      const user = await prisma.user.update({
+        where: { id },
+        data: {
+          password
+        }
+      });
+      return user;
+    },
     createHabit: async (_, args) => {
       const { name, icon, label, complex, userId } = args;
       const habit = await prisma.habit.create({

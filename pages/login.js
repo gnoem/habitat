@@ -12,7 +12,7 @@ const Login = () => {
   const router = useRouter();
   const { setUser } = useContext(DataContext);
   const { formData, handleFormError, inputProps } = useForm();
-  const handleSubmit = User.login(formData);
+  const handleSubmit = () => User.login(formData);
   const handleSuccess = async ({ login: foundUser }) => {
     const user = Object.assign(foundUser, { isLoggedIn: true });
     const result = await handleFetch('/api/auth/login', { user });

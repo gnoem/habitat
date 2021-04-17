@@ -134,8 +134,14 @@ const DataFormFields = ({ habits, existingData, currentDate, updateRecordsArray 
       const index = existingData.records.findIndex(item => item.habitId === id);
       record = (index !== -1) ? existingData.records[index] : {};
     }
-    return <DataFormField {...habit} {...{ currentDate, record, updateRecordsArray }} />;
-  })
+    return (
+      <DataFormField
+        key={`dataFormField-habitId-${habit.id}`}
+        {...habit}
+        {...{ currentDate, record, updateRecordsArray }}
+      />
+    );
+  });
 }
 
 const DataFormDateInput = ({ existingData, formData, inputProps, currentDate, setCurrentDate }) => {

@@ -12,9 +12,24 @@ export const handleFetch = async (route, body) => {
   console.dir(response.statusText);
 }
 
+const handleQuery = async (params = {}, variables = {}) => {
+  const response = await fetch('/api/server', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ query: params, variables })
+  });
+  const body = await response.json();
+  if (body.data) return body.data;
+  console.dir(body);
+}
+
 export const User = {
   get: async (params) => await handleQuery(queries.getUser, params),
   create: async (formData) => await handleQuery(mutations.createUser, formData),
+  edit: async (formData) => await handleQuery(mutations.editUser, formData),
+  editPassword: async (formData) => await handleQuery(mutations.editPassword, formData),
   login: async (params) => await handleQuery(queries.loginUser, params)
 }
 
@@ -28,19 +43,6 @@ export const Entry = {
   get: async (params) => await handleQuery(queries.getEntries, params),
   create: async (formData) => await handleQuery(mutations.createEntry, formData),
   edit: async (formData) => await handleQuery(mutations.editEntry, formData),
-}
-
-const handleQuery = async (params = {}, variables = {}) => {
-  const response = await fetch('/api/server', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ query: params, variables })
-  });
-  const body = await response.json();
-  if (body.data) return body.data;
-  console.dir(body);
 }
 
 const queries = {
@@ -103,6 +105,24 @@ const mutations = {
       createUser(email: $email, password: $password) {
         email
         password
+      }
+    }
+  `,
+  editUser: `
+    mutation ($id: Int, $name: String, $email: String) {
+      editUser(id: $id, name: $name, email: $email) {
+        id
+        name
+        email
+      }
+    }
+  `,
+  editPassword: `
+    mutation ($id: Int, $password: String) {
+      editPassword(id: $id, password: $password) {
+        id
+        name
+        email
       }
     }
   `,

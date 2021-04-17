@@ -3,8 +3,9 @@ import { DateMarker } from "../Date";
 import styles from "./dashboard.module.css";
 import { useContext, useEffect } from "react";
 import { DataContext } from "../../contexts";
+import { fancyClassName } from "../../utils";
 
-const Dashboard = ({ children, userId, sidebar }) => {
+const Dashboard = ({ children, userId, sidebar, className }) => {
   const { user, getUser, habits, getHabits, entries, getEntries } = useContext(DataContext);
   useEffect(() => {
     if (user == null) return getUser(userId);
@@ -20,7 +21,7 @@ const Dashboard = ({ children, userId, sidebar }) => {
       <Nav />
       <div className={styles.Main}>
         {sidebar && <Sidebar>{sidebar}</Sidebar>}
-        <Content>
+        <Content {...{ className }}>
           {children}
         </Content>
       </div>
@@ -28,9 +29,9 @@ const Dashboard = ({ children, userId, sidebar }) => {
   );
 }
 
-export const Content = ({ children }) => {
+export const Content = ({ children, className }) => {
   return (
-    <div className={styles.Content}>
+    <div className={`${styles.Content} ${fancyClassName({ styles, className })}`}>
       {children}
     </div>
   );
