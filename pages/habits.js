@@ -11,7 +11,7 @@ const Habits = ({ user }) => {
     if (habits == null) return <PageLoading className="jcfs" />;
     if (!habits.length) return 'No habits found, add some';
     const boxes = habits.map(habit => (
-      <HabitBox userId={user.id} {...habit} />
+      <HabitBox key={`habitBox-habitId-${habit.id}`} userId={user.id} {...habit} />
     ));
     return (
       <MyHabits userId={user.id}>
@@ -21,10 +21,8 @@ const Habits = ({ user }) => {
   }
   return (
     <Dashboard userId={user.id}>
-      <Content>
-        <h1>my habits</h1>
-        {content()}
-      </Content>
+      <h1>my habits</h1>
+      {content()}
     </Dashboard>
   );
 }

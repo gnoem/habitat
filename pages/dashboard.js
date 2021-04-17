@@ -44,12 +44,9 @@ const Dashboard = ({ user }) => {
     });
   }
   return (
-    <Dash userId={user.id}>
-      <Content>
-        <h1>dashboard</h1>
-        {dashboardContent()}
-      </Content>
-      <DashPanel {...{ habits }} />
+    <Dash userId={user.id} sidebar={<DashPanel {...{ habits }} />}>
+      <h1>dashboard</h1>
+      {dashboardContent()}
     </Dash>
   );
 }

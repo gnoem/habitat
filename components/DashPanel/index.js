@@ -25,25 +25,23 @@ const DashPanel = ({ habits }) => {
     return panelName === name;
   }
   return (
-    <Sidebar>
-        <div className={styles.DashPanel}>
-          <nav>
-            <button className={isActiveClassName('data')} onClick={() => handleNavClick('data')}>
-              <span>Add data</span>
-              <span><FontAwesomeIcon icon={faPlus} /></span>
-            </button>
-            <button className={isActiveClassName('calendar')} onClick={() => handleNavClick('calendar')}>
-              <span>Jump to date</span>
-              <span><FontAwesomeIcon icon={isActive('calendar') ? faPlus : faCalendarAlt} /></span>
-            </button>
-            <button className={isActiveClassName('test')} onClick={() => handleNavClick('test')}>
-              <span>Dummy</span>
-              <span><FontAwesomeIcon icon={isActive('test') ? faPlus : faBacon} /></span>
-            </button>
-          </nav>
-        <PanelContent {...{ view: panelName, habits }} />
-        </div>
-    </Sidebar>
+    <div className={styles.DashPanel}>
+        <nav>
+          <button className={isActiveClassName('data')} onClick={() => handleNavClick('data')}>
+            <span>Add data</span>
+            <span><FontAwesomeIcon icon={faPlus} /></span>
+          </button>
+          <button className={isActiveClassName('calendar')} onClick={() => handleNavClick('calendar')}>
+            <span>Jump to date</span>
+            <span><FontAwesomeIcon icon={isActive('calendar') ? faPlus : faCalendarAlt} /></span>
+          </button>
+          <button className={isActiveClassName('test')} onClick={() => handleNavClick('test')}>
+            <span>Dummy</span>
+            <span><FontAwesomeIcon icon={isActive('test') ? faPlus : faBacon} /></span>
+          </button>
+        </nav>
+      <PanelContent {...{ view: panelName, habits }} />
+      </div>
   );
 }
 
@@ -156,7 +154,7 @@ const DataForm = ({ habits }) => {
           defaultValue={formData.date}
           className="stretch"
           {...inputProps}
-          onInput={(e) => setCurrentDate(e.target.value)}
+          onInput={(e) => setCurrentDate(e.target.value)} // probably if viewing an existing entry, this should change the date on formData
         />
         {fields}
       </Form>
@@ -167,7 +165,7 @@ const DataForm = ({ habits }) => {
 const DataFormField = ({ currentDate, id, icon, label, complex, record, updateRecordsArray }) => {
   const defaultFormData = useMemo(() => ({
     habitId: id,
-    amount: record?.amount ?? (complex ? '' : null),
+    amount: record?.amount ?? (complex ? '' : false),
     check: record?.check ?? false
   }), [record]);
   const { formData, inputProps, checkboxProps, setFormData } = useForm(defaultFormData);

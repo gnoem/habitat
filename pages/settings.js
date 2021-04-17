@@ -4,19 +4,17 @@ import Dashboard, { Content } from "../components/Dashboard";
 const Settings = ({ user }) => {
   return (
     <Dashboard userId={user.id}>
-      <Content>
-        <h1>settings</h1>
-        <h2>appearance</h2>
+      <h1>settings</h1>
+      <h2>appearance</h2>
+      <ul>
+        <li>refresh background gradient periodically [y/n] - every ___ sec/min/hr</li>
+        <li>clock</li>
         <ul>
-          <li>refresh background gradient periodically [y/n] - every ___ sec/min/hr</li>
-          <li>clock</li>
-          <ul>
-            <li>hide clock [y/n]</li>
-            <li>24 hr clock [y/n]</li>
-            <li>show seconds [y/n]</li>
-          </ul>
+          <li>hide clock [y/n]</li>
+          <li>24 hr clock [y/n]</li>
+          <li>show seconds [y/n]</li>
         </ul>
-      </Content>
+      </ul>
     </Dashboard>
   );
 }

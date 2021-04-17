@@ -26,6 +26,7 @@
   --mono-font: 'Inconsolata', monospace;
   --link-color: #000;
   --link-bg: #000;
+  --caution: #df436a;
   --button-cancel-color: #767578;
   --loading-icon-color: #9FF7E7;
   --dashboard-nav-width: 7rem;

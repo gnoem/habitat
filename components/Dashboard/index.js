@@ -4,7 +4,7 @@ import styles from "./dashboard.module.css";
 import { useContext, useEffect } from "react";
 import { DataContext } from "../../contexts";
 
-const Dashboard = ({ children, userId }) => {
+const Dashboard = ({ children, userId, sidebar }) => {
   const { user, getUser, habits, getHabits, entries, getEntries } = useContext(DataContext);
   useEffect(() => {
     if (user == null) return getUser(userId);
@@ -18,8 +18,12 @@ const Dashboard = ({ children, userId }) => {
   return (
     <div className={styles.Dashboard}>
       <Nav />
-      <DateMarker />
-      <div className={styles.Main}>{children}</div>
+      <div className={styles.Main}>
+        {sidebar && <Sidebar>{sidebar}</Sidebar>}
+        <Content>
+          {children}
+        </Content>
+      </div>
     </div>
   );
 }
@@ -35,6 +39,7 @@ export const Content = ({ children }) => {
 export const Sidebar = ({ children }) => {
   return (
     <div className={styles.Sidebar}>
+      <DateMarker />
       {children}
     </div>
   );
