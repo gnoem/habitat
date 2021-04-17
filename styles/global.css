@@ -179,3 +179,12 @@ input[type=date] {
 .bb {
   font-size: 0.8rem;
 }
+.mt05 {
+  margin-top: 0.5rem !important;
+}
+.mt10 {
+  margin-top: 1rem !important;
+}
+.mt15 {
+  margin-top: 1.5rem !important;
+}

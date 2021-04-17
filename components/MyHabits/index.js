@@ -1,4 +1,4 @@
-import { faTrash, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useEffect, useRef, useState } from "react";
 import { DataContext } from "../../contexts";
@@ -6,7 +6,6 @@ import { useForm } from "../../hooks";
 import { handleQuery } from "../../pages/api";
 import Form, { Input, Submit } from "../Form";
 import { Checkbox } from "../Form/Checkbox";
-import { Gap } from "../util";
 import styles from "./myHabits.module.css";
 
 export const MyHabits = ({ children, userId }) => {
@@ -120,8 +119,7 @@ const HabitBody = ({ addingNew, userId, id, name, icon, label, complex, expanded
             <Input type="text" name="icon" label="Icon:" value={formData.icon} {...inputProps} />
           </div>
           <Input type="text" name="label" label="Display label:" className="stretch" value={formData.label} {...inputProps} />
-          <Gap />
-          <Checkbox name="complex" checked={formData.complex} detailedLabel={[
+          <Checkbox name="complex" className="mt10" checked={formData.complex} detailedLabel={[
             "enable complex tracking",
             "if checked, you will be able to record an amount when tracking this habit, e.g. how many hours of studying, how many oz. of water"
           ]} {...checkboxProps} />

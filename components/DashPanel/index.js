@@ -146,7 +146,7 @@ const DataForm = ({ habits }) => {
     <div className={styles.DataForm}>
       <Form onSubmit={handleSubmit} onSuccess={handleSuccess}
             behavior={{ checkmarkStick: false }}
-            submit={<Submit value="save changes" cancel={false} className="compact" />}>
+            submit={<Submit value="save changes" cancel={false} className="compact mt15" />}>
         <Input
           type="date"
           name="date"
