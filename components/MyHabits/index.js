@@ -1,12 +1,11 @@
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styles from "./myHabits.module.css";
 import { useContext, useEffect, useRef, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { Habit } from "../../pages/api";
 import { DataContext } from "../../contexts";
 import { useForm } from "../../hooks";
-import { handleQuery } from "../../pages/api";
-import Form, { Input, Submit } from "../Form";
-import { Checkbox } from "../Form/Checkbox";
-import styles from "./myHabits.module.css";
+import Form, { Input, Submit, Checkbox } from "../Form";
 
 export const MyHabits = ({ children, userId }) => {
   return (
@@ -72,30 +71,8 @@ const HabitBody = ({ addingNew, userId, id, name, icon, label, complex, expanded
     }
   }, [expanded]);
   const handleSubmit = async () => {
-    const createHabit = `
-      mutation ($name: String, $icon: String, $label: String, $complex: Boolean, $userId: Int) {
-        createHabit(name: $name, icon: $icon, label: $label, complex: $complex, userId: $userId) {
-          name
-          icon
-          label
-          complex
-          userId
-        }
-      }
-    `;
-    const editHabit = `
-      mutation ($id: Int, $name: String, $icon: String, $label: String, $complex: Boolean) {
-        editHabit(id: $id, name: $name, icon: $icon, label: $label, complex: $complex) {
-          id
-          name
-          icon
-          label
-          complex
-        }
-      }
-    `;
-    const mutation = addingNew ? createHabit : editHabit;
-    return await handleQuery(mutation, formData);
+    const submit = addingNew ? Habit.create : Habit.edit;
+    return submit(formData);
   }
   const handleSuccess = (result) => {
     console.log(result);

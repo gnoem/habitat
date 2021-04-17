@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Form, { Input, Submit } from "../components/Form";
-import { Homepage } from "../components/Homepage";
+import Homepage from "../components/Homepage";
 import { useForm } from "../hooks";
-import { handleFetch, handleQuery } from "./api";
+import { handleFetch, User } from "./api";
 import { auth } from "./api/auth";
 import { useContext } from "react";
 import { DataContext } from "../contexts";
@@ -12,25 +12,7 @@ const Login = () => {
   const router = useRouter();
   const { setUser } = useContext(DataContext);
   const { formData, handleFormError, inputProps } = useForm();
-  const handleSubmit = async () => {
-    const query = `
-      query ($email: String, $password: String) {
-        login(email: $email, password: $password) {
-          ... on FormError {
-            __typename
-            message
-            location
-          }
-          ... on User {
-            id
-            name
-            email
-          }
-        }
-      }
-    `;
-    return await handleQuery(query, formData);
-  }
+  const handleSubmit = User.login(formData);
   const handleSuccess = async ({ login: foundUser }) => {
     const user = Object.assign(foundUser, { isLoggedIn: true });
     const result = await handleFetch('/api/auth/login', { user });

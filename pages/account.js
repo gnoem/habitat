@@ -1,5 +1,5 @@
 import { auth } from "./api/auth";
-import Dashboard, { Content } from "../components/Dashboard";
+import Dashboard from "../components/Dashboard";
 import Form, { Input, Submit } from "../components/Form";
 import { useForm } from "../hooks";
 

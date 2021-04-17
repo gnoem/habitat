@@ -1,32 +1,22 @@
 import { useRouter } from "next/router";
+import { useContext } from "react";
+import { handleFetch, User } from "./api";
+import { DataContext } from "../contexts";
+import { useForm } from "../hooks";
+import Homepage from "../components/Homepage";
 import Form, { Input, Submit } from "../components/Form";
 import { Footer } from "../components/Footer";
-import { useForm, useUser } from "../hooks";
-import { handleQuery, handleFetch } from "./api";
-import { Homepage } from "../components/Homepage";
 
 const Register = () => {
   const router = useRouter();
-  const { setUser } = useUser({
-    redirectTo: '/dashboard',
-    redirectIfFound: true,
-  });
+  const { setUser } = useContext(DataContext);
   const { formData, handleFormError, inputProps } = useForm();
-  const handleSubmit = async () => {
-    const mutation = `
-      mutation ($email: String, $password: String) {
-        createUser(email: $email, password: $password) {
-          email
-          password
-        }
-      }
-    `;
-    return await handleQuery(mutation, formData);
-  }
+  const handleSubmit = User.create(formData);
   const handleSuccess = async ({ createUser }) => {
     const user = Object.assign(createUser, { isLoggedIn: true });
     const body = await handleFetch('/api/auth/login', { user });
     setUser(body.user);
+    router.push('/dashboard');
   }
   return (
     <Homepage>

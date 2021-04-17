@@ -1,6 +1,6 @@
 import styles from "./homepage.module.css";
 
-export const Homepage = ({ children, title }) => {
+const Homepage = ({ children, title }) => {
   return (
     <div className={styles.Homepage}>
       <div className={styles.Main}>
@@ -10,3 +10,5 @@ export const Homepage = ({ children, title }) => {
     </div>
   );
 }
+
+export default Homepage;

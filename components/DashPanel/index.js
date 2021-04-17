@@ -1,15 +1,13 @@
 import styles from "./dashPanel.module.css";
+import { useContext, useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { useForm } from "../../hooks";
-import { Sidebar } from "../Dashboard";
-import Form, { Input, Checkbox, Submit, Button } from "../Form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBacon, faCalendarAlt, faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { PageLoading } from "../Loading";
+import { faBacon, faCalendarAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { DataContext } from "../../contexts";
-import { handleQuery } from "../../pages/api";
-import { LinkButton } from "../LinkButton";
+import { useForm } from "../../hooks";
+import { Entry } from "../../pages/api";
+import Form, { Input, Checkbox, Submit } from "../Form";
+import { PageLoading } from "../Loading";
 
 const DashPanel = ({ habits }) => {
   const [panelName, setPanelName] = useState(null);
@@ -98,35 +96,8 @@ const DataForm = ({ habits }) => {
     setRecords(arrayToReturn);
   }
   const handleSubmit = async () => {
-    const createEntry = `
-      mutation ($userId: Int, $date: String, $records: [RecordInput]) {
-        createEntry(userId: $userId, date: $date, records: $records) {
-          id
-          date
-          records {
-            habitId
-            amount
-            check
-          }
-        }
-      }
-    `;
-    const editEntry = `
-      mutation ($id: Int, $date: String, $records: [RecordInput]) {
-        editEntry(id: $id, date: $date, records: $records) {
-          id
-          date
-          records {
-            habitId
-            amount
-            check
-          }
-        }
-      }
-    `;
-    const mutation = existingData ? editEntry : createEntry;
-    //console.dir(formData);
-    return await handleQuery(mutation, {...formData});
+    const submit = existingData ? Entry.edit : Entry.create;
+    return submit(formData);
   }
   const handleSuccess = (result) => {
     const { editEntry, createEntry } = result;

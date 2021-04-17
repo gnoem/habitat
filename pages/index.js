@@ -1,6 +1,6 @@
 import { Footer } from "../components/Footer";
 import { Button } from "../components/Form";
-import { Homepage } from "../components/Homepage";
+import Homepage from "../components/Homepage";
 
 export default function Home() {
   return (
