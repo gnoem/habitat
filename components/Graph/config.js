@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-export const config = (habits, entries, calendarPeriod) => {
+export const config = (habits, entries, calendarPeriod, type) => {
   const daysInMonth = new Array(dayjs(calendarPeriod).daysInMonth()).fill('');
   const datesInMonth = daysInMonth.map((_, i) => {
     return dayjs(`${calendarPeriod}-${i + 1}`).format('YYYY-MM-DD');
@@ -34,29 +34,50 @@ export const config = (habits, entries, calendarPeriod) => {
     return obj;
   }).filter(el => el);
   const labels = datesInMonth.map(day => dayjs(day).format('MMM DD'));
+  const yAxisLabels = type === 'simple' ? habits.map(habit => habit.name) : null;
   return {
-    initialSetup: chartSetup(labels, datasets),
+    initialSetup: chartSetup(labels, yAxisLabels, datasets, type),
     data: {
       labels,
+      yAxisLabels,
       datasets
     }
   }
 }
 
-export const chartSetup = (labels, datasets) => ({
+export const chartSetup = (labels, yAxisLabels, datasets, type) => ({
   type: 'line',
   options: {
     layout: {
       padding: {
-        //right: 100
+        left: 0 //100 // type === 'complex' ? 100 : 0
       }
     },
     scales: {
       x: {
-        ticks: { ...tickSettings }
+        ticks: {
+          font: {
+            family: 'Inconsolata, monospace'
+          },
+          display: type === 'complex'
+        },
+        grid: {
+          drawTicks: type === 'complex'
+        }
       },
       y: {
-        ticks: { ...tickSettings, color: '#000' }
+        type: yAxisLabels ? 'category' : 'linear',
+        labels: yAxisLabels,
+        ticks: {
+          font: {
+            family: 'Inconsolata, monospace'
+          },
+          color: '#000'
+        },
+        afterSetDimensions: (axes) => {
+          axes.paddingLeft = 100;
+          console.log(axes)
+        }
       }
     },
     responsive: true,
@@ -64,7 +85,7 @@ export const chartSetup = (labels, datasets) => ({
     hoverMode: 'index',
     plugins: {
       legend: {
-        display: true,
+        display: type === 'complex',
         position: 'bottom',
         labels: {
           font: {
@@ -77,6 +98,7 @@ export const chartSetup = (labels, datasets) => ({
         }
       },
       tooltip: {
+        enabled: type === 'complex',
         cornerRadius: 0,
         titleColor: '#000',
         titleFont: {
