@@ -84,10 +84,12 @@ const queries = {
   loginUser: `
     query ($email: String, $password: String) {
       login(email: $email, password: $password) {
-        ... on FormError {
+        ... on FormErrorReport {
           __typename
-          message
-          location
+          errors {
+            location
+            message
+          }
         }
         ... on User {
           id
@@ -103,8 +105,18 @@ const mutations = {
   createUser: `
     mutation ($email: String, $password: String) {
       createUser(email: $email, password: $password) {
-        email
-        password
+        ... on FormErrorReport {
+          __typename
+          errors {
+            location
+            message
+          }
+        }
+        ... on User {
+          id
+          name
+          email
+        }
       }
     }
   `,

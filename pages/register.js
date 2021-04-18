@@ -10,8 +10,11 @@ import { Footer } from "../components/Footer";
 const Register = () => {
   const router = useRouter();
   const { setUser } = useContext(DataContext);
-  const { formData, handleFormError, inputProps } = useForm();
-  const handleSubmit = User.create(formData);
+  const { formData, handleFormError, inputProps } = useForm({
+    email: '',
+    password: ''
+  });
+  const handleSubmit = () => User.create(formData);
   const handleSuccess = async ({ createUser }) => {
     const user = Object.assign(createUser, { isLoggedIn: true });
     const body = await handleFetch('/api/auth/login', { user });
@@ -22,7 +25,7 @@ const Register = () => {
     <Homepage>
       <h2>register</h2>
       <p>create an account by filling out the fields below:</p>
-      <Form onSubmit={handleSubmit} onSuccess={handleSuccess} handleError={handleFormError}
+      <Form onSubmit={handleSubmit} onSuccess={handleSuccess} handleFormError={handleFormError}
             behavior={{ checkmarkStick: false }}
             delay={1000}
             submit={<Submit value="continue" cancel="go back" onCancel={() => router.back()} />}>

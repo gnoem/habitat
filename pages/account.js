@@ -18,7 +18,7 @@ const Account = ({ user }) => {
 
 const AccountDetails = ({ user }) => {
   const { setUser } = useContext(DataContext);
-  const { formData, warnFormError, inputProps } = useForm({
+  const { formData, handleFormError, inputProps } = useForm({
     id: user.id,
     name: user.name,
     email: user.email
@@ -30,14 +30,26 @@ const AccountDetails = ({ user }) => {
           behavior={{ checkmarkStick: false }}
           submit={<Submit value="save changes" cancel={false} />}
           title="account details">
-      <Input type="text" name="name" label="your name:" defaultValue={formData.name} {...inputProps} />
-      <Input type="text" name="email" label="your email address:" defaultValue={formData.email} {...inputProps} />
+      <Input
+        type="text"
+        name="name"
+        label="your name:"
+        defaultValue={formData.name}
+        {...inputProps}
+      />
+      <Input
+        type="text"
+        name="email"
+        label="your email address:"
+        defaultValue={formData.email}
+        {...inputProps}
+      />
     </Form>
   );
 }
 
 const ChangePassword = ({ user }) => {
-  const { formData, warnFormError, inputProps, resetForm } = useForm({
+  const { formData, handleFormError, inputProps, resetForm } = useForm({
     id: user.id,
     password: '',
     confirmPassword: ''

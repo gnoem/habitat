@@ -12,6 +12,7 @@ form > div > .Input + .Input {
 }
 .Input > div {
   display: inline-block;
+  position: relative;
 }
 .Input > div + span {
   display: inline-block;
@@ -25,4 +26,47 @@ form > div > .Input + .Input {
 }
 .Input.stretch > div, .Input.stretch > div > input, .Input > div + span {
   width: 100%;
+}
+
+.Alert {
+  position: absolute;
+  z-index: 99;
+  top: 50%;
+  left: 100%;
+  transform: translate3d(0.5rem, -50%, 0);
+}
+.Alert > div {
+  width: 1.25rem;
+  height: 1.25rem;
+  text-align: center;
+  font-size: 1rem;
+  color: #000;
+  border-radius: 999px;
+  cursor: help;
+}
+.Alert > span {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  right: -0.5rem;
+  background: #fff;
+  color: #000;
+  font-size: 0.75rem;
+  line-height: 2;
+  padding: 0 0.5rem;
+  box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  opacity: 0;
+  transform: scale(0.9);
+  transform-origin: top right;
+  pointer-events: none;
+  transition: 0.2s;
+}
+.Alert > span > span {
+  display: block;
+  transform: skew(12deg);
+}
+.Alert > div:hover + span {
+  pointer-events: unset;
+  transform: scale(1) skew(-12deg);
+  opacity: 1;
 }

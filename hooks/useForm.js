@@ -22,36 +22,52 @@ export const useFormData = (initialState = {}) => {
 
 export const useFormError = (initialState = {}) => {
     const [formError, setFormError] = useState(initialState);
-    const updateFormError = (errors) => setFormError(prevState => ({
-      ...prevState,
-      ...errors
-    }));
-    const resetFormError = (e) => setFormError(prevState => {
+    const updateFormError = (errorReport) => {
+      /* sample errorReport: [
+        { location: 'email', message: 'already in use' },
+        { location: 'password', message: 'must be at least 6 chars' }
+      ] */
+      const errors = errorReport.reduce((obj, error) => {
+        obj[error.location] = error.message;
+        return obj;
+      }, {});
+      /* errors: {
+        email: 'already in use',
+        password: 'must be at least 6 chars'
+      } */
+      // and then spread that object into formError so that errorAlert on each
+      // input field can look at formError[inputName] and see if there's an error there
+      setFormError(errors);
+    }
+    const resetFormError = (e) => {
+      if (!formError?.[e.target.name]) return;
+      setFormError(prevState => {
         if (!prevState?.[e.target.name]) return prevState;
         const newState = {...prevState};
         delete newState[e.target.name];
         return newState;
-    });
-    const warnFormError = (inputName) => {
-        if (formError?.[inputName]) return {
-          type: 'error',
-          message: formError[inputName]
-        }
+      });
+    }
+    const errorAlert = (inputName) => {
+      if (formError?.[inputName]) return {
+        type: 'error',
+        message: formError[inputName]
+      }
     }
     return {
       updateFormError,
       resetFormError,
-      warnFormError
+      errorAlert
     }
 }
 
 export const useForm = (initialFormData = {}) => {
   const { formData, updateFormData, updateFormDataCheckbox, setFormData, resetForm } = useFormData(initialFormData);
-  const { updateFormError, resetFormError, warnFormError } = useFormError({});
+  const { updateFormError, resetFormError, errorAlert } = useFormError({});
   const inputProps = {
     onChange: updateFormData,
     onInput: resetFormError,
-    alert: warnFormError
+    alert: errorAlert
   }
   const checkboxProps = {
     onChange: updateFormDataCheckbox

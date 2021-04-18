@@ -4,6 +4,29 @@ export const resolvers = {
   Mutation: {
     createUser: async (_, args) => {
       const { email, password } = args;
+      const emailIsInUse = await prisma.user.findUnique({
+        where: { email }
+      });
+      const errors = [];
+      if (!email || email.length === 0) errors.push({
+        location: 'email',
+        message: 'this field is required'
+      });
+      if (emailIsInUse) errors.push({
+        location: 'email',
+        message: 'email is already in use'
+      });
+      if (!password || password.length === 0) errors.push({
+        location: 'password',
+        message: 'this field is required'
+      }); else if (password.length < 6) errors.push({
+        location: 'password',
+        message: 'minimum 6 characters'
+      });
+      if (errors.length > 0) return {
+        __typename: 'FormErrorReport',
+        errors
+      }
       const user = await prisma.user.create({
         data: {
           email,
@@ -98,14 +121,18 @@ export const resolvers = {
         where: { email }
       });
       if (!user) return {
-        __typename: 'FormError',
-        message: 'User not found',
-        location: 'email'
+        __typename: 'FormErrorReport',
+        errors: [{
+          message: 'User not found',
+          location: 'email'
+        }]
       }
       if (user.password !== password) return {
-        __typename: 'FormError',
-        message: 'Invalid password',
-        location: 'password'
+        __typename: 'FormErrorReport',
+        errors: [{
+          message: 'Invalid password',
+          location: 'password'
+        }]
       }
       return {
         __typename: 'User',
@@ -151,8 +178,8 @@ export const resolvers = {
   },
   UserResult: {
     __resolveType(obj) {
-      if (obj.__typename === 'FormError') {
-        return 'FormError';
+      if (obj.__typename === 'FormErrorReport') {
+        return 'FormErrorReport';
       }
       if (obj.__typename === 'User') {
         return 'User';

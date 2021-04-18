@@ -52,7 +52,7 @@ const HabitHeader = ({ name, icon, color, toggleExpanded }) => {
 
 const HabitBody = ({ addingNew, userId, id, name, icon, label, complex, expanded, updateExpanded }) => {
   const { getHabits } = useContext(DataContext);
-  const { formData, warnFormError, resetForm, inputProps, checkboxProps } = useForm({
+  const { formData, handleFormError, resetForm, inputProps, checkboxProps } = useForm({
     userId,
     id: addingNew ? '' : id,
     name: addingNew ? '' : name,

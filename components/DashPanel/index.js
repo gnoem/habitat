@@ -96,8 +96,17 @@ const DataForm = ({ habits }) => {
     setRecords(arrayToReturn);
   }
   const handleSubmit = async () => {
+    // first getting rid of empty string values for 'amount' field in each record object
+    // and replacing them with null
+    // otherwise server will reject them for not being type Int
+    const formDataCopy = {...formData};
+    const updatedRecords = formDataCopy.records.map(record => {
+      if (!record.amount) record.amount = null; // covers case 0 and case ''
+      return record;
+    });
+    formDataCopy.records = updatedRecords;
     const submit = existingData ? Entry.edit : Entry.create;
-    return submit(formData);
+    return submit(formDataCopy);
   }
   const handleSuccess = (result) => {
     const { editEntry, createEntry } = result;
@@ -231,11 +240,7 @@ const DataFormField = ({ currentDate, id, icon, label, complex, record, updateRe
     setFormData(defaultFormData(record));
   }, [currentDate]);
   useEffect(() => {
-    const formDataCopy = {...formData};
-    if (formDataCopy.amount === '') formDataCopy.amount = null;
-    // would just set defaultFormData.amount: record?.amount but eslint warning is like no null value for input
-    // so that's why i have to do this before I send it back up
-    updateRecordsArray(formDataCopy);
+    updateRecordsArray(formData);
     // fires on first render and whenever a field is updated
     // so really 'records' gets set twice - first when it's initialized, eithr with existingData?.records ?? []
     // and then again as soon as fields render
@@ -243,7 +248,7 @@ const DataFormField = ({ currentDate, id, icon, label, complex, record, updateRe
   useEffect(() => {
     if (!complex) return;
     const parsedInt = (value) => {
-      if (isNaN(parseInt(value))) return null;
+      if (isNaN(parseInt(value))) return '';
       return parseInt(value);
     }
     if (!formData.amount || parseInt(formData.amount) === 0) {

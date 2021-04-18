@@ -28,8 +28,19 @@ const Login = () => {
             behavior={{ showSuccess: false }}
             delay={1000}
             submit={<Submit value="continue" cancel="go back" onCancel={() => router.back()} />}>
-        <Input type="text" name="email" label="email address:" {...inputProps} />
-        <Input type="password" name="password" label="password:" note={forgotPasswordNote} {...inputProps} />
+        <Input
+          type="text"
+          name="email"
+          label="email address:"
+          {...inputProps}
+        />
+        <Input
+          type="password"
+          name="password"
+          label="password:"
+          note={forgotPasswordNote}
+          {...inputProps}
+        />
       </Form>
     </Homepage>
   );

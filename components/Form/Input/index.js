@@ -1,3 +1,5 @@
+import { faExclamation, faExclamationTriangle, faRadiation } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { fancyClassName } from "../../../utils";
 import styles from "./input.module.css";
@@ -13,6 +15,7 @@ export const Input = ({
     readOnly,
     onChange, onInput, onClick,
     note,
+    alert,
     className,
     min
   }) => {
@@ -33,8 +36,19 @@ export const Input = ({
           onClick,
           min
         }} />
+        <Alert {...{ alert, name }} />
       </div>
       {note && <span>{note}</span>}
+    </div>
+  );
+}
+
+const Alert = ({ alert, name }) => {
+  if (!alert(name)) return null;
+  return (
+    <div className={styles.Alert}>
+      <div><FontAwesomeIcon icon={faExclamationTriangle} /></div>
+      <span><span>{alert(name).message}</span></span>
     </div>
   );
 }

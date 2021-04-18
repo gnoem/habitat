@@ -5,7 +5,7 @@ import { Checkbox } from "./Checkbox";
 import { Input } from "./Input";
 import { Submit } from "./Submit";
 
-const Form = ({ children, title, submit, delay, onSubmit, onSuccess, warnError, behavior, className }) => {
+const Form = ({ children, title, submit, delay, onSubmit, onSuccess, handleFormError, behavior, className }) => {
   const defaultBehavior = {
     showLoading: true,
     showSuccess: true,
@@ -31,11 +31,11 @@ const Form = ({ children, title, submit, delay, onSubmit, onSuccess, warnError, 
   }
   const handleError = (result) => {
     if (Object.values(result)[0] == null) throw new Error('result is null');
-    const { __typename, message, location } = Object.values(result)[0];
-    if (__typename === 'FormError') {
+    const { __typename, errors } = Object.values(result)[0];
+    if (__typename === 'FormErrorReport') {
       setSuccessPending(false);
       setClicked(false);
-      throw { message, location }
+      throw errors;
     }
   }
   const handleSubmit = (e) => {
@@ -54,8 +54,8 @@ const Form = ({ children, title, submit, delay, onSubmit, onSuccess, warnError, 
         handleSuccess(result);
       }, delay ?? 0);
     }).catch(err => {
-      if (warnError) return warnError(err);
-      console.error(err);
+      if (handleFormError) return handleFormError(err);
+      console.log(err);
     });
   }
   const submitProps = { successPending, successAnimation };
