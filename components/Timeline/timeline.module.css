@@ -23,30 +23,21 @@
   margin-bottom: 2rem;
 }
 .TimelineHeader > nav {
+  display: inline-flex;
+  align-items: center;
   margin-left: -0.25rem;
-}
-.TimelineHeader > nav button {
-  font-size: 1.2rem;
-  padding: 0 0.25rem;
-}
-.TimelineHeader > nav button + button {
-  margin-left: 0.25rem;
-}
-.TimelineHeader > div.calendarPeriod {
   position: relative;
-  font-family: var(--mono-font);
-  font-size: 1.5rem;
-  font-weight: 300;
-  line-height: 0.8;
-  text-transform: uppercase;
-  margin-top: 0.75rem;
 }
-.TimelineHeader > div.calendarPeriod button {
-  position: absolute;
-  bottom: 0;
-  right: 0;
+.TimelineHeader > nav button:not(.jumpToCurrentMonth) {
+  font-size: 1.25rem;
+  line-height: 1.25rem;
+  padding: 0 0.25rem;
+  margin-right: 0.25rem;
+}
+button.jumpToCurrentMonth {
   font-size: 0.8rem;
-  line-height: 1.5;
+  line-height: 1.25rem;
+  margin-left: 0.5rem;
   white-space: nowrap;
   animation: jumpToDateAnimation 0.2s 1 forwards;
 }
@@ -60,6 +51,42 @@ button.jumpToCurrentMonth::after {
 }
 button.jumpToCurrentMonth:hover::after {
   opacity: 1;
+}
+
+div.calendarPeriod {
+  position: relative;
+  font-family: var(--mono-font);
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 0.8;
+  text-transform: uppercase;
+  margin-top: 0.75rem;
+}
+
+.timelineOptions {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: inline-flex;
+}
+.timelineOptions > button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  opacity: 0.3;
+  transition: 0.2s;
+}
+.timelineOptions > button.active,
+.timelineOptions > button:hover {
+  opacity: 1;
+}
+.timelineOptions > button + button {
+  margin-left: 1rem;
+}
+.timelineOptions > button svg {
+  margin-bottom: 0.25rem;
 }
 
 .noData {

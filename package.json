@@ -14,11 +14,13 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@prisma/client": "^2.21.2",
     "apollo-server-micro": "^2.22.2",
+    "chart.js": "^3.1.1",
     "dayjs": "^1.10.4",
     "graphql": "^15.5.0",
     "next": "^10.0.0",
     "next-iron-session": "^4.1.12",
     "react": "17.0.1",
+    "react-chartjs-2": "^2.11.1",
     "react-dom": "17.0.1",
     "react-flip-toolkit": "^7.0.13"
   },

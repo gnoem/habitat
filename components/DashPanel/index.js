@@ -2,7 +2,7 @@ import styles from "./dashPanel.module.css";
 import { useContext, useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBacon, faCalendarAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { DataContext } from "../../contexts";
 import { useForm } from "../../hooks";
 import { Entry } from "../../pages/api";
@@ -31,12 +31,8 @@ const DashPanel = ({ habits }) => {
             <span><FontAwesomeIcon icon={faPlus} /></span>
           </button>
           <button className={isActiveClassName('calendar')} onClick={() => handleNavClick('calendar')}>
-            <span>Jump to date</span>
+            <span>Jump to...</span>
             <span><FontAwesomeIcon icon={isActive('calendar') ? faPlus : faCalendarAlt} /></span>
-          </button>
-          <button className={isActiveClassName('test')} onClick={() => handleNavClick('test')}>
-            <span>Dummy</span>
-            <span><FontAwesomeIcon icon={isActive('test') ? faPlus : faBacon} /></span>
           </button>
         </nav>
       <PanelContent {...{ view: panelName, habits }} />
@@ -178,7 +174,7 @@ const DataFormDateInput = ({ existingData, formData, inputProps, currentDate, se
       );
       note = (
         <div className="tar">
-          ...or <button type="button" className="link" onClick={jumpToDate}>jump to a different date</button>
+          ...or <button type="button" className="link" onClick={jumpToDate}>jump to date</button>
         </div>
       );
       readOnly = false;

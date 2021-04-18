@@ -1,11 +1,12 @@
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styles from "./date.module.css";
 
 export const DateMarker = () => {
   return (
     <div className={styles.Date}>
-      <span className={styles.dd}>13</span>
-      <span className={styles.mm}>april</span>
+      <span className={styles.dd}>{dayjs().format('D')}</span>
+      <span className={styles.mm}>{dayjs().format('MMMM')}</span>
       <Time />
     </div>
   );

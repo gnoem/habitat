@@ -1,16 +1,17 @@
-import { faCaretLeft, faCaretRight } from "@fortawesome/free-solid-svg-icons";
+import { faCaretLeft, faCaretRight, faChartLine, faListOl, faTh } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import styles from "./timeline.module.css";
 import { LinkButton } from "../LinkButton";
+import { Graph } from "../Graph";
+import { useState } from "react";
 
 export const Timeline = ({ habits, entries, calendarPeriod, updateCalendarPeriod }) => {
+  // view options: list, grid, graph
+  // filter options: - include empty days
+  const [timelineView, setTimelineView] = useState('list'); // todo later config settings
   const timelineEntries = () => {
-    if (!entries.length) return (
-      <div className={styles.noData}><span>
-        you haven't added any data for this period
-      </span></div>
-    );
+    if (!entries.length) return <NoData />;
     return (
       <div className={styles.timelineEntries} key={calendarPeriod}>
         {entries.map(entry => <DashboardEntry key={`dashboardEntry-entryId(${entry.id})`} {...{ entry, habits }} />)}
@@ -19,13 +20,32 @@ export const Timeline = ({ habits, entries, calendarPeriod, updateCalendarPeriod
   }
   return (
     <div className={styles.Timeline}>
-      <TimelineHeader {...{ calendarPeriod, updateCalendarPeriod }} />
-      <TimelineContent content={timelineEntries()} />
+      <TimelineHeader {...{
+        calendarPeriod,
+        updateCalendarPeriod,
+        timelineView,
+        updateTimelineView: setTimelineView
+      }} />
+      <TimelineContent {...{
+        habits,
+        entries,
+        calendarPeriod,
+        timelineView,
+        content: timelineEntries()
+      }} />
     </div>
   );
 }
 
-const TimelineHeader = ({ calendarPeriod, updateCalendarPeriod }) => {
+export const NoData = () => {
+  return (
+    <div className={styles.noData}><span>
+      you haven't added any data for this period
+    </span></div>
+  );
+}
+
+const TimelineHeader = ({ calendarPeriod, updateCalendarPeriod, timelineView, updateTimelineView }) => {
   const currentPeriod = dayjs().format('YYYY-MM');
   const nav = (direction) => () => {
     const newPeriod = direction === 'next'
@@ -38,18 +58,43 @@ const TimelineHeader = ({ calendarPeriod, updateCalendarPeriod }) => {
       <nav aria-label="Calendar months">
         <button type="button" onClick={nav('prev')}><FontAwesomeIcon icon={faCaretLeft} /></button>
         <button type="button" onClick={nav('next')}><FontAwesomeIcon icon={faCaretRight} /></button>
+        {(calendarPeriod !== currentPeriod) &&
+          <LinkButton className={styles.jumpToCurrentMonth} onClick={() => updateCalendarPeriod(currentPeriod)}>jump to current month</LinkButton>}
       </nav>
       <div className={styles.calendarPeriod}>
         {dayjs(calendarPeriod).format('MMMM YYYY')}
-        {(calendarPeriod !== currentPeriod) &&
-          <LinkButton className={styles.jumpToCurrentMonth} onClick={() => updateCalendarPeriod(currentPeriod)}>jump to current month</LinkButton>}
+        <div className={styles.timelineOptions}>
+          <button
+            className={timelineView === 'list' ? styles.active : ''}
+            onClick={() => updateTimelineView('list')}>
+              <FontAwesomeIcon icon={faListOl} />
+              list
+          </button>
+          <button
+            className={timelineView === 'grid' ? styles.active : ''}
+            onClick={() => updateTimelineView('grid')}>
+              <FontAwesomeIcon icon={faTh} />
+              grid
+          </button>
+          <button
+            className={timelineView === 'graph' ? styles.active : ''}
+            onClick={() => updateTimelineView('graph')}>
+              <FontAwesomeIcon icon={faChartLine} />
+              graph
+          </button>
+        </div>
       </div>
     </div>
   );
 }
 
-const TimelineContent = ({ content }) => {
-  return content;
+const TimelineContent = ({ habits, entries, calendarPeriod, timelineView, content }) => {
+  switch (timelineView) {
+    case 'list': return content;
+    case 'grid': return 'grid!';
+    case 'graph': return <Graph {...{ habits, entries, calendarPeriod }} />;
+    default: return content;
+  }
 }
 
 const DashboardEntry = ({ entry, habits }) => {
@@ -63,7 +108,6 @@ const DashboardEntry = ({ entry, habits }) => {
   const entryDate = () => {
     const month = dayjs(date).format('MMM');
     const day = dayjs(date).format('DD');
-    const year = dayjs(date).format('YYYY');
     return (
       <div className={styles.entryTitle}>
         <span className={styles.day}>{day}</span>

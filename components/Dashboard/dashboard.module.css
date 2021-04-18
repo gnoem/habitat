@@ -29,6 +29,7 @@
 .Content {
   grid-area: content;
   margin: 5rem 0;
+  padding-right: 2rem;
 }
 .Sidebar {
   position: fixed;
