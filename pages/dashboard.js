@@ -1,47 +1,28 @@
 import { auth } from "./api/auth";
 import Dash, { Content } from "../components/Dashboard";
 import DashPanel from "../components/DashPanel";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { DataContext } from "../contexts";
 import { PageLoading } from "../components/Loading";
+import { Timeline } from "../components/Timeline";
+import dayjs from "dayjs";
 
 const Dashboard = ({ user }) => {
   const { habits, entries } = useContext(DataContext);
+  const [calendarPeriod, setCalendarPeriod] = useState(dayjs().format('YYYY-MM'));
   const dashboardContent = () => {
     if (!habits || !entries) return <PageLoading className="jcfs" />;
-    const getHabitObject = {
-      fromId: (id) => {
-        const index = habits.findIndex(habit => habit.id === id);
-        return (index !== -1) ? habits[index] : {}; 
-      }
-    }
-    return entries.map(entry => {
-      const recordsList = entry.records.map(record => {
-        if (!record.check) return null;
-        const currentHabit = getHabitObject.fromId(record.habitId);
-        const label = () => {
-          if (!currentHabit.complex) return currentHabit.label;
-          const pre = currentHabit.label.split('{{')[0].trim();
-          const post = currentHabit.label.split('}}')[1].trim();
-          const unit = currentHabit.label.split('{{')[1].split('}}')[0];
-          const amount = record.amount ?? 'some';
-          return (
-            <>{pre} {amount} {unit} {post}</>
-          );
-        }
-        return (
-          <li key={`dashboardContent-recordsListID-${record.id}`}>
-            {label()}
-          </li>
-        )
-      });
-      return (
-        <div key={`dashboardContent-entryID-${entry.id}`}>
-          <h3>{entry.date}</h3>
-          <ul>{recordsList}</ul>
-        </div>
-      );
+    const entriesToDisplay = entries.filter(entry => {
+      const [currentYear, currentMonth] = calendarPeriod.split('-');
+      const [entryYear, entryMonth] = entry.date.split('-');
+      if ((entryYear === currentYear) && (entryMonth === currentMonth)) return entry;
     });
+    return <Timeline {...{
+      habits,
+      entries: entriesToDisplay,
+      calendarPeriod,
+      updateCalendarPeriod: setCalendarPeriod
+    }} />;
   }
   return (
     <Dash userId={user.id} sidebar={<DashPanel {...{ habits }} />}>

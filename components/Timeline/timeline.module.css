@@ -1,0 +1,121 @@
+@keyframes jumpToDateAnimation {
+  from {
+    opacity: 0;
+    transform: translate3d(-1rem, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes timelineEntriesAnimation {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.TimelineHeader {
+  margin-bottom: 2rem;
+}
+.TimelineHeader > nav {
+  margin-left: -0.25rem;
+}
+.TimelineHeader > nav button {
+  font-size: 1.2rem;
+  padding: 0 0.25rem;
+}
+.TimelineHeader > nav button + button {
+  margin-left: 0.25rem;
+}
+.TimelineHeader > div.calendarPeriod {
+  position: relative;
+  font-family: var(--mono-font);
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 0.8;
+  text-transform: uppercase;
+  margin-top: 0.75rem;
+}
+.TimelineHeader > div.calendarPeriod button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  white-space: nowrap;
+  animation: jumpToDateAnimation 0.2s 1 forwards;
+}
+button.jumpToCurrentMonth::before {
+  content: '\00BB';
+  display: inline-block;
+  margin-right: 0.5em;
+}
+button.jumpToCurrentMonth::after {
+  opacity: 0;
+}
+button.jumpToCurrentMonth:hover::after {
+  opacity: 1;
+}
+
+.noData {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  animation: timelineEntriesAnimation 0.2s 1 forwards;
+}
+.noData span {
+  opacity: 0.4;
+}
+
+.timelineEntries {
+  display: flex;
+  flex-direction: column;
+  animation: timelineEntriesAnimation 0.2s 1 forwards;
+}
+.DashboardEntry {
+  display: flex;
+  flex-direction: row;
+}
+.DashboardEntry:not(:first-of-type) > * {
+  padding-top: 1.5rem;
+}
+.entryTitle {
+  text-transform: uppercase;
+  padding-right: 0.75rem;
+  margin-right: 1rem;
+  border-right: 1px solid #000;
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+  width: 3rem;
+}
+.entryTitle span {
+  display: block;
+  text-align: right;
+  line-height: 1;
+}
+.entryTitle span.day {
+  font-family: var(--default-font);
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 0.125rem;
+}
+.entryTitle span.month {
+  font-family: var(--mono-font);
+  font-size: 0.8rem;
+}
+.entryBody > div {
+  display: grid;
+  grid-template: 'icon label' 100% / 1.9rem 1fr;
+  align-items: center;
+}
+.entryBody > div span:first-of-type {
+  font-size: 1.3rem;
+}
+.entryBody > div b {
+  font-weight: 600;
+}

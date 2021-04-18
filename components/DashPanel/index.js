@@ -25,7 +25,7 @@ const DashPanel = ({ habits }) => {
   }
   return (
     <div className={styles.DashPanel}>
-        <nav>
+        <nav aria-label="Main dashboard actions">
           <button className={isActiveClassName('data')} onClick={() => handleNavClick('data')}>
             <span>Add data</span>
             <span><FontAwesomeIcon icon={faPlus} /></span>
@@ -193,6 +193,11 @@ const DataFormDateInput = ({ existingData, formData, inputProps, currentDate, se
   }
   // todo add useEffect for jumpingToDate - if true, open up calendar box
   // probably can do this when i set up custom calendar component
+  // ALSO!!!! if creating new entry BUT changes have been made to form, then changing the date should not jump to a new date and erase the changes
+  // id-less but edited formData should be treated similarly to existingData in this respect
+  // maybe instead of "if (!existingData)" in inputAttributes fn, it should check if formData.id == null
+  // and then set a useEffect on FormFieldInput where if any change is made, set formData.id to 'pending' or something
+  // also the label should still say "create a new entry for:" and not "edit existing entry" or whatever
   useEffect(() => {
     if (editingDate) setEditingDate(false);
     if (jumpingToDate) setJumpingToDate(false);
@@ -205,7 +210,7 @@ const DataFormDateInput = ({ existingData, formData, inputProps, currentDate, se
     if (existingData.date !== formData.date) {
       setCurrentDate(formData.date)
     }
-  }, [jumpingToDate])
+  }, [jumpingToDate]);
   const dateInputOnChange = (jumpingToDate || !existingData)
     ? (e) => updateCurrentDate(e.target.value)
     : inputProps.onChange;
