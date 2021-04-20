@@ -23,6 +23,7 @@ export const Input = ({
     <div className={`${styles.Input} ${fancyClassName({ styles, className })}`}>
       {label && <label>{label}</label>}
       <div>
+        {(type === 'color') && <ColorInput {...{ color: value }} />}
         <input {...{
           type,
           name,
@@ -50,5 +51,11 @@ const Alert = ({ alert, name }) => {
       <div><FontAwesomeIcon icon={faExclamationTriangle} /></div>
       <span><span>{alert(name).message}</span></span>
     </div>
+  );
+}
+
+const ColorInput = ({ color }) => {
+  return (
+    <span className={styles.ColorInput} style={{ background: color }}></span>
   );
 }

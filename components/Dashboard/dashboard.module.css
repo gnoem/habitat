@@ -30,6 +30,7 @@
   grid-area: content;
   margin: 5rem 0;
   padding-right: 2rem;
+  width: 100%;
 }
 .Sidebar {
   position: fixed;

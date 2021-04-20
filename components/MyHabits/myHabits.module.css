@@ -103,16 +103,16 @@
   border: 0;
   background: #f7f7f7;
   font-size: 0.9rem;
-  width: 100%;
 }
 
-.HabitFormTopRow {
+.displayOptions {
+  margin-top: 1rem;
   display: flex;
 }
-.HabitFormTopRow > div:first-child {
+.displayOptions > div:first-child {
   flex: 1 0 auto;
 }
-.HabitFormTopRow > div:last-child {
+.displayOptions > div:last-child {
   flex: 0 1 auto;
 }
 

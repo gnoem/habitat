@@ -4,3 +4,7 @@
   align-items: flex-start;
   justify-content: center;
 }
+.Graph > div {
+  position: relative;
+  width: 100%;
+}

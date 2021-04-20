@@ -70,3 +70,22 @@ form > div > .Input + .Input {
   transform: scale(1) skew(-12deg);
   opacity: 1;
 }
+
+.Input input[type=color] {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.ColorInput {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2rem;
+  height: 2rem;
+  background: #fff;
+  border: 1px solid #000;
+  border-radius: 999px;
+  cursor: pointer;
+}

@@ -5,10 +5,10 @@ export const config = (habits, entries, calendarPeriod, type) => {
   const datesInMonth = daysInMonth.map((_, i) => {
     return dayjs(`${calendarPeriod}-${i + 1}`).format('YYYY-MM-DD');
   });
-  const particularEntryRecord = (someEntry, habitId) => {
-    return someEntry.records.find(record => record.habitId === habitId);
-  }
   const datasets = habits.map(habit => {
+    const particularEntryRecord = (someEntry, habitId) => {
+      return someEntry.records.find(record => record.habitId === habitId);
+    }
     const activeThisMonth = entries.some(entry => particularEntryRecord(entry, habit.id)?.check);
     if (!activeThisMonth) return null;
     const data = datesInMonth.map(day => {
@@ -50,7 +50,7 @@ export const chartSetup = (labels, yAxisLabels, datasets, type) => ({
   options: {
     layout: {
       padding: {
-        left: 0 //100 // type === 'complex' ? 100 : 0
+        right: 30
       }
     },
     scales: {
@@ -76,7 +76,6 @@ export const chartSetup = (labels, yAxisLabels, datasets, type) => ({
         },
         afterSetDimensions: (axes) => {
           axes.paddingLeft = 100;
-          console.log(axes)
         }
       }
     },

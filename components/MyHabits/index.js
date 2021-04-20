@@ -16,7 +16,7 @@ export const MyHabits = ({ children, userId }) => {
   );
 }
 
-export const HabitBox = ({ addingNew, userId, id, name, icon, label, complex }) => {
+export const HabitBox = ({ addingNew, userId, id, name, icon, color, label, complex }) => {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className={`${styles.HabitBox} ${expanded ? styles.expanded : ''}`}>
@@ -32,6 +32,7 @@ export const HabitBox = ({ addingNew, userId, id, name, icon, label, complex }) 
         id,
         name,
         icon,
+        color,
         label,
         complex,
         expanded,
@@ -50,13 +51,14 @@ const HabitHeader = ({ name, icon, color, toggleExpanded }) => {
   );
 }
 
-const HabitBody = ({ addingNew, userId, id, name, icon, label, complex, expanded, updateExpanded }) => {
+const HabitBody = ({ addingNew, userId, id, name, icon, color, label, complex, expanded, updateExpanded }) => {
   const { getHabits } = useContext(DataContext);
   const { formData, handleFormError, resetForm, inputProps, checkboxProps } = useForm({
     userId,
     id: addingNew ? '' : id,
     name: addingNew ? '' : name,
     icon: addingNew ? '' : icon,
+    color: addingNew ? '#45DAC8' : color,
     label: label ?? '',
     complex: complex ?? false
   });
@@ -91,9 +93,10 @@ const HabitBody = ({ addingNew, userId, id, name, icon, label, complex, expanded
         <Form onSubmit={handleSubmit} onSuccess={handleSuccess}
               behavior={{ checkmarkStick: false }}
               submit={<Submit className="compact" value="save changes" cancel={false} />}>
-          <div className={styles.HabitFormTopRow}>
-            <Input type="text" name="name" label="Habit name:" value={formData.name} {...inputProps} />
-            <Input type="text" name="icon" label="Icon:" value={formData.icon} {...inputProps} />
+          <Input type="text" name="name" label="Habit name:" value={formData.name} className="stretch" {...inputProps} />
+          <div className={styles.displayOptions}>
+            <Input type="text" name="icon" label="Icon:" value={formData.icon} className="stretch" {...inputProps} />
+            <Input type="color" name="color" label="Color:" value={formData.color} {...inputProps} />
           </div>
           <Input type="text" name="label" label="Display label:" className="stretch" value={formData.label} {...inputProps} />
           <Checkbox name="complex" className="mt10" checked={formData.complex} detailedLabel={[
@@ -101,7 +104,7 @@ const HabitBody = ({ addingNew, userId, id, name, icon, label, complex, expanded
             "if checked, you will be able to record an amount when tracking this habit, e.g. how many hours of studying, how many oz. of water"
           ]} {...checkboxProps} />
         </Form>
-        {addingNew || <DeleteHabit {...{ id, name }} />}
+        {/* addingNew || <DeleteHabit {...{ id, name }} /> */}
       </div>
     </div>
   );

@@ -26,7 +26,6 @@ const ChartCanvas = ({ type, habits, entries, calendarPeriod }) => {
     }
     const ctx = myCanvas.getContext('2d');
     const { data, initialSetup } = config(habits, entries, calendarPeriod, type);
-    console.log(data);
     if (chartInstance) {
       chartInstance.data = data;
       chartInstance.update();
@@ -34,19 +33,25 @@ const ChartCanvas = ({ type, habits, entries, calendarPeriod }) => {
     }
     setChartInstance(new Chart(ctx, initialSetup));
   }, [chartRef, entries]);
+  const chartHeight = () => {
+    if (type === 'complex') return 250;
+    if (habits.length <= 1) return 40;
+    return habits.length * 20;
+  }
   return (
     <div>
-      <canvas id="myChart" width={type === 'simple' ? 600 : 600} height={type === 'simple' ? 40 : 250} ref={chartRef}></canvas>
+      <canvas id="myChart" height={chartHeight()} ref={chartRef}></canvas>
     </div>
-  );
+  ); // height for simple habits: habitsActiveThisMonth.length * 40
+  // visibility: hidden on canvas if habitsActiveThisMonth.length is 0
 }
 
 export const SimpleHabits = ({ habits, entries, calendarPeriod }) => {
-  const filteredHabits = habits.filter(habit => !habit.complex);
+  const simpleHabits = habits.filter(habit => !habit.complex);
   return (
     <ChartCanvas {...{
       type: 'simple',
-      habits: filteredHabits,
+      habits: simpleHabits,
       entries,
       calendarPeriod
     }} />
@@ -54,11 +59,11 @@ export const SimpleHabits = ({ habits, entries, calendarPeriod }) => {
 }
 
 export const ComplexHabits = ({ habits, entries, calendarPeriod }) => {
-  const filteredHabits = habits.filter(habit => habit.complex);
+  const complexHabits = habits.filter(habit => habit.complex);
   return (
     <ChartCanvas {...{
       type: 'complex',
-      habits: filteredHabits,
+      habits: complexHabits,
       entries,
       calendarPeriod
     }} />

@@ -158,6 +158,13 @@ button span[data-ghost=true] + * {
   animation: 0.5s checkmark-shrink 1 forwards;
 }
 
+form .formGrid {
+  display: flex;
+}
+form div + .formGrid {
+  margin-top: 1rem;
+}
+
 div.sbs {
   display: flex;
 }
