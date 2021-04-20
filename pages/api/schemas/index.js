@@ -72,8 +72,8 @@ export const typeDefs = gql`
     createUser(email: String, password: String): UserResult
     editUser(id: Int, name: String, email: String): User
     editPassword(id: Int, password: String): User
-    createHabit(name: String, icon: String, label: String, complex: Boolean, userId: Int): Habit
-    editHabit(id: Int, name: String, icon: String, label: String, complex: Boolean): Habit
+    createHabit(name: String, icon: String, color: String, label: String, complex: Boolean, userId: Int): Habit
+    editHabit(id: Int, name: String, icon: String, color: String, label: String, complex: Boolean): Habit
     createEntry(userId: Int, date: String, records: [RecordInput]): Entry
     editEntry(id: Int, date: String, records: [RecordInput]): Entry
   }

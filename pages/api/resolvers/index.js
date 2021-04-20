@@ -57,11 +57,12 @@ export const resolvers = {
       return user;
     },
     createHabit: async (_, args) => {
-      const { name, icon, label, complex, userId } = args;
+      const { name, icon, color, label, complex, userId } = args;
       const habit = await prisma.habit.create({
         data: {
           name,
           icon,
+          color,
           label,
           complex,
           userId
@@ -70,12 +71,13 @@ export const resolvers = {
       return habit;
     },
     editHabit: async (_, args) => {
-      const { id, name, icon, label, complex } = args;
+      const { id, name, icon, color, label, complex } = args;
       const habit = await prisma.habit.update({
         where: { id },
         data: {
           name,
           icon,
+          color,
           label,
           complex
         }

@@ -139,10 +139,11 @@ const mutations = {
     }
   `,
   createHabit: `
-    mutation ($name: String, $icon: String, $label: String, $complex: Boolean, $userId: Int) {
-      createHabit(name: $name, icon: $icon, label: $label, complex: $complex, userId: $userId) {
+    mutation ($name: String, $icon: String, $color: String, $label: String, $complex: Boolean, $userId: Int) {
+      createHabit(name: $name, icon: $icon, color: $color, label: $label, complex: $complex, userId: $userId) {
         name
         icon
+        color
         label
         complex
         userId
@@ -150,11 +151,12 @@ const mutations = {
     }
   `,
   editHabit: `
-    mutation ($id: Int, $name: String, $icon: String, $label: String, $complex: Boolean) {
-      editHabit(id: $id, name: $name, icon: $icon, label: $label, complex: $complex) {
+    mutation ($id: Int, $name: String, $icon: String, $color: String, $label: String, $complex: Boolean) {
+      editHabit(id: $id, name: $name, icon: $icon, color: $color, label: $label, complex: $complex) {
         id
         name
         icon
+        color
         label
         complex
       }

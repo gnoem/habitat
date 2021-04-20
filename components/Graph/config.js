@@ -28,7 +28,7 @@ export const config = (habits, entries, calendarPeriod, type) => {
       data,
       borderColor: '#000',
       borderWidth: 1,
-      backgroundColor: /* habit.color ?? */ '#45DAC8',
+      backgroundColor: habit.color || '#45DAC8',
       tension: 0.3
     }
     return obj;
