@@ -24,6 +24,7 @@ model Habit {
   color         String?
   label         String?
   complex       Boolean?
+  records       Record[]
   user          User?          @relation(fields: [userId], references: [id])
   userId        Int?
   @@map(name: "habits")
@@ -40,10 +41,11 @@ model Entry {
 
 model Record {
   id            Int           @default(autoincrement()) @id
-  habitId       Int
+  habit         Habit?        @relation(fields: [habitId], references: [id])
+  habitId       Int?
   amount        Int?
   check         Boolean
-  entry         Entry         @relation(fields: [entryId], references: [id])
-  entryId       Int
+  entry         Entry?        @relation(fields: [entryId], references: [id])
+  entryId       Int?
   @@map(name: "records")
 }

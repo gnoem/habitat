@@ -74,6 +74,7 @@ export const typeDefs = gql`
     editPassword(id: Int, password: String): User
     createHabit(name: String, icon: String, color: String, label: String, complex: Boolean, userId: Int): Habit
     editHabit(id: Int, name: String, icon: String, color: String, label: String, complex: Boolean): Habit
+    deleteHabit(id: Int): Habit
     createEntry(userId: Int, date: String, records: [RecordInput]): Entry
     editEntry(id: Int, date: String, records: [RecordInput]): Entry
   }

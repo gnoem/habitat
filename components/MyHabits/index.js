@@ -104,7 +104,7 @@ const HabitBody = ({ addingNew, userId, id, name, icon, color, label, complex, e
             "if checked, you will be able to record an amount when tracking this habit, e.g. how many hours of studying, how many oz. of water"
           ]} {...checkboxProps} />
         </Form>
-        {/* addingNew || <DeleteHabit {...{ id, name }} /> */}
+        {addingNew || <DeleteHabit {...{ id, name, getHabits }} />}
       </div>
     </div>
   );
@@ -129,13 +129,22 @@ const NewHabitBox = ({ userId }) => {
   );
 }
 
-const DeleteHabit = ({ id }) => {
+const DeleteHabit = ({ id, name, getHabits }) => {
+  const deleteHabit = async () => {
+    return Habit.delete({ id }).then((result) => {
+      console.log('success!!!!');
+      console.log(result);
+      getHabits();
+    }).catch(err => {
+      console.error(err);
+    });
+  }
   return (
     <div className={styles.DeleteHabit}>
       <span>delete this habit</span>
       <div>
         <span>permanently erase any & all evidence of this habit's existence (you will be asked to confirm)</span>
-        <button type="button"><FontAwesomeIcon icon={faTrashAlt} /></button>
+        <button type="button" onClick={deleteHabit}><FontAwesomeIcon icon={faTrashAlt} /></button>
       </div>
     </div>
   );

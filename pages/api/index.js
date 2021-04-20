@@ -37,6 +37,7 @@ export const Habit = {
   get: async (params) => await handleQuery(queries.getHabits, params),
   create: async (formData) => await handleQuery(mutations.createHabit, formData),
   edit: async (formData) => await handleQuery(mutations.editHabit, formData),
+  delete: async (formData) => await handleQuery(mutations.deleteHabit, formData)
 }
 
 export const Entry = {
@@ -153,6 +154,18 @@ const mutations = {
   editHabit: `
     mutation ($id: Int, $name: String, $icon: String, $color: String, $label: String, $complex: Boolean) {
       editHabit(id: $id, name: $name, icon: $icon, color: $color, label: $label, complex: $complex) {
+        id
+        name
+        icon
+        color
+        label
+        complex
+      }
+    }
+  `,
+  deleteHabit: `
+    mutation ($id: Int) {
+      deleteHabit(id: $id) {
         id
         name
         icon

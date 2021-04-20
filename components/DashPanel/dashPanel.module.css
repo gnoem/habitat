@@ -7,13 +7,13 @@
     'content' 1fr / 100%;
   justify-items: flex-end;
 }
-.DashPanel nav {
+.DashPanel > nav {
   text-align: right;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
 }
-.DashPanel nav button {
+.DashPanel > nav button {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -21,13 +21,13 @@
   max-height: 2rem;
   transition: 0.2s;
 }
-.DashPanel nav button > span:first-child {
+.DashPanel > nav button > span:first-child {
   font-size: 1rem;
   transition: 0.2s;
   position: relative;
   z-index: 5;
 }
-.DashPanel nav button > span:first-child::before {
+.DashPanel > nav button > span:first-child::before {
   content: '';
   display: block;
   position: absolute;
@@ -40,7 +40,7 @@
   transform: skew(-12deg);
   /* box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1); */
 }
-.DashPanel nav button > span:last-child {
+.DashPanel > nav button > span:last-child {
   width: 2rem;
   height: 2rem;
   background: #000;
@@ -54,20 +54,20 @@
   margin-left: 0.75rem;
   transition: 0.2s;
 }
-.DashPanel nav button + button {
+.DashPanel > nav button + button {
   margin-top: 1rem;
 }
-.DashPanel nav button.active {
+.DashPanel > nav button.active {
   margin-top: 0;
 }
-.DashPanel nav button.active > span:first-child {
+.DashPanel > nav button.active > span:first-child {
   font-size: 1.4rem;
   font-weight: 300;
 }
-.DashPanel nav button.active > span:last-child {
+.DashPanel > nav button.active > span:last-child {
   transform: rotate(-45deg);
 }
-.DashPanel nav button.inactive {
+.DashPanel > nav button.inactive {
   opacity: 0;
   margin-top: 0;
   max-height: 0;
@@ -127,4 +127,8 @@
   padding-right: 0;
   margin: 0 0.4rem;
   line-height: 1.4rem;
+}
+
+.DataFormDateInputNav > button {
+  font-size: 1rem;
 }

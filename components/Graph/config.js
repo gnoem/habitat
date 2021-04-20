@@ -129,9 +129,3 @@ export const chartSetup = (labels, yAxisLabels, datasets, type) => ({
     datasets
   },
 });
-
-const tickSettings = {
-  font: {
-    family: 'Inconsolata, monospace'
-  }
-}

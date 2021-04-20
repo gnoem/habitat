@@ -2,12 +2,13 @@ import styles from "./dashPanel.module.css";
 import { useContext, useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarAlt, faPlus, faTimes, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { DataContext } from "../../contexts";
 import { useForm } from "../../hooks";
 import { Entry } from "../../pages/api";
 import Form, { Input, Checkbox, Submit } from "../Form";
 import { PageLoading } from "../Loading";
+import { ArrowNav } from "../ArrowNav";
 
 const DashPanel = ({ habits }) => {
   const [panelName, setPanelName] = useState(null);
@@ -153,13 +154,27 @@ const DataFormFields = ({ habits, existingData, currentDate, updateRecordsArray 
 const DataFormDateInput = ({ existingData, formData, setFormData, inputProps, currentDate, setCurrentDate }) => {
   const [editingDate, setEditingDate] = useState(false);
   const [jumpingToDate, setJumpingToDate] = useState(false);
+  const navDate = (direction) => () => {
+    const newDate = direction === 'next'
+      ? (date) => dayjs(date).add(1, 'day').format('YYYY-MM-DD')
+      : (date) => dayjs(date).subtract(1, 'day').format('YYYY-MM-DD');
+    updateCurrentDate(newDate);
+  }
   const inputAttributes = () => {
-    let label = 'Edit existing entry for:',
+    let label = <span>Edit existing entry for:</span>,
+        nav = (
+          <ArrowNav
+            ariaLabel="Date navigation for adding data"
+            prev={navDate('prev')}
+            next={navDate('next')}
+            className={styles.DataFormDateInputNav}
+          />
+        ),
         readOnly = true,
         onClick = () => setEditingDate(true),
         note;
     if (!existingData) {
-      label = 'Create a new entry for:';
+      label = <span>Create a new entry for:</span>;
       readOnly = false;
       onClick = null;
     }
@@ -175,25 +190,23 @@ const DataFormDateInput = ({ existingData, formData, setFormData, inputProps, cu
         }));
         setEditingDate(false);
       }
-      label = (
-        <span>
-          Edit the date on this entry:
-        </span>
-      );
+      label = <span>Edit the date on this entry:</span>;
       note = (
         <div className="tar">
-          ...or <button type="button" className="link" onClick={jumpToDate}>jump to date</button> / [<button type="button" className="link" onClick={cancelEditingDate}>cancel</button>]
+          ...or <button type="button" className="link" onClick={jumpToDate}>jump to date</button> / <button type="button" onClick={cancelEditingDate}><FontAwesomeIcon icon={faTimesCircle} /></button>
         </div>
       );
+      nav = null;
       readOnly = false;
       onClick = null;
     }
     else if (jumpingToDate) {
-      label = (<span>Jump to date:</span>)
+      label = <span>Jump to date:</span>;
       readOnly = false;
+      nav = null;
       onClick = null;
     }
-    return { label, readOnly, onClick, note }
+    return { label: (<>{label} {nav}</>), readOnly, onClick, note }
   }
   // todo add useEffect for jumpingToDate - if true, open up calendar box
   // probably can do this when i set up custom calendar component
@@ -215,9 +228,6 @@ const DataFormDateInput = ({ existingData, formData, setFormData, inputProps, cu
       setCurrentDate(formData.date)
     }
   }, [jumpingToDate]);
-  useEffect(() => {
-    console.log('formData.date is ', formData.date)
-  }, [formData.date]);
   const dateInputOnChange = (jumpingToDate || !existingData)
     ? (e) => updateCurrentDate(e.target.value)
     : inputProps.onChange;

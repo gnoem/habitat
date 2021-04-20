@@ -10,6 +10,11 @@ form > div > .Input + .Input {
   flex-direction: column;
   align-items: flex-start;
 }
+.Input > label {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 .Input > div {
   display: inline-block;
   position: relative;
