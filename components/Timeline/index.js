@@ -5,6 +5,7 @@ import styles from "./timeline.module.css";
 import { LinkButton } from "../LinkButton";
 import { Graph } from "../Graph";
 import { useState } from "react";
+import { ArrowNav } from "../ArrowNav";
 
 export const Timeline = ({ habits, entries, calendarPeriod, updateCalendarPeriod }) => {
   // view options: list, grid, graph
@@ -55,12 +56,11 @@ const TimelineHeader = ({ calendarPeriod, updateCalendarPeriod, timelineView, up
   }
   return (
     <div className={styles.TimelineHeader}>
-      <nav aria-label="Calendar months">
-        <button type="button" onClick={nav('prev')}><FontAwesomeIcon icon={faCaretLeft} /></button>
-        <button type="button" onClick={nav('next')}><FontAwesomeIcon icon={faCaretRight} /></button>
+      <div className={styles.TimelineNav}>
+        <ArrowNav ariaLabel="Calendar navigation" prev={nav('prev')} next={nav('next')} />
         {(calendarPeriod !== currentPeriod) &&
           <LinkButton className={styles.jumpToCurrentMonth} onClick={() => updateCalendarPeriod(currentPeriod)}>jump to current month</LinkButton>}
-      </nav>
+      </div>
       <div className={styles.calendarPeriod}>
         {dayjs(calendarPeriod).format('MMMM YYYY')}
         <div className={styles.timelineOptions}>

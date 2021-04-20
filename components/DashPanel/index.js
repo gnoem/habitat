@@ -121,6 +121,7 @@ const DataForm = ({ habits }) => {
         <DataFormDateInput {...{
           existingData,
           formData,
+          setFormData,
           inputProps,
           currentDate,
           setCurrentDate
@@ -149,7 +150,7 @@ const DataFormFields = ({ habits, existingData, currentDate, updateRecordsArray 
   });
 }
 
-const DataFormDateInput = ({ existingData, formData, inputProps, currentDate, setCurrentDate }) => {
+const DataFormDateInput = ({ existingData, formData, setFormData, inputProps, currentDate, setCurrentDate }) => {
   const [editingDate, setEditingDate] = useState(false);
   const [jumpingToDate, setJumpingToDate] = useState(false);
   const inputAttributes = () => {
@@ -167,6 +168,13 @@ const DataFormDateInput = ({ existingData, formData, inputProps, currentDate, se
         setJumpingToDate(true);
         setEditingDate(false);
       }
+      const cancelEditingDate = () => {
+        setFormData(prevState => ({
+          ...prevState,
+          date: existingData?.date
+        }));
+        setEditingDate(false);
+      }
       label = (
         <span>
           Edit the date on this entry:
@@ -174,7 +182,7 @@ const DataFormDateInput = ({ existingData, formData, inputProps, currentDate, se
       );
       note = (
         <div className="tar">
-          ...or <button type="button" className="link" onClick={jumpToDate}>jump to date</button>
+          ...or <button type="button" className="link" onClick={jumpToDate}>jump to date</button> / [<button type="button" className="link" onClick={cancelEditingDate}>cancel</button>]
         </div>
       );
       readOnly = false;
@@ -207,6 +215,9 @@ const DataFormDateInput = ({ existingData, formData, inputProps, currentDate, se
       setCurrentDate(formData.date)
     }
   }, [jumpingToDate]);
+  useEffect(() => {
+    console.log('formData.date is ', formData.date)
+  }, [formData.date]);
   const dateInputOnChange = (jumpingToDate || !existingData)
     ? (e) => updateCurrentDate(e.target.value)
     : inputProps.onChange;
@@ -219,7 +230,7 @@ const DataFormDateInput = ({ existingData, formData, inputProps, currentDate, se
       type="date"
       name="date"
       label={inputAttributes().label}
-      defaultValue={formData.date}
+      value={formData.date}
       readOnly={inputAttributes().readOnly}
       className="stretch mb10"
       {...inputProps}

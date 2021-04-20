@@ -22,17 +22,10 @@
 .TimelineHeader {
   margin-bottom: 2rem;
 }
-.TimelineHeader > nav {
+.TimelineNav {
   display: inline-flex;
   align-items: center;
-  margin-left: -0.25rem;
   position: relative;
-}
-.TimelineHeader > nav button:not(.jumpToCurrentMonth) {
-  font-size: 1.25rem;
-  line-height: 1.25rem;
-  padding: 0 0.25rem;
-  margin-right: 0.25rem;
 }
 button.jumpToCurrentMonth {
   font-size: 0.8rem;
