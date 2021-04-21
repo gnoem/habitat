@@ -121,6 +121,17 @@ export const resolvers = {
         }
       });
       return entry;
+    },
+    deleteEntry: async (_, args) => {
+      const { id } = args;
+      const deleteEntry = prisma.entry.delete({
+        where: { id }
+      });
+      const deleteRecords = prisma.record.deleteMany({
+        where: { entryId: id }
+      });
+      const transaction = await prisma.$transaction([deleteEntry, deleteRecords]);
+      return transaction;
     }
   },
   Query: {

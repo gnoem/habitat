@@ -2,8 +2,8 @@ import styles from "./dashPanel.module.css";
 import { useContext, useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarAlt, faPlus, faTimes, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
-import { DataContext } from "../../contexts";
+import { faAngleDoubleRight, faCalendarAlt, faCaretRight, faPlus, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import { DataContext, ModalContext } from "../../contexts";
 import { useForm } from "../../hooks";
 import { Entry } from "../../pages/api";
 import Form, { Input, Checkbox, Submit } from "../Form";
@@ -60,6 +60,7 @@ const PanelContent = ({ view, habits, dashPanelOptions }) => {
 
 const DataForm = ({ habits, dashPanelOptions }) => {
   const { entries, getEntries } = useContext(DataContext);
+  const { createModal } = useContext(ModalContext);
   const [currentDate, setCurrentDate] = useState(dashPanelOptions?.date ?? dayjs().format('YYYY-MM-DD'));
   const existingData = useMemo(() => {
     const index = entries?.findIndex(entry => entry.date === currentDate);
@@ -76,13 +77,7 @@ const DataForm = ({ habits, dashPanelOptions }) => {
   }, [dashPanelOptions?.date]);
   useEffect(() => {
     resetForm();
-  }, [entries, currentDate]);
-  const setRecords = (data) => {
-    setFormData(prevData => ({
-      ...prevData,
-      records: data
-    }));
-  }
+  }, [entries, currentDate, existingData]);
   const updateRecordsArray = (newRecord) => {
     const { records } = formData;
     const arrayToReturn = [...records];
@@ -94,7 +89,10 @@ const DataForm = ({ habits, dashPanelOptions }) => {
     else {
       arrayToReturn[index] = newRecord;
     }
-    setRecords(arrayToReturn);
+    setFormData(prevData => ({
+      ...prevData,
+      records: arrayToReturn
+    }))
   }
   const handleSubmit = async () => {
     // first getting rid of empty string values for 'amount' field in each record object
@@ -117,6 +115,9 @@ const DataForm = ({ habits, dashPanelOptions }) => {
     // probably just set useEffect on that component
     // with entire entries array as dependency? i guess.... or maybe currentDate would be better... or both
   }
+  const handleDelete = () => {
+    createModal('deleteEntry', { entry: existingData });
+  }
   if (!habits || !entries) return <PageLoading />;
   return (
     <div className={styles.DataForm}>
@@ -133,13 +134,19 @@ const DataForm = ({ habits, dashPanelOptions }) => {
         }} />
         <DataFormFields {...{ habits, existingData, currentDate, updateRecordsArray }} />
       </Form>
+      {existingData && (
+        <button className={styles.deleteEntry} onClick={handleDelete}>
+          <FontAwesomeIcon icon={faAngleDoubleRight} />
+          <span>delete this entry</span>
+        </button>
+      )}
     </div>
   );
 }
 
 const DataFormFields = ({ habits, existingData, currentDate, updateRecordsArray }) => {
   return habits?.map(habit => {
-    let record = {};
+    let record;
     if (existingData?.records) {
       const { id } = habit;
       const index = existingData.records.findIndex(item => item.habitId === id);
@@ -256,20 +263,19 @@ const DataFormDateInput = ({ existingData, formData, setFormData, inputProps, cu
 }
 
 const DataFormField = ({ currentDate, id, icon, label, complex, record, updateRecordsArray }) => {
-  const defaultFormData = (record) => ({
+  const { formData, inputProps, checkboxProps, setFormData, resetForm } = useForm({
     habitId: id,
     amount: record?.amount ?? '',
     check: record?.check ?? false
   });
-  const { formData, inputProps, checkboxProps, setFormData } = useForm(defaultFormData(record));
   useEffect(() => {
-    setFormData(defaultFormData(record));
+    resetForm();
   }, [currentDate]);
   useEffect(() => {
-    updateRecordsArray(formData);
-    // fires on first render and whenever a field is updated
-    // so really 'records' gets set twice - first when it's initialized, eithr with existingData?.records ?? []
-    // and then again as soon as fields render
+    if (!record) resetForm();
+  }, [record]);
+  useEffect(() => {
+    updateRecordsArray(formData); // immediately update parent formData with this record
   }, [formData.check, formData.amount]);
   useEffect(() => {
     if (!complex) return;

@@ -77,5 +77,6 @@ export const typeDefs = gql`
     deleteHabit(id: Int): Habit
     createEntry(userId: Int, date: String, records: [RecordInput]): Entry
     editEntry(id: Int, date: String, records: [RecordInput]): Entry
+    deleteEntry(id: Int): Entry
   }
 `;

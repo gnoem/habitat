@@ -44,6 +44,7 @@ export const Entry = {
   get: async (params) => await handleQuery(queries.getEntries, params),
   create: async (formData) => await handleQuery(mutations.createEntry, formData),
   edit: async (formData) => await handleQuery(mutations.editEntry, formData),
+  delete: async (formData) => await handleQuery(mutations.deleteEntry, formData),
 }
 
 const queries = {
@@ -200,5 +201,13 @@ const mutations = {
         }
       }
     }
-  `
+  `,
+  deleteEntry: `
+    mutation ($id: Int) {
+      deleteEntry(id: $id) {
+        id
+        date
+      }
+    }
+  `,
 }
