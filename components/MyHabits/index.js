@@ -104,7 +104,7 @@ const HabitBody = ({ addingNew, userId, id, name, icon, color, label, complex, e
             "if checked, you will be able to record an amount when tracking this habit, e.g. how many hours of studying, how many oz. of water"
           ]} {...checkboxProps} />
         </Form>
-        {addingNew || <DeleteHabit {...{ id, name, getHabits }} />}
+        {addingNew || <DeleteHabit {...{ id, name }} />}
       </div>
     </div>
   );
@@ -129,17 +129,8 @@ const NewHabitBox = ({ userId }) => {
   );
 }
 
-const DeleteHabit = ({ id, name, getHabits }) => {
+const DeleteHabit = ({ id, name }) => {
   const { createModal } = useContext(ModalContext);
-  const deleteHabit = async () => {
-    return Habit.delete({ id }).then((result) => {
-      console.log('success!!!!');
-      console.log(result);
-      getHabits();
-    }).catch(err => {
-      console.error(err);
-    });
-  }
   const confirmDeleteHabit = () => {
     const habit = { id, name }
     createModal('deleteHabit', { habit });

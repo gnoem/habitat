@@ -10,6 +10,10 @@ import dayjs from "dayjs";
 const Dashboard = ({ user }) => {
   const { habits, entries } = useContext(DataContext);
   const [calendarPeriod, setCalendarPeriod] = useState(dayjs().format('YYYY-MM'));
+  const [dashPanel, setDashPanel] = useState(null);
+  const updateDashPanel = (view, options) => {
+    setDashPanel({ view, options });
+  }
   const dashboardContent = () => {
     if (!habits || !entries) return <PageLoading className="jcfs" />;
     const entriesToDisplay = entries.filter(entry => {
@@ -21,11 +25,13 @@ const Dashboard = ({ user }) => {
       habits,
       entries: entriesToDisplay,
       calendarPeriod,
-      updateCalendarPeriod: setCalendarPeriod
+      updateCalendarPeriod: setCalendarPeriod,
+      dashPanel,
+      updateDashPanel
     }} />;
   }
   return (
-    <Dash userId={user.id} sidebar={<DashPanel {...{ habits }} />}>
+    <Dash userId={user.id} sidebar={<DashPanel {...{ habits, dashPanel, updateDashPanel }} />}>
       <h1>dashboard</h1>
       {dashboardContent()}
     </Dash>

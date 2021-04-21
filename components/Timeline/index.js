@@ -1,4 +1,4 @@
-import { faCaretLeft, faCaretRight, faChartLine, faListOl, faTh } from "@fortawesome/free-solid-svg-icons";
+import { faCaretLeft, faCaretRight, faChartLine, faEdit, faListOl, faPen, faTh } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import styles from "./timeline.module.css";
@@ -7,7 +7,7 @@ import { Graph } from "../Graph";
 import { useState } from "react";
 import { ArrowNav } from "../ArrowNav";
 
-export const Timeline = ({ habits, entries, calendarPeriod, updateCalendarPeriod }) => {
+export const Timeline = ({ habits, entries, calendarPeriod, updateCalendarPeriod, dashPanel, updateDashPanel }) => {
   // view options: list, grid, graph
   // filter options: - include empty days
   const [timelineView, setTimelineView] = useState('list'); // todo later config settings
@@ -15,7 +15,7 @@ export const Timeline = ({ habits, entries, calendarPeriod, updateCalendarPeriod
     if (!entries.length) return <NoData />;
     return (
       <div className={styles.timelineEntries} key={calendarPeriod}>
-        {entries.map(entry => <DashboardEntry key={`dashboardEntry-entryId(${entry.id})`} {...{ entry, habits }} />)}
+        {entries.map(entry => <DashboardEntry key={`dashboardEntry-entryId(${entry.id})`} {...{ entry, habits, updateDashPanel }} />)}
       </div>
     );
   }
@@ -97,7 +97,7 @@ const TimelineContent = ({ habits, entries, calendarPeriod, timelineView, conten
   }
 }
 
-const DashboardEntry = ({ entry, habits }) => {
+const DashboardEntry = ({ entry, habits, updateDashPanel }) => {
   const { date, records } = entry;
   const getHabitObject = {
     fromId: (id) => {
@@ -108,10 +108,14 @@ const DashboardEntry = ({ entry, habits }) => {
   const entryDate = () => {
     const month = dayjs(date).format('MMM');
     const day = dayjs(date).format('DD');
+    const editEntry = () => {
+      updateDashPanel('data', { date });
+    }
     return (
       <div className={styles.entryTitle}>
         <span className={styles.day}>{day}</span>
         <span className={styles.month}>{month}</span>
+        <button onClick={editEntry}><FontAwesomeIcon icon={faPen} /></button>
       </div>
     );
   }

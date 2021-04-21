@@ -10,11 +10,12 @@ import Form, { Input, Checkbox, Submit } from "../Form";
 import { PageLoading } from "../Loading";
 import { ArrowNav } from "../ArrowNav";
 
-const DashPanel = ({ habits }) => {
-  const [panelName, setPanelName] = useState(null);
+const DashPanel = ({ habits, dashPanel, updateDashPanel }) => {
+  //const [panelName, setPanelName] = useState(null);
+  const { view: panelName, options: dashPanelOptions } = dashPanel ?? {};
   const handleNavClick = (newPanelName) => {
-    if (panelName === newPanelName) setPanelName(null);
-    else setPanelName(newPanelName);
+    if (panelName === newPanelName) updateDashPanel(null);
+    else updateDashPanel(newPanelName);
   }
   const isActiveClassName = (name) => {
     if (panelName == null) return '';
@@ -36,15 +37,15 @@ const DashPanel = ({ habits }) => {
             <span><FontAwesomeIcon icon={isActive('calendar') ? faPlus : faCalendarAlt} /></span>
           </button>
         </nav>
-      <PanelContent {...{ view: panelName, habits }} />
+      <PanelContent {...{ view: panelName, habits, dashPanelOptions }} />
       </div>
   );
 }
 
-const PanelContent = ({ view, habits }) => {
+const PanelContent = ({ view, habits, dashPanelOptions }) => {
   const panelContent = () => {
     switch (view) {
-      case 'data': return <DataForm {...{ habits }} />;
+      case 'data': return <DataForm {...{ habits, dashPanelOptions }} />;
       case 'calendar': return 'Jump to date...';
       case 'test': return 'test';
       default: return '';
@@ -57,9 +58,9 @@ const PanelContent = ({ view, habits }) => {
   );
 }
 
-const DataForm = ({ habits }) => {
+const DataForm = ({ habits, dashPanelOptions }) => {
   const { entries, getEntries } = useContext(DataContext);
-  const [currentDate, setCurrentDate] = useState(dayjs().format('YYYY-MM-DD'));
+  const [currentDate, setCurrentDate] = useState(dashPanelOptions?.date ?? dayjs().format('YYYY-MM-DD'));
   const existingData = useMemo(() => {
     const index = entries?.findIndex(entry => entry.date === currentDate);
     return entries?.[index] ?? null;
@@ -70,6 +71,9 @@ const DataForm = ({ habits }) => {
     date: existingData?.date ?? currentDate,
     records: existingData?.records ?? []
   });
+  useEffect(() => {
+    if (dashPanelOptions?.date) setCurrentDate(dashPanelOptions?.date);
+  }, [dashPanelOptions?.date]);
   useEffect(() => {
     resetForm();
   }, [entries, currentDate]);
