@@ -3,7 +3,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { Habit } from "../../pages/api";
-import { DataContext } from "../../contexts";
+import { DataContext, ModalContext } from "../../contexts";
 import { useForm } from "../../hooks";
 import Form, { Input, Submit, Checkbox } from "../Form";
 
@@ -130,6 +130,7 @@ const NewHabitBox = ({ userId }) => {
 }
 
 const DeleteHabit = ({ id, name, getHabits }) => {
+  const { createModal } = useContext(ModalContext);
   const deleteHabit = async () => {
     return Habit.delete({ id }).then((result) => {
       console.log('success!!!!');
@@ -139,12 +140,16 @@ const DeleteHabit = ({ id, name, getHabits }) => {
       console.error(err);
     });
   }
+  const confirmDeleteHabit = () => {
+    const habit = { id, name }
+    createModal('deleteHabit', { habit });
+  }
   return (
     <div className={styles.DeleteHabit}>
       <span>delete this habit</span>
       <div>
         <span>permanently erase any & all evidence of this habit's existence (you will be asked to confirm)</span>
-        <button type="button" onClick={deleteHabit}><FontAwesomeIcon icon={faTrashAlt} /></button>
+        <button type="button" onClick={confirmDeleteHabit}><FontAwesomeIcon icon={faTrashAlt} /></button>
       </div>
     </div>
   );

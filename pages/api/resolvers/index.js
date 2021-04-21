@@ -86,17 +86,14 @@ export const resolvers = {
     },
     deleteHabit: async (_, args) => {
       const { id } = args;
-      console.log(id);
       const deleteHabit = prisma.habit.delete({
         where: { id }
       });
       const deleteRecords = prisma.record.deleteMany({
         where: { habitId: id }
       });
-      console.log(deleteRecords)
       const transaction = await prisma.$transaction([deleteHabit, deleteRecords]);
-      console.log(transaction)
-      return deleteHabit;
+      return transaction;
     },
     createEntry: async (_, args) => {
       const { userId, date, records } = args;

@@ -2,19 +2,24 @@ import styles from "./layout.module.css";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { Header } from "../Header";
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import '@fortawesome/fontawesome-svg-core/styles.css';
 // Prevent fontawesome from adding its CSS since we did it manually above:
 import { config } from '@fortawesome/fontawesome-svg-core';
+import { Modal } from "../Modal";
+import { ModalContext } from "../../contexts";
 config.autoAddCss = false; /* eslint-disable import/first */
 
 export const Layout = ({ children }) => {
   const { pathname } = useRouter();
+  const { modal } = useContext(ModalContext);
   const homepage = ['/', '/login', '/register'].includes(pathname);
   return (
     <div className={styles.Layout}>
       <Header />
       <Backdrop {...{ pathname }} />
+      <Modal {...modal} />
+      {/* does everytime context change mean the background backdrop shifts again? todo look into this more */}
       {homepage && <img alt="" src="/decor/hmmm.png" />}
       {children}
     </div>
