@@ -1,7 +1,7 @@
 import { auth } from "./api/auth";
 import Dash, { Content } from "../components/Dashboard";
 import DashPanel from "../components/DashPanel";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { DataContext } from "../contexts";
 import { PageLoading } from "../components/Loading";
 import { Timeline } from "../components/Timeline";
@@ -14,26 +14,27 @@ const Dashboard = ({ user }) => {
   const updateDashPanel = (view, options) => {
     setDashPanel({ view, options });
   }
-  const dashboardContent = () => {
-    if (!habits || !entries) return <PageLoading className="jcfs" />;
-    const entriesToDisplay = entries.filter(entry => {
+  const entriesToDisplay = useMemo(() => {
+    if (!entries) return [];
+    return entries.filter(entry => {
       const [currentYear, currentMonth] = calendarPeriod.split('-');
       const [entryYear, entryMonth] = entry.date.split('-');
       if ((entryYear === currentYear) && (entryMonth === currentMonth)) return entry;
     });
-    return <Timeline {...{
-      habits,
-      entries: entriesToDisplay,
-      calendarPeriod,
-      updateCalendarPeriod: setCalendarPeriod,
-      dashPanel,
-      updateDashPanel
-    }} />;
-  }
+  }, [entries, calendarPeriod]);
   return (
     <Dash userId={user.id} sidebar={<DashPanel {...{ habits, dashPanel, updateDashPanel }} />}>
       <h1>dashboard</h1>
-      {dashboardContent()}
+      {(!habits || !entries)
+        ? <PageLoading className="jcfs" />
+        : <Timeline {...{
+          habits,
+          entries: entriesToDisplay,
+          calendarPeriod,
+          updateCalendarPeriod: setCalendarPeriod,
+          dashPanel,
+          updateDashPanel
+        }} />}
     </Dash>
   );
 }

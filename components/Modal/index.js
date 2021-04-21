@@ -2,6 +2,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useEffect, useRef } from "react";
 import { ModalContext } from "../../contexts";
+import { useRefName } from "../../hooks";
 import styles from "./modal.module.css";
 import { modalStore } from "./modalStore";
 
@@ -19,7 +20,7 @@ const ModalWrapper = ({ children, selfDestruct, closeModal }) => {
   const modalRef = useRef(null);
   const modalContentRef = useRef(null);
   useEffect(() => {
-    const { current: modalContent } = modalContentRef;
+    const modalContent = useRefName(modalContentRef);
     const handleClick = (e) => {
       if (modalContent.contains(e.target)) return;
       closeModal();

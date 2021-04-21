@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import styles from "./timeline.module.css";
 import { LinkButton } from "../LinkButton";
 import { Graph } from "../Graph";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowNav } from "../ArrowNav";
 
 export const Timeline = ({ habits, entries, calendarPeriod, updateCalendarPeriod, dashPanel, updateDashPanel }) => {
@@ -31,6 +31,7 @@ export const Timeline = ({ habits, entries, calendarPeriod, updateCalendarPeriod
         habits,
         entries,
         calendarPeriod,
+        updateDashPanel,
         timelineView,
         content: timelineEntries()
       }} />
@@ -88,11 +89,11 @@ const TimelineHeader = ({ calendarPeriod, updateCalendarPeriod, timelineView, up
   );
 }
 
-const TimelineContent = ({ habits, entries, calendarPeriod, timelineView, content }) => {
+const TimelineContent = ({ habits, entries, calendarPeriod, updateDashPanel, timelineView, content }) => {
   switch (timelineView) {
     case 'list': return content;
     case 'grid': return 'grid!';
-    case 'graph': return <Graph {...{ habits, entries, calendarPeriod }} />;
+    case 'graph': return <Graph {...{ habits, entries, calendarPeriod, updateDashPanel }} />;
     default: return content;
   }
 }

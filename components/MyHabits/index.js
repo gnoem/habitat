@@ -6,6 +6,7 @@ import { Habit } from "../../pages/api";
 import { DataContext, ModalContext } from "../../contexts";
 import { useForm } from "../../hooks";
 import Form, { Input, Submit, Checkbox } from "../Form";
+import { useRefName } from "../../hooks";
 
 export const MyHabits = ({ children, userId }) => {
   return (
@@ -64,7 +65,7 @@ const HabitBody = ({ addingNew, userId, id, name, icon, color, label, complex, e
   });
   const habitBodyRef = useRef(null);
   useEffect(() => {
-    const { current: habitBody } = habitBodyRef;
+    const habitBody = useRefName(habitBodyRef);
     if (!habitBody) return;
     if (expanded) {
       habitBody.style.maxHeight = habitBody.scrollHeight + 'px';
