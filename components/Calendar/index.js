@@ -1,7 +1,8 @@
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { fancyClassName } from "../../utils";
+import { TooltipElement } from "../Tooltip";
 import styles from "./calendar.module.css";
 
 export const Calendar = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
@@ -43,10 +44,22 @@ const CalendarDays = ({ habits, entries, totalDaysInMonth, updateDashPanel }) =>
   return totalDaysInMonth.map((date, index) => {
     const isFiller = date === '';
     const { records } = entries.find(entry => entry.date === date) ?? {};
-    const recordIcons = records?.map(record => {
-      const habitIcon = habits.find(habit => habit.id === record.habitId)?.icon;
+    const recordIcons = records?.map(({ habitId, amount, check }) => {
+      if (!check) return null;
+      const { name, icon, label, complex } = habits.find(habit => habit.id === habitId);
+      const unit = complex ? label.split('{{')[1].split('}}')[0].trim() : null;
+      const recordDetails = (
+        <span>
+          <b>{name}:</b> {
+            complex ? `${amount} ${unit}` : <FontAwesomeIcon icon={faCheck} />
+          }
+        </span>
+      )
       return (
-        <div>{habitIcon}</div>
+        <TooltipElement tooltip={{
+          className: 'below nowrap',
+          content: recordDetails
+        }}>{icon}</TooltipElement>
       );
     });
     return (
