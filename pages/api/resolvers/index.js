@@ -56,6 +56,32 @@ export const resolvers = {
       });
       return user;
     },
+    editSettings: async (_, args) => {
+      const {
+        userId,
+        dashboard__defaultView,
+        appearance__showClock,
+        appearance__24hrClock,
+        appearance__showClockSeconds
+      } = args;
+      const settingsObj = {
+        dashboard__defaultView,
+        appearance__showClock,
+        appearance__24hrClock,
+        appearance__showClockSeconds
+      }
+      const settings = await prisma.settings.upsert({
+        where: {
+          userId
+        },
+        update: settingsObj,
+        create: {
+          userId,
+          ...settingsObj
+        }
+      });
+      return settings;
+    },
     createHabit: async (_, args) => {
       const { name, icon, color, label, complex, userId } = args;
       const habit = await prisma.habit.create({
@@ -193,6 +219,18 @@ export const resolvers = {
         where: { entryId }
       });
       return records;
+    },
+    settings: async (_, args) => {
+      const { userId } = args;
+      const settings = await prisma.settings.findUnique({
+        where: { userId }
+      });
+      return settings;
+    }
+  },
+  User: {
+    settings: (parent) => {
+      return resolvers.Query.settings(null, { userId: parent.id })
     }
   },
   Entry: {

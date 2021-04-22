@@ -30,6 +30,7 @@ export const User = {
   create: async (formData) => await handleQuery(mutations.createUser, formData),
   edit: async (formData) => await handleQuery(mutations.editUser, formData),
   editPassword: async (formData) => await handleQuery(mutations.editPassword, formData),
+  editSettings: async (formData) => await handleQuery(mutations.editSettings, formData),
   login: async (params) => await handleQuery(queries.loginUser, params)
 }
 
@@ -54,6 +55,12 @@ const queries = {
         id
         name
         email
+        settings {
+          dashboard__defaultView
+          appearance__showClock
+          appearance__24hrClock
+          appearance__showClockSeconds
+        }
       }
     }
   `,
@@ -137,6 +144,26 @@ const mutations = {
         id
         name
         email
+      }
+    }
+  `,
+  editSettings: `
+    mutation (
+      $userId: Int,
+      $dashboard__defaultView: String,
+      $appearance__showClock: Boolean,
+      $appearance__24hrClock: Boolean,
+      $appearance__showClockSeconds: Boolean) {
+      editSettings(
+        userId: $userId,
+        dashboard__defaultView: $dashboard__defaultView,
+        appearance__showClock: $appearance__showClock,
+        appearance__24hrClock: $appearance__24hrClock,
+        appearance__showClockSeconds: $appearance__showClockSeconds) {
+        dashboard__defaultView
+        appearance__showClock
+        appearance__24hrClock
+        appearance__showClockSeconds
       }
     }
   `,

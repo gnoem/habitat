@@ -6,7 +6,7 @@ const Settings = ({ user }) => {
   return (
     <Dashboard userId={user.id}>
       <h1>settings</h1>
-      <SettingsForm />
+      <SettingsForm {...{ user }} />
     </Dashboard>
   );
 }

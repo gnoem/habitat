@@ -8,6 +8,15 @@ export const typeDefs = gql`
     password: String
     habits: [Habit]
     entries: [Entry]
+    settings: Settings
+  }
+
+  type Settings {
+    id: Int,
+    dashboard__defaultView: String,
+    appearance__showClock: Boolean,
+    appearance__24hrClock: Boolean,
+    appearance__showClockSeconds: Boolean
   }
 
   type Habit {
@@ -63,6 +72,7 @@ export const typeDefs = gql`
     users: [User]
     login(email: String, password: String): UserResult
     user(id: Int): User
+    settings(userId: Int): Settings
     habits(userId: Int): [Habit]
     entries(userId: Int): [Entry]
     records(entryId: Int): [Record]
@@ -72,6 +82,12 @@ export const typeDefs = gql`
     createUser(email: String, password: String): UserResult
     editUser(id: Int, name: String, email: String): User
     editPassword(id: Int, password: String): User
+    editSettings(
+      userId: Int,
+      dashboard__defaultView: String,
+      appearance__showClock: Boolean,
+      appearance__24hrClock: Boolean,
+      appearance__showClockSeconds: Boolean): Settings
     createHabit(name: String, icon: String, color: String, label: String, complex: Boolean, userId: Int): Habit
     editHabit(id: Int, name: String, icon: String, color: String, label: String, complex: Boolean): Habit
     deleteHabit(id: Int): Habit

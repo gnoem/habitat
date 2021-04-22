@@ -1,17 +1,24 @@
 import styles from "./settings.module.css";
+import { DataContext } from "../../contexts";
 import Form, { Submit, Switch } from "../Form";
 import { Dropdown } from "../Dropdown";
 import { useForm } from "../../hooks";
+import { User } from "../../pages/api";
+import { useContext } from "react";
 
-export const SettingsForm = ({ settings }) => {
-  const { formData, updateFormData, checkboxProps, dropdownProps } = useForm({
-    dashboard__defaultView: settings?.dashboard__defaultView ?? 'graph',
-    appearance__showClock: settings?.appearance__showClock ?? true,
-    appearance__24hrClock: settings?.appearance__24hrClock ?? false,
-    appearance__showClockSeconds: settings?.appearance__showClockSeconds ?? true
+export const SettingsForm = ({ user }) => {
+  const { getUser } = useContext(DataContext);
+  const { formData, checkboxProps, dropdownProps } = useForm({
+    userId: user.id,
+    dashboard__defaultView: user.settings?.dashboard__defaultView ?? 'list',
+    appearance__showClock: user.settings?.appearance__showClock ?? true,
+    appearance__24hrClock: user.settings?.appearance__24hrClock ?? false,
+    appearance__showClockSeconds: user.settings?.appearance__showClockSeconds ?? true
   });
-  const handleSubmit = async () => Promise.resolve(formData);
-  const handleSuccess = console.log;
+  const handleSubmit = async () => User.editSettings(formData);
+  const handleSuccess = () => {
+    getUser();
+  }
   return (
     <Form
       onSubmit={handleSubmit}
