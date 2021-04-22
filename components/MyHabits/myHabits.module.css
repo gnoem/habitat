@@ -117,37 +117,14 @@
 }
 
 .DeleteHabit {
-  margin-top: 1.5rem;
+  margin-top: 1rem;
+  text-align: center;
 }
-.DeleteHabit > span {
-  display: block;
-  font-weight: 500;
-  padding-bottom: 0.2rem;
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 0.5rem;
+.DeleteHabit button {
+  font-size: 0.5rem;
 }
-.DeleteHabit > div {
-  display: flex;
-  align-items: center;
-  font-size: 0.7rem;
-  line-height: 1.2;
-  color: #666;
-}
-.DeleteHabit > div span {
-  margin-right: 0.5rem;
-}
-.DeleteHabit > div button {
-  flex: 0 0 1.5rem;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  display: block;
-  border: 1px solid #000;
-  font-size: 0.7rem;
-  transition: 0.2s;
-}
-.DeleteHabit > div button:hover {
-  border-radius: 0;
-  border-color: var(--caution);
-  color: var(--caution);
+.DeleteHabit button > span {
+  display: inline-block;
+  margin-left: 0.25rem;
+  font-size: 0.75rem;
 }

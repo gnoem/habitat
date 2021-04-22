@@ -6,6 +6,7 @@ import { LinkButton } from "../LinkButton";
 import { Graph } from "../Graph";
 import { useEffect, useState } from "react";
 import { ArrowNav } from "../ArrowNav";
+import { Calendar } from "../Calendar";
 
 export const Timeline = ({ habits, entries, calendarPeriod, updateCalendarPeriod, dashPanel, updateDashPanel }) => {
   // view options: list, grid, graph
@@ -92,7 +93,7 @@ const TimelineHeader = ({ calendarPeriod, updateCalendarPeriod, timelineView, up
 const TimelineContent = ({ habits, entries, calendarPeriod, updateDashPanel, timelineView, content }) => {
   switch (timelineView) {
     case 'list': return content;
-    case 'grid': return 'grid!';
+    case 'grid': return <Calendar {...{ habits, entries, calendarPeriod, updateDashPanel }} />;
     case 'graph': return <Graph {...{ habits, entries, calendarPeriod, updateDashPanel }} />;
     default: return content;
   }

@@ -1,7 +1,7 @@
 import styles from "./myHabits.module.css";
 import { useContext, useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDoubleRight, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { Habit } from "../../pages/api";
 import { DataContext, ModalContext } from "../../contexts";
 import { useForm } from "../../hooks";
@@ -138,11 +138,10 @@ const DeleteHabit = ({ id, name }) => {
   }
   return (
     <div className={styles.DeleteHabit}>
-      <span>delete this habit</span>
-      <div>
-        <span>permanently erase any & all evidence of this habit's existence (you will be asked to confirm)</span>
-        <button type="button" onClick={confirmDeleteHabit}><FontAwesomeIcon icon={faTrashAlt} /></button>
-      </div>
+      <button onClick={confirmDeleteHabit}>
+        <FontAwesomeIcon icon={faAngleDoubleRight} />
+        <span>delete this habit</span>
+      </button>
     </div>
   );
-}
+} 

@@ -5,6 +5,10 @@ const Settings = ({ user }) => {
   return (
     <Dashboard userId={user.id}>
       <h1>settings</h1>
+      <h2>dashboard</h2>
+      <ul>
+        <li>default dashboard view: [list/grid/graph]</li>
+      </ul>
       <h2>appearance</h2>
       <ul>
         <li>refresh background gradient periodically [y/n] - every ___ sec/min/hr</li>
