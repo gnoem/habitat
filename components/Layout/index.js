@@ -38,7 +38,14 @@ const Backdrop = ({ pathname }) => {
       didMountRef.current = true;
     }
   }, [pathname]);
-  const startingColors = ['#D8FFF1', '#EADFFF', '#FCFFDF', '#E9FFC7', '#D4FFF7', '#FFE0F5']; // ['#e7c7ff', '#c7dfff', '#c7ffe3', '#e9ffc7']; // originally
+  const startingColors = [
+    'rgb(216, 255, 241)',
+    'rgb(234, 223, 255)',
+    'rgb(252, 255, 223)',
+    'rgb(233, 255, 199)',
+    'rgb(212, 255, 247)',
+    'rgb(255, 224, 245)'
+  ];
   const blobs = startingColors.map(color => {
     const translation = {
       x: Math.random() * (50 + 50) - 50,
@@ -60,9 +67,14 @@ const Backdrop = ({ pathname }) => {
 }
 
 const Blob = ({ initial, hue, translation, size }) => {
+  const transparentize = (rgb) => {
+    // gradients that fade to transparent are interpreted/interpolated as ending in 'transparent black' in safari
+    // this is a workaround
+    return rgb.replace('rgb', 'rgba').split(')')[0] + ', 0)';
+  }
   return (
     <div className={styles.f} style={{
-      background: `radial-gradient(${initial} 0%, transparent 70%)`,
+      background: `radial-gradient(${initial} 0%, ${transparentize(initial)} 70%)`,
       filter: `hue-rotate(${hue}deg)`,
       transform: `scale(${size.x}, ${size.y}) translate3d(${translation.x}%, ${translation.y}%, 0)`
     }}></div>
