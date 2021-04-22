@@ -20,8 +20,9 @@
   border-width: 1px 0 0 1px;
   padding: 0 0.5rem 0.5rem;
   min-height: 4rem;
+  cursor: pointer;
 }
-.calendarDay > div:first-of-type {
+.calendarDay > div.title {
   font-family: var(--mono-font);
   font-weight: 400;
   font-size: 1rem;
@@ -50,6 +51,7 @@
   border: 0;
   background: #000;
   opacity: 0.05;
+  cursor: default;
 }
 .calendarDay.filler * {
   display: none;
