@@ -1,12 +1,25 @@
 import styles from "./settings.module.css";
-import Form, { Submit } from "../Form";
+import Form, { Submit, Switch } from "../Form";
 import { Dropdown } from "../Dropdown";
+import { useForm } from "../../hooks";
 
-export const SettingsForm = () => {
+export const SettingsForm = ({ settings }) => {
+  const { formData, updateFormData, checkboxProps } = useForm({
+    dashboard__defaultView: settings?.dashboard__defaultView ?? 'list',
+    appearance__showClock: settings?.appearance__showClock ?? true,
+    appearance__24hrClock: settings?.appearance__24hrClock ?? false,
+    appearance__showClockSeconds: settings?.appearance__showClockSeconds ?? true
+  });
+  const handleSubmit = async () => Promise.resolve(formData);
+  const handleSuccess = console.log;
   return (
-    <Form submit={<Submit value="save changes" cancel={false} />}>
-      <DashboardSettings />
-      <AppearanceSettings />
+    <Form
+      onSubmit={handleSubmit}
+      onSuccess={handleSuccess}
+      behavior={{ checkmarkStick: false }}
+      submit={<Submit value="save changes" cancel={false} />}>
+        <DashboardSettings {...{ formData, updateFormData }} />
+        <AppearanceSettings {...{ formData, updateFormData, checkboxProps }} />
     </Form>
   );
 }
@@ -32,22 +45,34 @@ const DashboardSettings = () => {
   );
 }
 
-const AppearanceSettings = () => {
+const AppearanceSettings = ({ formData, checkboxProps }) => {
   return (
     <div className={styles.Settings}>
       <h2>appearance</h2>
       <h3>clock</h3>
       <div>
-        <span>hide clock</span>
-        <div>[y/n]</div>
+        <span>show clock</span>
+        <Switch
+          name="appearance__showClock"
+          on={formData.appearance__showClock}
+          {...checkboxProps}
+        />
       </div>
       <div>
         <span>24 hr clock</span>
-        <div>[y/n]</div>
+        <Switch
+          name="appearance__24hrClock"
+          on={formData.appearance__24hrClock}
+          {...checkboxProps}
+        />
       </div>
       <div>
         <span>show seconds</span>
-        <div>[y/n]</div>
+        <Switch
+          name="appearance__showClockSeconds"
+          on={formData.appearance__showClockSeconds}
+          {...checkboxProps}
+        />
       </div>
     </div>
   );

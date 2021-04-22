@@ -4,6 +4,7 @@ import { Button } from "./Button";
 import { Checkbox } from "./Checkbox";
 import { Input } from "./Input";
 import { Submit } from "./Submit";
+import { Switch } from "./Switch";
 
 const Form = ({ children, title, submit, delay, onSubmit, onSuccess, handleFormError, behavior, className }) => {
   const defaultBehavior = {
@@ -70,4 +71,4 @@ const Form = ({ children, title, submit, delay, onSubmit, onSuccess, handleFormE
 }
 
 export default Form;
-export { Button, Checkbox, Input, Submit }
+export { Button, Checkbox, Input, Submit, Switch }

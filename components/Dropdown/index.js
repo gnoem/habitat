@@ -51,8 +51,11 @@ const List = ({ listItems, onChange, updateDisplayValue, updateExpanded }) => {
       updateExpanded(false);
     }
     return (
-      <button key={`listButtons-display(${display})`} onClick={handleClick}>
-        <span>{display}</span>
+      <button
+        key={`listButtons-display(${display})`}
+        type="button"
+        onClick={handleClick}>
+          <span>{display}</span>
       </button>
     );
   });
