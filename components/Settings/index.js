@@ -4,8 +4,8 @@ import { Dropdown } from "../Dropdown";
 import { useForm } from "../../hooks";
 
 export const SettingsForm = ({ settings }) => {
-  const { formData, updateFormData, checkboxProps } = useForm({
-    dashboard__defaultView: settings?.dashboard__defaultView ?? 'list',
+  const { formData, updateFormData, checkboxProps, dropdownProps } = useForm({
+    dashboard__defaultView: settings?.dashboard__defaultView ?? 'graph',
     appearance__showClock: settings?.appearance__showClock ?? true,
     appearance__24hrClock: settings?.appearance__24hrClock ?? false,
     appearance__showClockSeconds: settings?.appearance__showClockSeconds ?? true
@@ -18,27 +18,29 @@ export const SettingsForm = ({ settings }) => {
       onSuccess={handleSuccess}
       behavior={{ checkmarkStick: false }}
       submit={<Submit value="save changes" cancel={false} />}>
-        <DashboardSettings {...{ formData, updateFormData }} />
-        <AppearanceSettings {...{ formData, updateFormData, checkboxProps }} />
+        <DashboardSettings {...{ formData, dropdownProps }} />
+        <AppearanceSettings {...{ formData, checkboxProps }} />
     </Form>
   );
 }
 
-const DashboardSettings = () => {
+const DashboardSettings = ({ formData, dropdownProps }) => {
   const dashboardViewListItems = [
     { value: 'list', display: 'list' },
     { value: 'grid', display: 'grid' },
     { value: 'graph', display: 'graph' }
   ];
+  const dashboardViewDefaultValue = dashboardViewListItems.find(item => item.value === formData.dashboard__defaultView)?.display;
   return (
     <div className={styles.Settings}>
       <h2>dashboard</h2>
       <div>
         <span>default dashboard view:</span>
         <Dropdown
-          defaultValue={dashboardViewListItems[0].display}
+          name="dashboard__defaultView"
+          defaultValue={dashboardViewDefaultValue}
           listItems={dashboardViewListItems}
-          onChange={console.log}
+          {...dropdownProps}
         />
       </div>
     </div>

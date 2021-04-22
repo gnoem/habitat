@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./dropdown.module.css";
 import { useRefName } from "../../hooks";
 
-export const Dropdown = ({ defaultValue, listItems, onChange }) => {
+export const Dropdown = ({ name, defaultValue, listItems, onChange }) => {
   const [displayValue, setDisplayValue] = useState(defaultValue ?? 'Select one...');
   const [expanded, setExpanded] = useState(false);
   const toggleExpanded = () => setExpanded(state => !state);
@@ -26,7 +26,7 @@ export const Dropdown = ({ defaultValue, listItems, onChange }) => {
       <Display {...{ toggleExpanded }}>{displayValue}</Display>
       <List {...{
         listItems,
-        onChange,
+        onChange: (value) => onChange(name, value),
         updateDisplayValue: setDisplayValue,
         updateExpanded: setExpanded
       }} />

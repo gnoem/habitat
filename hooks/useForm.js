@@ -10,11 +10,16 @@ export const useFormData = (initialState = {}) => {
       ...prevState,
       [e.target.name]: e.target.checked
     }));
+    const updateFormDataDropdown = (key, value) => setFormData(prevState => ({
+      ...prevState,
+      [key]: value
+    }));
     const resetForm = () => setFormData(initialState);
     return {
       formData,
       updateFormData,
       updateFormDataCheckbox,
+      updateFormDataDropdown,
       setFormData,
       resetForm
     }
@@ -64,7 +69,7 @@ export const useFormError = (initialState = {}) => {
 }
 
 export const useForm = (initialFormData = {}) => {
-  const { formData, updateFormData, updateFormDataCheckbox, setFormData, resetForm } = useFormData(initialFormData);
+  const { formData, updateFormData, updateFormDataCheckbox, updateFormDataDropdown, setFormData, resetForm } = useFormData(initialFormData);
   const { updateFormError, resetFormError, errorAlert } = useFormError({});
   const inputProps = {
     onChange: updateFormData,
@@ -74,12 +79,16 @@ export const useForm = (initialFormData = {}) => {
   const checkboxProps = {
     onChange: updateFormDataCheckbox
   }
+  const dropdownProps = {
+    onChange: updateFormDataDropdown
+  }
   return {
     formData,
     setFormData,
     resetForm,
     handleFormError: updateFormError,
     inputProps,
-    checkboxProps
+    checkboxProps,
+    dropdownProps
   }
 }
