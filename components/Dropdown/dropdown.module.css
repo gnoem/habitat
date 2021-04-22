@@ -1,0 +1,70 @@
+.Dropdown {
+  position: relative;
+  display: inline-block;
+  font-family: var(--mono-font);
+  cursor: pointer;
+}
+.Display, .List button {
+  background: #fff;
+  line-height: 2rem;
+  padding: 0 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.Display::before {
+  content: '';
+  display: block;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: calc(100% + 0.5rem);
+  height: 100%;
+  background: inherit;
+  transform: translate3d(-0.25rem, 0, 0) skew(-12deg);
+  box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+.Display span {
+  display: block;
+  margin-right: 3rem;
+}
+.Display svg {
+  display: block;
+  transition: 0.2s;
+}
+.List {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin-top: 0.25rem;
+  box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+.List button {
+  max-height: 0;
+  overflow: hidden;
+  transition: 0.2s;
+}
+.List button:hover {
+  background: #f3f3f3;
+}
+.List button span {
+  display: block;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: 0.2s;
+}
+
+.Dropdown.expanded .Display svg {
+  transform: rotate(-90deg);
+}
+.Dropdown.expanded .List button {
+  max-height: 2rem;
+}
+.Dropdown.expanded .List button span {
+  opacity: 1;
+  transform: scale(1);
+}

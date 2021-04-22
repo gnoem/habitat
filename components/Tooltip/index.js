@@ -1,11 +1,11 @@
 import { fancyClassName } from "../../utils";
 import styles from "./tooltip.module.css";
 
-export const TooltipElement = ({ children, tooltip }) => {
+export const TooltipElement = ({ children, className, content }) => {
   return (
     <div className={styles.TooltipElement}>
       {children}
-      <Tooltip {...tooltip} />
+      <Tooltip {...{ className, content }} />
     </div>
   );
 }

@@ -1,0 +1,11 @@
+.Settings {
+  width: 100%;
+}
+.Settings + .Settings {
+  margin-top: 1rem;
+}
+.Settings > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

@@ -14,7 +14,16 @@ model User {
   password      String?
   habits        Habit[]
   entries       Entry[]
+  settings      Settings
   @@map(name: "users")
+}
+
+model Settings {
+  dashboard__defaultView          String
+  appearance__clock24hr           Boolean
+  appearance__clockSeconds        Boolean
+  user                            User          @relation(fields: [userId], references: [id])
+  userId                          Int
 }
 
 model Habit {

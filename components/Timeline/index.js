@@ -7,6 +7,7 @@ import { Graph } from "../Graph";
 import { useEffect, useState } from "react";
 import { ArrowNav } from "../ArrowNav";
 import { Calendar } from "../Calendar";
+import { TooltipElement } from "../Tooltip";
 
 export const Timeline = ({ habits, entries, calendarPeriod, updateCalendarPeriod, dashPanel, updateDashPanel }) => {
   // view options: list, grid, graph
@@ -117,7 +118,11 @@ const DashboardEntry = ({ entry, habits, updateDashPanel }) => {
       <div className={styles.entryTitle}>
         <span className={styles.day}>{day}</span>
         <span className={styles.month}>{month}</span>
-        <button onClick={editEntry}><FontAwesomeIcon icon={faPen} /></button>
+        <button onClick={editEntry}>
+          <TooltipElement className="below" content="edit in side panel">
+            <FontAwesomeIcon icon={faPen} />
+          </TooltipElement>
+        </button>
       </div>
     );
   }

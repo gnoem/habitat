@@ -27,6 +27,8 @@ export const useFormError = (initialState = {}) => {
         { location: 'email', message: 'already in use' },
         { location: 'password', message: 'must be at least 6 chars' }
       ] */
+      console.dir(errorReport);
+      if (!Array.isArray(errorReport)) return console.error(errorReport); // todo better
       const errors = errorReport.reduce((obj, error) => {
         obj[error.location] = error.message;
         return obj;

@@ -33,7 +33,7 @@ const CalendarWeekLabels = () => {
   return new Array(7).fill('').map((_, index) => {
     const weekName = dayjs().day(index).format('ddd');
     return (
-      <div className={styles.calendarWeekLabel}>
+      <div key={`calendarWeekLabels-${weekName}`} className={styles.calendarWeekLabel}>
         {weekName}
       </div>
     );
@@ -54,25 +54,27 @@ const CalendarDays = ({ habits, entries, totalDaysInMonth, updateDashPanel }) =>
             complex ? `${amount} ${unit}` : <FontAwesomeIcon icon={faCheck} />
           }
         </span>
-      )
+      );
       return (
-        <TooltipElement tooltip={{
-          className: 'below nowrap',
-          content: recordDetails
-        }}>{icon}</TooltipElement>
+        <TooltipElement
+          key={`recordIcon-${date}-${habitId}`}
+          className="below nowrap"
+          content={recordDetails}>
+            {icon}
+        </TooltipElement>
       );
     });
     return (
       <CalendarDay key={`calendarDay-${index}`}
-                   className={isFiller ? styles.filler : ''}
-                   date={date}
-                   updateDashPanel={updateDashPanel}>
-        {isFiller ? null : (
-          <div className={styles.title}>
-            {date.split('-')[2]}
-          </div>
-        )}
-        <div>{recordIcons}</div>
+        className={isFiller ? styles.filler : ''}
+        date={date}
+        updateDashPanel={updateDashPanel}>
+          {isFiller ? null : (
+            <div className={styles.title}>
+              {date.split('-')[2]}
+            </div>
+          )}
+          <div>{recordIcons}</div>
       </CalendarDay>
     );
   });
