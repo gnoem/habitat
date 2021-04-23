@@ -218,3 +218,40 @@ input[type=date] {
 .tar {
   text-align: right;
 }
+
+#nprogress {
+  pointer-events: none;
+}
+#nprogress .spinner {
+  display: block;
+  position: fixed;
+  z-index: 1346;
+  bottom: 3rem;
+  right: 3rem;
+}
+#nprogress .spinner-icon {
+  width: 3rem;
+  height: 3rem;
+  border: solid 0.125rem transparent;
+  border-top-color: #000;
+  border-left-color: #000;
+  border-radius: 999px;
+  animation: nprogress-spinner 0.4s linear infinite;
+}
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+.nprogress-custom-parent #nprogress .spinner,
+.nprogress-custom-parent #nprogress .bar {
+  position: absolute;
+}
+
+@keyframes nprogress-spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
