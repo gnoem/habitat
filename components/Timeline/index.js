@@ -1,19 +1,17 @@
-import { faCaretLeft, faCaretRight, faChartLine, faEdit, faListOl, faPen, faTh } from "@fortawesome/free-solid-svg-icons";
+import { faChartLine, faListOl, faPen, faTh } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import styles from "./timeline.module.css";
 import { LinkButton } from "../LinkButton";
 import { Graph } from "../Graph";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ArrowNav } from "../ArrowNav";
 import { Calendar } from "../Calendar";
 import { TooltipElement } from "../Tooltip";
+import { getUnitFromLabel } from "../../utils";
 
 export const Timeline = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod, updateDashPanel }) => {
-  // view options: list, grid, graph
-  // filter options: - include empty days
-  console.dir(user);
-  const [timelineView, setTimelineView] = useState(user.settings?.dashboard__defaultView ?? 'list'); // todo later config settings
+  const [timelineView, setTimelineView] = useState(user.settings?.dashboard__defaultView ?? 'list');
   const timelineEntries = () => {
     if (!entries.length) return <NoData />;
     return (
@@ -147,7 +145,7 @@ const EntryRecord = ({ habit, record }) => {
     if (!complex) return <span>{label}</span>;
     const pre = label.split('{{')[0].trim();
     const post = label.split('}}')[1].trim();
-    const unit = label.split('{{')[1].split('}}')[0].trim();
+    const unit = getUnitFromLabel(label);
     return (
       <span>{pre} <b>{amount ?? 'some'} {unit}</b> {post}</span>
     );

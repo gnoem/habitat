@@ -1,7 +1,7 @@
 import { faCheck, faPen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
-import { fancyClassName } from "../../utils";
+import { fancyClassName, getUnitFromLabel } from "../../utils";
 import { TooltipElement } from "../Tooltip";
 import styles from "./calendar.module.css";
 
@@ -47,7 +47,7 @@ const CalendarDays = ({ habits, entries, totalDaysInMonth, updateDashPanel }) =>
     const recordIcons = records?.map(({ habitId, amount, check }) => {
       if (!check) return null;
       const { name, icon, label, complex } = habits.find(habit => habit.id === habitId);
-      const unit = complex ? label.split('{{')[1].split('}}')[0].trim() : null;
+      const unit = complex ? getUnitFromLabel(label) : null;
       const recordDetails = (
         <span>
           <b>{name}:</b> {

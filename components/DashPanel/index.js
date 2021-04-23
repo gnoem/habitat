@@ -9,6 +9,7 @@ import { Entry } from "../../pages/api";
 import Form, { Input, Checkbox, Submit } from "../Form";
 import { PageLoading } from "../Loading";
 import { ArrowNav } from "../ArrowNav";
+import { getUnitFromLabel } from "../../utils";
 
 const DashPanel = ({ habits, dashPanel, updateDashPanel }) => {
   //const [panelName, setPanelName] = useState(null);
@@ -309,7 +310,7 @@ const DataFormFieldInput = ({ label, complex, formData, inputProps, checkboxProp
   if (complex) {
     const pre = label.split('{{')[0];
     const post = label.split('}}')[1];
-    const unit = ' ' + label.split('{{')[1].split('}}')[0];
+    const unit = ' ' + getUnitFromLabel(label);
     return (
       <span>
         <div>

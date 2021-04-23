@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { getUnitFromLabel } from "../../utils";
 
 export const config = (habits, entries, calendarPeriod, type) => {
   const daysInMonth = new Array(dayjs(calendarPeriod).daysInMonth()).fill('');
@@ -7,7 +8,7 @@ export const config = (habits, entries, calendarPeriod, type) => {
   });
   const datasets = habits.map(habit => {
     const particularEntryRecord = (someEntry, habitId) => {
-      return someEntry.records.find(record => record.habitId === habitId);
+      return someEntry?.records?.find(record => record.habitId === habitId);
     }
     const activeThisMonth = entries.some(entry => particularEntryRecord(entry, habit.id)?.check);
     if (!activeThisMonth) return null;
@@ -21,7 +22,7 @@ export const config = (habits, entries, calendarPeriod, type) => {
       }
       return habit.complex ? 0 : null;
     });
-    const unit = habit.label.split('{{')[1]?.split('}}')[0]?.trim();
+    const unit = getUnitFromLabel(habit.label);
     const obj = {
       label: habit.name,
       unit,
