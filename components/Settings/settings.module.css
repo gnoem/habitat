@@ -1,21 +1,31 @@
 .Settings {
   width: 100%;
+  max-width: 500px;
 }
 .Settings + .Settings {
   margin-top: 1rem;
 }
+.Settings h2 {
+  margin-bottom: 1.5rem;
+}
 .Settings h3 {
   font-size: 1rem;
-  margin: 1.5rem 0 1rem;
+  margin: 1rem 0;
   text-transform: uppercase;
 }
 .Settings > div {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: 0.2s;
 }
 .Settings > div + div {
   margin-top: 0.5rem;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   padding-top: 0.5rem;
+}
+
+.disabled {
+  opacity: 0.3;
+  pointer-events: none;
 }

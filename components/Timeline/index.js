@@ -9,10 +9,11 @@ import { ArrowNav } from "../ArrowNav";
 import { Calendar } from "../Calendar";
 import { TooltipElement } from "../Tooltip";
 
-export const Timeline = ({ habits, entries, calendarPeriod, updateCalendarPeriod, dashPanel, updateDashPanel }) => {
+export const Timeline = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod, updateDashPanel }) => {
   // view options: list, grid, graph
   // filter options: - include empty days
-  const [timelineView, setTimelineView] = useState('list'); // todo later config settings
+  console.dir(user);
+  const [timelineView, setTimelineView] = useState(user.settings?.dashboard__defaultView ?? 'list'); // todo later config settings
   const timelineEntries = () => {
     if (!entries.length) return <NoData />;
     return (

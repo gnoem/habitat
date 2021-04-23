@@ -24,14 +24,13 @@ export const SettingsForm = ({ user }) => {
       onSubmit={handleSubmit}
       onSuccess={handleSuccess}
       behavior={{ checkmarkStick: false }}
-      submit={<Submit value="save changes" cancel={false} />}>
-        <DashboardSettings {...{ formData, dropdownProps }} />
-        <AppearanceSettings {...{ formData, checkboxProps }} />
+      submit={<Submit value="save changes" cancel={false} className="mt25" />}>
+        <DashboardSettings {...{ formData, dropdownProps, checkboxProps }} />
     </Form>
   );
 }
 
-const DashboardSettings = ({ formData, dropdownProps }) => {
+const DashboardSettings = ({ formData, dropdownProps, checkboxProps }) => {
   const dashboardViewListItems = [
     { value: 'list', display: 'list' },
     { value: 'grid', display: 'grid' },
@@ -41,8 +40,9 @@ const DashboardSettings = ({ formData, dropdownProps }) => {
   return (
     <div className={styles.Settings}>
       <h2>dashboard</h2>
+      <h3>general</h3>
       <div>
-        <span>default dashboard view:</span>
+        <span>default dashboard view</span>
         <Dropdown
           name="dashboard__defaultView"
           defaultValue={dashboardViewDefaultValue}
@@ -50,14 +50,6 @@ const DashboardSettings = ({ formData, dropdownProps }) => {
           {...dropdownProps}
         />
       </div>
-    </div>
-  );
-}
-
-const AppearanceSettings = ({ formData, checkboxProps }) => {
-  return (
-    <div className={styles.Settings}>
-      <h2>appearance</h2>
       <h3>clock</h3>
       <div>
         <span>show clock</span>
@@ -67,7 +59,7 @@ const AppearanceSettings = ({ formData, checkboxProps }) => {
           {...checkboxProps}
         />
       </div>
-      <div>
+      <div className={formData.appearance__showClock ? '' : styles.disabled}>
         <span>24 hr clock</span>
         <Switch
           name="appearance__24hrClock"
@@ -75,7 +67,7 @@ const AppearanceSettings = ({ formData, checkboxProps }) => {
           {...checkboxProps}
         />
       </div>
-      <div>
+      <div className={formData.appearance__showClock ? '' : styles.disabled}>
         <span>show seconds</span>
         <Switch
           name="appearance__showClockSeconds"

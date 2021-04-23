@@ -28,6 +28,7 @@ const Dashboard = ({ user }) => {
       {(!habits || !entries)
         ? <PageLoading className="jcfs" />
         : <Timeline {...{
+          user,
           habits,
           entries: entriesToDisplay,
           calendarPeriod,

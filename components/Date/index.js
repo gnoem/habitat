@@ -2,17 +2,18 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styles from "./date.module.css";
 
-export const DateMarker = () => {
+export const DateMarker = ({ user }) => {
+  const { appearance__showClock, appearance__24hrClock, appearance__showClockSeconds } = user?.settings ?? {};
   return (
     <div className={styles.Date}>
       <span className={styles.dd}>{dayjs().format('D')}</span>
       <span className={styles.mm}>{dayjs().format('MMMM')}</span>
-      <Time />
+      {appearance__showClock && <Time {...{ appearance__24hrClock, appearance__showClockSeconds }} />}
     </div>
   );
 }
 
-const Time = () => {
+const Time = ({ appearance__24hrClock, appearance__showClockSeconds }) => {
   const [time, setTime] = useState(new Date());
   useEffect(() => {
     const counter = setInterval(() => {
@@ -21,16 +22,16 @@ const Time = () => {
     return () => clearInterval(counter);
   }, []);
   let [hours, minutes, seconds] = [time.getHours(), time.getMinutes(), time.getSeconds()];
-  const ampm = hours >= 12 ? 'pm' : 'am';
-  hours = hours % 12;
+  const ampm = appearance__24hrClock ? null : (hours >= 12) ? 'pm' : 'am';
+  hours = appearance__24hrClock ? hours : hours % 12;
   hours = hours ? hours : 12; // the hour '0' should be '12'
   const addZero = (num) => {
     let fixed = num < 10 ? '0' + num : num;
     return fixed;
   }
   minutes = addZero(minutes);
-  seconds = addZero(seconds);
+  seconds = appearance__showClockSeconds ? `:${addZero(seconds)}` : null;
   return (
-    <div className={styles.Time}>{hours}:{minutes}:{seconds} {ampm}</div>
+    <div className={styles.Time}>{hours}:{minutes}{seconds} {ampm}</div>
   );
 }

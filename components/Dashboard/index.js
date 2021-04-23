@@ -20,7 +20,7 @@ const Dashboard = ({ children, userId, sidebar, className }) => {
     <div className={styles.Dashboard}>
       <Nav />
       <div className={styles.Main}>
-        {sidebar && <Sidebar>{sidebar}</Sidebar>}
+        {sidebar && <Sidebar {...{ user }}>{sidebar}</Sidebar>}
         <Content {...{ className }}>
           {children}
         </Content>
@@ -37,10 +37,10 @@ export const Content = ({ children, className }) => {
   );
 }
 
-export const Sidebar = ({ children }) => {
+export const Sidebar = ({ children, user }) => {
   return (
     <div className={styles.Sidebar}>
-      <DateMarker />
+      <DateMarker {...{ user }} />
       {children}
     </div>
   );

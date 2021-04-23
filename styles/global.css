@@ -212,6 +212,9 @@ input[type=date] {
 .mt15 {
   margin-top: 1.5rem !important;
 }
+.mt25 {
+  margin-top: 2.5rem !important;
+}
 .tar {
   text-align: right;
 }
