@@ -9,9 +9,13 @@ import { modalStore } from "./modalStore";
 export const Modal = ({ keyphrase, options, selfDestruct }) => {
   const { closeModal } = useContext(ModalContext);
   if (!keyphrase) return null;
+  const modalProps = {
+    ...options,
+    closeModal
+  }
   return (
     <ModalWrapper {...{ selfDestruct, closeModal }}>
-      {modalStore[keyphrase]?.(options) ?? 'nothing to see here'}
+      {modalStore[keyphrase]?.(modalProps) ?? 'nothing to see here'}
     </ModalWrapper>
   );
 }

@@ -2,13 +2,13 @@ import styles from "./nav.module.css";
 import { useRouter } from "next/router";
 import { faCog, faHome, faList, faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { handleFetch } from "../../pages/api";
+import { handleRequest } from "../../pages/api";
 import { Sidebar } from "../Sidebar";
 
 export const Nav = () => {
   const router = useRouter();
   const handleLogout = async () => {
-    await handleFetch('/api/auth/logout');
+    await handleRequest('/api/auth/logout');
     router.push('/');
   }
   const isActive = (path) => {

@@ -125,7 +125,7 @@ const DashboardEntry = ({ entry, habits, updateDashPanel }) => {
       </div>
     );
   }
-  const recordsList = records.map(record => {
+  const recordsList = records?.map(record => {
     const habit = getHabitObject.fromId(record.habitId);
     return <EntryRecord key={`entryRecord-entryId(${record.entryId})-recordId(${record.id})`} {...{ habit, record }} />
   });

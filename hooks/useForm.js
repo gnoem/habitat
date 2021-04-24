@@ -27,12 +27,11 @@ export const useFormData = (initialState = {}) => {
 
 export const useFormError = (initialState = {}) => {
     const [formError, setFormError] = useState(initialState);
-    const updateFormError = (errorReport) => {
+    const parseFormError = (errorReport) => {
       /* sample errorReport: [
         { location: 'email', message: 'already in use' },
         { location: 'password', message: 'must be at least 6 chars' }
       ] */
-      console.dir(errorReport);
       if (!Array.isArray(errorReport)) return console.error(errorReport); // todo better
       const errors = errorReport.reduce((obj, error) => {
         obj[error.location] = error.message;
@@ -42,7 +41,11 @@ export const useFormError = (initialState = {}) => {
         email: 'already in use',
         password: 'must be at least 6 chars'
       } */
-      // and then spread that object into formError so that errorAlert on each
+      return errors;
+    }
+    const updateFormError = (errorReport) => {
+      const errors = parseFormError(errorReport);
+      // now spread error object into formError so that errorAlert on each
       // input field can look at formError[inputName] and see if there's an error there
       setFormError(errors);
     }
@@ -63,6 +66,7 @@ export const useFormError = (initialState = {}) => {
     }
     return {
       updateFormError,
+      parseFormError,
       resetFormError,
       errorAlert
     }
@@ -70,7 +74,7 @@ export const useFormError = (initialState = {}) => {
 
 export const useForm = (initialFormData = {}) => {
   const { formData, updateFormData, updateFormDataCheckbox, updateFormDataDropdown, setFormData, resetForm } = useFormData(initialFormData);
-  const { updateFormError, resetFormError, errorAlert } = useFormError({});
+  const { updateFormError, parseFormError, resetFormError, errorAlert } = useFormError({});
   const inputProps = {
     onChange: updateFormData,
     onInput: resetFormError,
@@ -87,6 +91,7 @@ export const useForm = (initialFormData = {}) => {
     setFormData,
     resetForm,
     handleFormError: updateFormError,
+    parseFormError,
     inputProps,
     checkboxProps,
     dropdownProps

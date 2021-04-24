@@ -60,7 +60,7 @@ const PanelContent = ({ view, habits, dashPanelOptions }) => {
 }
 
 const DataForm = ({ habits, dashPanelOptions }) => {
-  const { entries, getEntries } = useContext(DataContext);
+  const { user, entries, getEntries } = useContext(DataContext);
   const { createModal } = useContext(ModalContext);
   const [currentDate, setCurrentDate] = useState(dashPanelOptions?.date ?? dayjs().format('YYYY-MM-DD'));
   const existingData = useMemo(() => {
@@ -68,7 +68,7 @@ const DataForm = ({ habits, dashPanelOptions }) => {
     return entries?.[index] ?? null;
   }, [entries, currentDate]);
   const { formData, resetForm, setFormData, inputProps } = useForm({
-    userId: 2,
+    userId: user.id,
     id: existingData?.id,
     date: existingData?.date ?? currentDate,
     records: existingData?.records ?? []

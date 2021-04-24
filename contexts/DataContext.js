@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { User, Habit, Entry, handleFetch } from "../pages/api";
+import { User, Habit, Entry, handleRequest } from "../pages/api";
 
 export const DataContext = React.createContext(null);
 
@@ -27,7 +27,7 @@ export const DataContextProvider = ({ children }) => {
     return entries;
   }
   useEffect(() => {
-    const setSession = async () => await handleFetch('/api/auth/login', { user });
+    const setSession = async () => await handleRequest('/api/auth/login', { user });
     setSession();
   }, [user]);
   const dataContext = {

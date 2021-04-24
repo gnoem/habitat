@@ -1,12 +1,44 @@
 import { useContext } from "react";
 import { DataContext } from "../../contexts";
+import { useForm } from "../../hooks";
 import { Entry, Habit } from "../../pages/api";
-import { Submit } from "../Form";
+import { Submit, Button } from "../Form";
 import { ModalForm } from "./ModalForm";
 
 export const modalStore = {
+  'somethingWentWrong': (props) => <SomethingWentWrong {...props} />,
+  'unhandledFormError': (props) => <UnhandledFormError {...props} />,
   'deleteHabit': (props) => <DeleteHabit {...props} />,
   'deleteEntry': (props) => <DeleteEntry {...props} />,
+}
+
+const SomethingWentWrong = ({ error, closeModal }) => {
+  const handleClick = () => {
+    closeModal();
+    window.location.reload();
+  }
+  return (
+    <div>
+      <h2>something went wrong</h2>
+      <p>an unknown error occurred, please reload the page and try again or <button type="button" onClick={() => console.log(error)}>click to console.log error</button></p>
+      <Button onClick={handleClick}>close & reload</Button>
+    </div>
+  );
+}
+
+const UnhandledFormError = ({ error, closeModal }) => {
+  const { parseFormError } = useForm();
+  console.dir(error);
+  return (
+    <div>
+      <h2>oopsies</h2>
+      <p>there was some error with the data you submitted, possibly something like leaving a required form field blank or that you didn't meet a minimum/maximum character length requirement, that sort of thing. you can read the raw error report below:</p>
+      <code>{JSON.stringify(parseFormError(error))}</code>
+      <div className="mt15">
+        <Button onClick={closeModal}>try again</Button>
+      </div>
+    </div>
+  )
 }
 
 const DeleteHabit = ({ habit }) => {

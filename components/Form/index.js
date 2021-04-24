@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { ModalContext } from "../../contexts";
+import { warnError } from "../../pages/api/handleError";
 import { fancyClassName } from "../../utils";
 import { Button } from "./Button";
 import { Checkbox } from "./Checkbox";
@@ -7,13 +9,14 @@ import { Submit } from "./Submit";
 import { Switch } from "./Switch";
 
 const Form = ({ children, title, submit, delay, onSubmit, onSuccess, handleFormError, behavior, className }) => {
+  const { createModal } = useContext(ModalContext);
   const defaultBehavior = {
     showLoading: true,
     showSuccess: true,
     checkmarkStick: true
   };
   const { showLoading, showSuccess, checkmarkStick } = Object.assign(defaultBehavior, behavior);
-  const [clicked, setClicked] = useState(false);
+  const [clickedOnceAlready, setClickedOnceAlready] = useState(false);
   const [successPending, setSuccessPending] = useState(false);
   const [successAnimation, setSuccessAnimation] = useState(null);
   useEffect(() => {
@@ -26,27 +29,25 @@ const Form = ({ children, title, submit, delay, onSubmit, onSuccess, handleFormE
       onSuccess(result);
       if (showSuccess && !checkmarkStick) {
         setSuccessAnimation('fade');
-        setClicked(false);
+        setClickedOnceAlready(false);
       }
     }, showSuccess ? 1400 : 0);
   }
-  const handleError = (result) => {
-    if (Object.values(result)[0] == null) throw new Error('result is null');
-    const { __typename, errors } = Object.values(result)[0];
-    if (__typename === 'FormErrorReport') {
-      setSuccessPending(false);
-      setClicked(false);
-      throw errors;
-    }
+  const validateResult = (result) => {
+    // maybe can get rid of this
+    // if !result or result field is null, then whatever fuckup caused that to happen might have been caught in catch block
+    // todo take a closer look at api/handleError, do more testing and see if that's actually the case for all such fuckups
+    if (!result) throw new Error('no response from server');
+    if (Object.values(result)[0] == null) throw new Error('response object was null, indicates malformed query or something?')
   }
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (clicked) return; // prevent multiple form submission
-    setClicked(true);
+    if (clickedOnceAlready) return;
+    setClickedOnceAlready(true);
     if (!onSubmit) return console.log('missing onSubmit handler!');
     if (showLoading) setSuccessPending(true);
     onSubmit().then(result => {
-      handleError(result);
+      validateResult(result);
       setTimeout(() => {
         if (showSuccess) {
           setSuccessAnimation('check');
@@ -55,8 +56,15 @@ const Form = ({ children, title, submit, delay, onSubmit, onSuccess, handleFormE
         handleSuccess(result);
       }, delay ?? 0);
     }).catch(err => {
-      if (handleFormError) return handleFormError(err);
-      console.log(err);
+      setSuccessPending(false);
+      setClickedOnceAlready(false);
+      const { __typename, errors } = err;
+      if (__typename === 'FormErrorReport') {
+        if (handleFormError) handleFormError(errors);
+        else warnError('unhandledFormError', errors, { createModal });
+        return;
+      }
+      warnError('somethingWentWrong', err, { createModal });
     });
   }
   const submitProps = { successPending, successAnimation };

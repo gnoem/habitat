@@ -80,7 +80,10 @@ export const resolvers = {
           ...settingsObj
         }
       });
-      return settings;
+      return {
+        __typename: 'Settings',
+        ...settings
+      }
     },
     createHabit: async (_, args) => {
       const { name, icon, color, label, complex, userId } = args;
@@ -238,6 +241,7 @@ export const resolvers = {
       return resolvers.Query.records(null, { entryId: parent.id })
     }
   },
+  // note to self: when creating unions remember to update "... on User" thing in query/mutation string
   UserResult: {
     __resolveType(obj) {
       if (obj.__typename === 'FormErrorReport') {

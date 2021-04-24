@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useContext } from "react";
-import { handleFetch, User } from "./api";
+import { handleRequest, User } from "./api";
 import { DataContext } from "../contexts";
 import { useForm } from "../hooks";
 import Homepage from "../components/Homepage";
@@ -17,7 +17,7 @@ const Register = () => {
   const handleSubmit = () => User.create(formData);
   const handleSuccess = async ({ createUser }) => {
     const user = Object.assign(createUser, { isLoggedIn: true });
-    const body = await handleFetch('/api/auth/login', { user });
+    const body = await handleRequest('/api/auth/login', { user });
     setUser(body.user);
     router.push('/dashboard');
   }

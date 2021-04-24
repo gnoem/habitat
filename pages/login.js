@@ -3,7 +3,7 @@ import Link from "next/link";
 import Form, { Input, Submit } from "../components/Form";
 import Homepage from "../components/Homepage";
 import { useForm } from "../hooks";
-import { handleFetch, User } from "./api";
+import { handleRequest, User } from "./api";
 import { auth } from "./api/auth";
 import { useContext } from "react";
 import { DataContext } from "../contexts";
@@ -11,11 +11,14 @@ import { DataContext } from "../contexts";
 const Login = () => {
   const router = useRouter();
   const { setUser } = useContext(DataContext);
-  const { formData, handleFormError, inputProps } = useForm();
+  const { formData, handleFormError, inputProps } = useForm({
+    username: '',
+    password: ''
+  });
   const handleSubmit = () => User.login(formData);
   const handleSuccess = async ({ login: foundUser }) => {
     const user = Object.assign(foundUser, { isLoggedIn: true });
-    const result = await handleFetch('/api/auth/login', { user });
+    const result = await handleRequest('/api/auth/login', { user });
     setUser(result.user);
     router.push('/dashboard');
   }
@@ -25,7 +28,6 @@ const Login = () => {
       <h2>login</h2>
       <p>or click <Link href="/register">here</Link> to register</p>
       <Form onSubmit={handleSubmit} onSuccess={handleSuccess} handleFormError={handleFormError}
-            behavior={{ showSuccess: false }}
             delay={1000}
             submit={<Submit value="continue" cancel="go back" onCancel={() => router.back()} />}>
         <Input
