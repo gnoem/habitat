@@ -1,8 +1,3 @@
-export const warnError = (errorName = 'somethingWentWrong', error = {}, { createModal } = {}) => {
-  if (createModal) return createModal?.(errorName, { error });
-  console.error('no handleError handlers specified!');
-}
-
 export class FetchError extends Error {
   constructor(meta = {}) {
     super('No response from server');

@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-import { ModalContext } from "../../contexts";
-import { warnError } from "../../pages/api/handleError";
+import React, { useEffect, useState } from "react";
+import { useWarnError } from "../../hooks";
 import { fancyClassName } from "../../utils";
 import { Button } from "./Button";
 import { Checkbox } from "./Checkbox";
@@ -9,7 +8,7 @@ import { Submit } from "./Submit";
 import { Switch } from "./Switch";
 
 const Form = ({ children, title, submit, delay, onSubmit, onSuccess, handleFormError, behavior, className }) => {
-  const { createModal } = useContext(ModalContext);
+  const warnError = useWarnError();
   const defaultBehavior = {
     showLoading: true,
     showSuccess: true,
@@ -61,10 +60,10 @@ const Form = ({ children, title, submit, delay, onSubmit, onSuccess, handleFormE
       const { __typename, errors } = err;
       if (__typename === 'FormErrorReport') {
         if (handleFormError) handleFormError(errors);
-        else warnError('unhandledFormError', errors, { createModal });
+        else warnError('unhandledFormError', errors);
         return;
       }
-      warnError('somethingWentWrong', err, { createModal });
+      warnError('somethingWentWrong', err);
     });
   }
   const submitProps = { successPending, successAnimation };
