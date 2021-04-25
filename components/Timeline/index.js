@@ -9,6 +9,7 @@ import { ArrowNav } from "../ArrowNav";
 import { Calendar } from "../Calendar";
 import { TooltipElement } from "../Tooltip";
 import { getUnitFromLabel } from "../../utils";
+import { ViewOptions } from "../ViewOptions";
 
 export const Timeline = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod, updateDashPanel }) => {
   const [timelineView, setTimelineView] = useState(user.settings?.dashboard__defaultView ?? 'list');
@@ -65,26 +66,26 @@ const TimelineHeader = ({ calendarPeriod, updateCalendarPeriod, timelineView, up
       </div>
       <div className={styles.calendarPeriod}>
         {dayjs(calendarPeriod).format('MMMM YYYY')}
-        <div className={styles.timelineOptions}>
+        <ViewOptions className={styles.TimelineViewOptions}>
           <button
-            className={timelineView === 'list' ? styles.active : ''}
+            className={timelineView === 'list' ? styles.currentTimelineView : ''}
             onClick={() => updateTimelineView('list')}>
               <FontAwesomeIcon icon={faListOl} />
               list
           </button>
           <button
-            className={timelineView === 'grid' ? styles.active : ''}
+            className={timelineView === 'grid' ? styles.currentTimelineView : ''}
             onClick={() => updateTimelineView('grid')}>
               <FontAwesomeIcon icon={faTh} />
               grid
           </button>
           <button
-            className={timelineView === 'graph' ? styles.active : ''}
+            className={timelineView === 'graph' ? styles.currentTimelineView : ''}
             onClick={() => updateTimelineView('graph')}>
               <FontAwesomeIcon icon={faChartLine} />
               graph
           </button>
-        </div>
+        </ViewOptions>
       </div>
     </div>
   );

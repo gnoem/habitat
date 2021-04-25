@@ -1,23 +1,32 @@
-.MyHabits {
+.MyHabitsNav {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+.HabitViewOptions {
+  margin-bottom: 2rem;
+}
+div button.currentHabitView { /* including div for specificity */
+  opacity: 1;
+}
+
+.HabitList {
   display: inline-flex;
   flex-direction: column;
   width: 300px;
   margin-bottom: 5rem;
 }
-
-.HabitBox + .HabitBox {
+.HabitListItem + .HabitListItem {
   margin-top: 1.4rem;
 }
-
-
-.HabitHeader {
+.HabitListItemHeader {
   position: relative;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: flex-start;
 }
-.HabitHeader h3 {
+.HabitListItemHeader h3 {
   font-family: var(--mono-font);
   font-size: 1.2rem;
   font-weight: 400;
@@ -35,24 +44,7 @@
   justify-content: center;
   font-size: 2.5rem;
 }
-.HabitIcon::before {
-  content: '';
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  z-index: -1;
-  bottom: 0;
-  left: 0;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 999px;
-  background: #000;
-  background: transparent;
-  margin-right: 0.75rem;
-}
-.HabitIcon::after {
+.HabitListItem .HabitIcon::after {
   content: '+';
   color: #000;
   font-size: 0.8rem;
@@ -69,11 +61,10 @@
   background: #fff;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5);
 }
-.HabitBox.expanded .HabitIcon::after {
+.HabitListItem.expanded .HabitIcon::after {
   content: '-'
 }
-
-.HabitBody {
+.HabitListItemBody {
   font-size: 0.8rem;
   margin-left: 0.5rem;
   width: calc(100% - 0.5rem);
@@ -88,21 +79,62 @@
   margin-top: 0.5rem;
   border-radius: 0 0 4rem 0;
 }
-.HabitBox.expanded .HabitBody {
+.HabitListItem.expanded .HabitListItemBody {
   opacity: 1;
   transform: scaleX(1);
   border-radius: 0;
 }
-.HabitBody > div {
+.HabitListItemBody > div {
   padding: 1rem 1rem 1.5rem;
 }
-.HabitBody label {
+.HabitListItemBody label {
   font-size: 0.8rem;
 }
-.HabitBody input {
+.HabitListItemBody input {
   border: 0;
   background: #f7f7f7;
   font-size: 0.9rem;
+}
+
+.HabitGrid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1rem -1.5rem -1.5rem 0;
+}
+.HabitGridItem {
+  position: relative;
+  flex: 1 1 10rem;
+  margin: 0 1.5rem 1.5rem 0;
+  padding: 1rem;
+  background: #fff;
+  box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.01);
+  border-radius: 0rem;
+}
+.HabitGridColorIndicator {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0.5rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.5;
+}
+.HabitGridItemHeader .HabitIcon {
+  margin-top: -2rem;
+}
+.HabitGridItemHeader .HabitIcon + span {
+  display: block;
+  margin: 0.75rem 0 0.5rem;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+.HabitGridItemBody {
+  display: flex;
+}
+.HabitGridItemBody span {
+  font-family: var(--mono-font);
+  font-size: 0.8rem;
 }
 
 .displayOptions {

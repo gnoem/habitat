@@ -56,30 +56,13 @@ div.calendarPeriod {
   margin-top: 0.75rem;
 }
 
-.timelineOptions {
+.TimelineViewOptions {
   position: absolute;
   bottom: 0;
   right: 0;
-  display: inline-flex;
 }
-.timelineOptions > button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  opacity: 0.3;
-  transition: 0.2s;
-}
-.timelineOptions > button.active,
-.timelineOptions > button:hover {
+button.currentTimelineView {
   opacity: 1;
-}
-.timelineOptions > button + button {
-  margin-left: 1rem;
-}
-.timelineOptions > button svg {
-  margin-bottom: 0.25rem;
 }
 
 .noData {

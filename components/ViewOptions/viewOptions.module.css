@@ -1,0 +1,22 @@
+.viewOptions {
+  display: inline-flex;
+}
+.viewOptions > button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  opacity: 0.3;
+  transition: 0.2s;
+}
+.viewOptions > button.viewOption_active,
+.viewOptions > button:hover {
+  opacity: 1;
+}
+.viewOptions > button + button {
+  margin-left: 1rem;
+}
+.viewOptions > button svg {
+  margin-bottom: 0.25rem;
+}
