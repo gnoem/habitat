@@ -34,10 +34,10 @@
 }
 .Sidebar {
   position: fixed;
-  bottom: 0;
+  top: 250px;
   right: 0;
-  width: 300px;
-  height: calc(100% - 250px);
+  max-width: 300px;
+  max-height: calc(100% - 250px);
   padding: 0 3rem 3rem 0;
 }
 

@@ -27,7 +27,7 @@ const Login = () => {
       <h2>login</h2>
       <p>or click <Link href="/register">here</Link> to register</p>
       <Form onSubmit={handleSubmit} onSuccess={handleSuccess} handleFormError={handleFormError}
-            delay={1000}
+            behavior={{ showSuccess: false }}
             submit={<Submit value="continue" cancel="go back" onCancel={() => router.back()} />}>
         <Input
           type="text"
