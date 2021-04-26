@@ -5,3 +5,11 @@
   width: var(--dashboard-nav-width);
   height: 100vh;
 }
+
+@media screen and (max-width: 900px) {
+  .Sidebar {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+}

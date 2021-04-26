@@ -6,14 +6,14 @@ import { DataContext } from "../contexts";
 import { PageLoading } from "../components/Loading";
 import { Timeline } from "../components/Timeline";
 import dayjs from "dayjs";
+import { useMobile } from "../hooks";
 
 const Dashboard = ({ user }) => {
   const { habits, entries } = useContext(DataContext);
   const [calendarPeriod, setCalendarPeriod] = useState(dayjs().format('YYYY-MM'));
   const [dashPanel, setDashPanel] = useState(null);
-  const updateDashPanel = (view, options) => {
-    setDashPanel({ view, options });
-  }
+  const isMobile = useMobile();
+  const updateDashPanel = (view, options) => setDashPanel({ view, options });
   const entriesToDisplay = useMemo(() => {
     if (!entries) return [];
     return entries.filter(entry => {
@@ -24,6 +24,7 @@ const Dashboard = ({ user }) => {
   }, [entries, calendarPeriod]);
   return (
     <Dash userId={user.id} sidebar={<DashPanel {...{ habits, dashPanel, updateDashPanel }} />}>
+      {(isMobile && dashPanel?.view) && <div className="dim">{dashPanel ? console.log(dashPanel) : console.log('none!!!!')}</div>}
       <h1>dashboard</h1>
       {(!habits || !entries)
         ? <PageLoading className="jcfs" />

@@ -62,3 +62,16 @@
   background: #fff;
   transform: skew(-12deg);
 }
+
+@media screen and (max-width: 900px) {
+  .Nav {
+    flex-direction: row;
+    height: auto;
+    visibility: hidden;
+    display: none;
+  }
+  .Nav button + button {
+    margin-top: 0;
+    margin-left: 0.5rem;
+  }
+}

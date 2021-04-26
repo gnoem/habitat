@@ -18,6 +18,7 @@ const Dashboard = ({ children, userId, sidebar, className }) => {
   }, [user, entries]);
   return (
     <div className={styles.Dashboard}>
+      <DateMarker {...{ user }} />
       <Nav />
       <div className={styles.Main}>
         {sidebar && <Sidebar {...{ user }}>{sidebar}</Sidebar>}
@@ -40,7 +41,6 @@ export const Content = ({ children, className }) => {
 export const Sidebar = ({ children, user }) => {
   return (
     <div className={styles.Sidebar}>
-      <DateMarker {...{ user }} />
       {children}
     </div>
   );

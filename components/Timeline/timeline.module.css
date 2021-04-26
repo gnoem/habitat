@@ -46,7 +46,7 @@ button.jumpToCurrentMonth:hover::after {
   opacity: 1;
 }
 
-div.calendarPeriod {
+.calendarPeriod {
   position: relative;
   font-family: var(--mono-font);
   font-size: 1.5rem;
@@ -133,4 +133,20 @@ div button.currentTimelineView { /* including div for specificity */
 }
 .entryBody > div b {
   font-weight: 600;
+}
+
+@media screen and (max-width: 900px) {
+  .calendarPeriod {
+    font-size: 1.2rem;
+  }
+  .entryTitle {
+    margin-right: 0.75rem;
+  }
+  .entryBody > div {
+    font-size: 0.8rem;
+    grid-template: 'icon label' 100% / 1.625rem 1fr;
+  }
+  .entryBody > div span:first-of-type {
+    font-size: 1.125rem;
+  }
 }

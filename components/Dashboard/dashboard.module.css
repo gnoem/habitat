@@ -55,3 +55,31 @@
 .Content.Account form + form {
   margin-top: 2rem;
 }
+
+@media screen and (max-width: 900px) {
+  .Dashboard h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .Main {
+    grid-template:
+      'content' 1fr
+      'sidebar' auto / 100%;
+  }
+  .Content {
+    margin: 0;
+    margin-top: calc(0.6 * 150px);
+    padding: 1.5rem;
+  }
+  .Sidebar {
+    position: fixed;
+    z-index: 50;
+    top: unset;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    max-width: 100%;
+    max-height: 75%;
+    padding: 0;
+  }
+}

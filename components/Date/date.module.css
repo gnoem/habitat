@@ -22,3 +22,12 @@
   font-family: var(--mono-font);
   font-size: 1.2rem;
 }
+
+@media screen and (max-width: 900px) {
+  .Date {
+    display: none;
+    transform: scale(0.5);
+    transform-origin: top right;
+    margin: 0.5rem 1rem;
+  }
+}
