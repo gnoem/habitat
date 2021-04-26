@@ -61,7 +61,7 @@ div.calendarPeriod {
   bottom: 0;
   right: 0;
 }
-button.currentTimelineView {
+div button.currentTimelineView { /* including div for specificity */
   opacity: 1;
 }
 

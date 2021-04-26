@@ -16,8 +16,7 @@ const Register = () => {
   });
   const handleSubmit = () => User.create(formData);
   const handleSuccess = async ({ createUser }) => {
-    const user = Object.assign(createUser, { isLoggedIn: true });
-    const body = await handleRequest('/api/auth/login', { user });
+    const body = await handleRequest('/api/auth/login', { user: createUser });
     setUser(body.user);
     router.push('/dashboard');
   }

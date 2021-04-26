@@ -10,7 +10,6 @@
   opacity: 0.3;
   transition: 0.2s;
 }
-.viewOptions > button.viewOption_active,
 .viewOptions > button:hover {
   opacity: 1;
 }

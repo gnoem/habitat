@@ -79,6 +79,12 @@ const queries = {
           id
           name
           email
+          settings {
+            dashboard__defaultView
+            appearance__showClock
+            appearance__24hrClock
+            appearance__showClockSeconds
+          }
         }
       }
     }
@@ -100,6 +106,12 @@ const mutations = {
           id
           name
           email
+          settings {
+            dashboard__defaultView
+            appearance__showClock
+            appearance__24hrClock
+            appearance__showClockSeconds
+          }
         }
       }
     }

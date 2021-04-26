@@ -12,7 +12,10 @@ import { getUnitFromLabel } from "../../utils";
 import { ViewOptions } from "../ViewOptions";
 
 export const Timeline = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod, updateDashPanel }) => {
-  const [timelineView, setTimelineView] = useState(user.settings?.dashboard__defaultView ?? 'list');
+  const [timelineView, setTimelineView] = useState((() => {
+    console.dir(user);
+    return user.settings?.dashboard__defaultView ?? 'list'
+  })());
   const timelineEntries = () => {
     if (!entries.length) return <NoData />;
     return (

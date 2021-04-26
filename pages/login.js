@@ -16,8 +16,7 @@ const Login = () => {
     password: ''
   });
   const handleSubmit = () => User.login(formData);
-  const handleSuccess = async ({ login: foundUser }) => {
-    const user = Object.assign(foundUser, { isLoggedIn: true });
+  const handleSuccess = async ({ login: user }) => {
     const result = await handleRequest('/api/auth/login', { user });
     setUser(result.user);
     router.push('/dashboard');
