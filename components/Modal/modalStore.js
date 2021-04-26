@@ -1,13 +1,14 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { DataContext } from "../../contexts";
 import { useForm } from "../../hooks";
 import { Entry, Habit } from "../../pages/api";
 import { Submit, Button } from "../Form";
-import { ModalForm } from "./ModalForm";
+import { ModalForm, ModalizedForm } from "./ModalForm";
 
 export const modalStore = {
   'somethingWentWrong': (props) => <SomethingWentWrong {...props} />,
   'unhandledFormError': (props) => <UnhandledFormError {...props} />,
+  'manageHabit': (props) => <ManageHabit {...props} />,
   'deleteHabit': (props) => <DeleteHabit {...props} />,
   'deleteEntry': (props) => <DeleteEntry {...props} />,
 }
@@ -39,6 +40,15 @@ const UnhandledFormError = ({ error, closeModal }) => {
       </div>
     </div>
   )
+}
+
+const ManageHabit = ({ habitForm, habitFormProps }) => {
+  return (
+    <ModalizedForm {...{
+      originalFormComponent: habitForm,
+      originalFormProps: habitFormProps
+    }} />
+  );
 }
 
 const DeleteHabit = ({ habit }) => {

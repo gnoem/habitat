@@ -19,3 +19,22 @@ export const ModalForm = (props) => {
     </Form>
   );
 }
+
+export const ModalizedForm = ({ originalFormComponent, originalFormProps }) => {
+  const { closeModal, submit } = useContext(ModalContext);
+  const { onSuccess } = originalFormProps;
+  const handleSuccess = () => {
+    onSuccess?.();
+    closeModal();
+  }
+  const submitProps = {
+    onCancel: closeModal
+  }
+  const modalSubmit = submit ? React.cloneElement(submit, submitProps) : <Submit {...submitProps} />;
+  const componentToReturn = React.cloneElement(originalFormComponent, {
+    onSuccess: handleSuccess,
+    submit: modalSubmit,
+    ...originalFormProps
+  });
+  return componentToReturn;
+}

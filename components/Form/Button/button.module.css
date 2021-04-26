@@ -34,3 +34,6 @@
 .Button:hover::after {
   border-color: #000 !important; /* fuck it lol */
 }
+.Button.compact {
+  padding: 0.5rem 1rem;
+}

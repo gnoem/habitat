@@ -97,18 +97,21 @@ div button.currentHabitView { /* including div for specificity */
 }
 
 .HabitGrid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 25%));
   margin: 1rem -1.5rem -1.5rem 0;
 }
 .HabitGridItem {
+  display: flex;
+  flex-direction: column;
   position: relative;
-  flex: 1 1 10rem;
   margin: 0 1.5rem 1.5rem 0;
   padding: 1rem;
   background: #fff;
-  box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.01);
-  border-radius: 0rem;
+  /* box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.05); */
+}
+.HabitGridItem.big {
+  grid-row: 1 / -1;
 }
 .HabitGridColorIndicator {
   position: absolute;
@@ -130,11 +133,26 @@ div button.currentHabitView { /* including div for specificity */
   font-size: 1.2rem;
 }
 .HabitGridItemBody {
+  flex: 1 0 auto;
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
-.HabitGridItemBody span {
+.HabitGridItemBody > span {
   font-family: var(--mono-font);
   font-size: 0.8rem;
+  margin-bottom: 0.75rem;
+}
+.HabitGridItemBody > div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.HabitGridItemBody > div button {
+  opacity: 0.3;
+}
+.HabitGridItemBody > div button + button {
+  margin-left: 0.5rem;
 }
 
 .displayOptions {
