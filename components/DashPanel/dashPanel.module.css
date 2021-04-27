@@ -158,27 +158,28 @@ button.deleteEntry > span {
   .DashPanel > nav button > span:last-child {
     margin: 0;
   }
+  .DashPanel > nav button + button.active {
+    margin-top: 1rem;
+  }
   .PanelContent {
     width: 100%;
     height: 100%;
-    overflow: visible;
     background: #fff;
-    transform: scaleY(0);
-    transform-origin: bottom;
-    opacity: 1;
+    transform: none;
     margin-top: 0;
+    opacity: 1;
+    max-height: 0;
   }
   .PanelContent.active {
-    transform: scaleY(1);
+    transform: none;
+    max-height: 75vh;
   }
   .DashPanel nav button.active {
-    margin-bottom: -2rem;
+    transform: translate3d(0, 1.5rem, 0);
     position: relative;
     z-index: 51;
   }
   .DataForm {
-    position: relative;
-    z-index: 51;
     padding: 1.5rem;
   }
   .DataForm input {

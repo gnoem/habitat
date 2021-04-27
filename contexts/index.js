@@ -1,14 +1,17 @@
 import { DataContext, DataContextProvider } from "./DataContext";
+import { MobileContext, MobileContextProvider } from "./MobileContext";
 import { ModalContext, ModalContextProvider } from "./ModalContext";
 
 const AppContextProvider = ({ children }) => {
   return (
     <DataContextProvider>
-      <ModalContextProvider>
-        {children}
-      </ModalContextProvider>
+      <MobileContextProvider>
+        <ModalContextProvider>
+          {children}
+        </ModalContextProvider>
+      </MobileContextProvider>
     </DataContextProvider>
   );
 }
 
-export { DataContext, ModalContext, AppContextProvider }
+export { DataContext, MobileContext, ModalContext, AppContextProvider }
