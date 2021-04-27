@@ -58,6 +58,7 @@
 
 .Dim {
   position: fixed;
+  z-index: 250;
   top: 0;
   left: 0;
   width: 100%;
@@ -65,9 +66,11 @@
   background: rgba(0, 0, 0, 0.5);
   opacity: 0;
   transition: 0.2s;
+  pointer-events: none;
 }
 .Dim.dimmed {
   opacity: 1;
+  pointer-events: auto;
 }
 
 @media screen and (max-width: 900px) {
@@ -82,12 +85,12 @@
   }
   .Content {
     margin: 0;
-    margin-top: calc(0.6 * 150px);
+    margin-top: 5rem;
     padding: 1.5rem;
   }
   .Sidebar {
     position: fixed;
-    z-index: 50;
+    z-index: 300;
     top: unset;
     bottom: 0;
     right: 0;

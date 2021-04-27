@@ -24,6 +24,7 @@ const Dashboard = ({ user }) => {
   return (
     <Dash userId={user.id}
           dim={isMobile && dashPanel?.view}
+          dimOnClick={() => setDashPanel(null)}
           sidebar={<DashPanel {...{ habits, dashPanel, updateDashPanel }} />}>
       <h1>dashboard</h1>
       {(!habits || !entries) && <PageLoading className="jcfs" />}

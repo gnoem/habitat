@@ -5,7 +5,7 @@ import { useContext, useEffect } from "react";
 import { DataContext } from "../../contexts";
 import { fancyClassName } from "../../utils";
 
-const Dashboard = ({ children, userId, sidebar, className, dim }) => {
+const Dashboard = ({ children, userId, sidebar, className, dim, dimOnClick }) => {
   const { user, getUser, habits, getHabits, entries, getEntries } = useContext(DataContext);
   useEffect(() => {
     if (user == null) return getUser(userId);
@@ -18,7 +18,7 @@ const Dashboard = ({ children, userId, sidebar, className, dim }) => {
   }, [user, entries]);
   return (
     <div className={styles.Dashboard}>
-      <Dim {...{ dim }} />
+      <Dim {...{ dim, dimOnClick }} />
       <DateMarker {...{ user }} />
       <Nav />
       <div className={styles.Main}>
@@ -31,9 +31,9 @@ const Dashboard = ({ children, userId, sidebar, className, dim }) => {
   );
 }
 
-export const Dim = ({ dim }) => {
+export const Dim = ({ dim, dimOnClick }) => {
   return (
-    <div className={`${styles.Dim} ${dim ? styles.dimmed : ''}`}></div>
+    <div className={`${styles.Dim} ${dim ? styles.dimmed : ''}`} onClick={dimOnClick}></div>
   );
 }
 

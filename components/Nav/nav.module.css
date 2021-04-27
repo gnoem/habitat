@@ -65,13 +65,91 @@
 
 @media screen and (max-width: 900px) {
   .Nav {
-    flex-direction: row;
-    height: auto;
-    visibility: hidden;
-    display: none;
+    margin-top: 1rem;
+    margin-left: 2rem;
+    display: inline-flex;
+    align-items: flex-start;
+    width: auto;
+    height: 100%;
+    transform-origin: top left;
+    animation: fadeIn 0.2s 1 forwards;
+  }
+  .Nav button {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.1rem;
+  }
+  .Nav button > span,
+  .Nav button.active > span {
+    line-height: 2.5rem;
+    transform: translate3d(0, 50%, 0);
+    margin-left: 0.75rem;
   }
   .Nav button + button {
-    margin-top: 0;
-    margin-left: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .MobileNavButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 5rem;
+    height: 5rem;
+    overflow: visible;
+    position: relative;
+  }
+  .MobileNavButton::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    display: block;
+    width: 140%;
+    height: 140%;
+    background: url('./blob.svg') center;
+    background-size: 140% 140%;
+    transition: 0.2s;
+  }
+  .MobileNavButton > span {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .MobileNavButton > span::before, .MobileNavButton > span::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #000;
+    transition: 0.2s;
+  }
+  .MobileNavButton > span::after {
+    margin-top: 5px;
+  }
+  .MobileNavButton.expanded::before {
+    transform: scale(4, 9);
+  }
+  .MobileNavButton.expanded > span::before,
+  .MobileNavButton.expanded > span::after {
+    transform-origin: center;
+  }
+  .MobileNavButton.expanded > span::before {
+    transform: rotate(45deg);
+  }
+  .MobileNavButton.expanded > span::after {
+    margin: 0;
+    transform: rotate(-45deg) translate3d(0, -1px, 0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
