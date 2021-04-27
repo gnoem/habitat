@@ -3,8 +3,9 @@ import React, { useEffect, useState } from "react";
 export const MobileContext = React.createContext(null);
 
 export const MobileContextProvider = ({ children }) => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 900);
+  const [isMobile, setIsMobile] = useState(null);
   useEffect(() => {
+    setIsMobile(window.innerWidth <= 900);
     const checkWidth = () => {
       if (window.innerWidth <= 900) {
         if (!isMobile) setIsMobile(true);

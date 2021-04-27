@@ -1,12 +1,11 @@
 import { auth } from "./api/auth";
-import Dash, { Content } from "../components/Dashboard";
+import Dash from "../components/Dashboard";
 import DashPanel from "../components/DashPanel";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { DataContext, MobileContext } from "../contexts";
 import { PageLoading } from "../components/Loading";
 import { Timeline } from "../components/Timeline";
 import dayjs from "dayjs";
-import { useMobile } from "../hooks";
 
 const Dashboard = ({ user }) => {
   const { habits, entries } = useContext(DataContext);
@@ -22,16 +21,14 @@ const Dashboard = ({ user }) => {
       if ((entryYear === currentYear) && (entryMonth === currentMonth)) return entry;
     });
   }, [entries, calendarPeriod]);
-  console.log(isMobile);
-  console.log(dashPanel);
   return (
     <Dash userId={user.id}
           dim={isMobile && dashPanel?.view}
           sidebar={<DashPanel {...{ habits, dashPanel, updateDashPanel }} />}>
       <h1>dashboard</h1>
-      {(!habits || !entries)
-        ? <PageLoading className="jcfs" />
-        : <Timeline {...{
+      {(!habits || !entries) && <PageLoading className="jcfs" />}
+      {(habits && entries) && (
+        <Timeline {...{
           user,
           habits,
           entries: entriesToDisplay,
@@ -39,7 +36,8 @@ const Dashboard = ({ user }) => {
           updateCalendarPeriod: setCalendarPeriod,
           dashPanel,
           updateDashPanel
-        }} />}
+        }} />
+      )}
     </Dash>
   );
 }
