@@ -31,7 +31,7 @@ div button.currentHabitView { /* including div for specificity */
   font-size: 1.2rem;
   font-weight: 400;
   letter-spacing: -0.5px;
-  margin-left: 0.75rem;
+  margin-left: 1rem;
   margin-bottom: 0;
 }
 .HabitIcon {

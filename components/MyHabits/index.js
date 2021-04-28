@@ -12,18 +12,14 @@ import { DataContext } from "../../contexts";
 
 export const MyHabits = ({ userId, habits }) => {
   const [habitView, setHabitView] = useState('list');
-  const content = () => {
-    switch (habitView) {
-      case 'list': return <HabitList {...{ userId, habits }} />;
-      default: return <HabitList {...{ userId, habits }} />;
-    }
-  }
   return (
     <div className={styles.MyHabits}>
-      <MyHabitsNav {...{
-        habitView,
-        updateHabitView: setHabitView
-      }} />
+      {(habits.length < 0) && (
+        <MyHabitsNav {...{
+          habitView,
+          updateHabitView: setHabitView
+        }} />
+      )}
       <Habits {...{
         habitView,
         userId,
@@ -64,7 +60,7 @@ const Habits = ({ habitView, userId, habits }) => {
   return (
     <div className={habitView === 'list' ? styles.HabitList : styles.HabitGrid}>
       {boxes}
-      <NewHabit {...{ userId }} />
+      <NewHabit {...{ habits, userId }} />
     </div>
   );
 }

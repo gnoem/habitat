@@ -36,7 +36,7 @@
   position: fixed;
   top: 250px;
   right: 0;
-  max-width: 300px;
+  max-width: var(--dashpanel-sidebar-width);
   max-height: calc(100% - 250px);
   padding: 0 3rem 3rem 0;
 }

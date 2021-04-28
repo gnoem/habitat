@@ -75,12 +75,12 @@ const HabitListItemBody = ({ addingNew, userId, id, name, icon, color, label, co
   );
 }
 
-export const NewHabitListItem = ({ userId }) => {
+export const NewHabitListItem = ({ habits, userId }) => {
   return (
     <HabitListItem {...{
       addingNew: true,
       userId,
-      name: 'Add new',
+      name: habits.length ? 'Add new' : 'Create your first habit',
       icon: '🌱' //'🐣'
     }} />
   );

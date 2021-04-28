@@ -38,6 +38,7 @@
   --button-cancel-color: #767578;
   --loading-icon-color: #9FF7E7;
   --dashboard-nav-width: 7rem;
+  --dashpanel-sidebar-width: 250px;
 }
 
 * {
@@ -75,6 +76,10 @@ h1 {
 h2 {
   font-size: 2rem;
   margin-bottom: 1rem;
+}
+center {
+  display: block;
+  text-align: center;
 }
 
 a, a:visited, button.link {
@@ -208,6 +213,9 @@ input[type=date] {
 }
 .mb10 {
   margin-bottom: 1rem !important;
+}
+.mb20 {
+  margin-bottom: 2rem !important;
 }
 .mt15 {
   margin-top: 1.5rem !important;

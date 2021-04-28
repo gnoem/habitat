@@ -71,7 +71,6 @@
   opacity: 0;
   margin-top: 0;
   max-height: 0;
-  max-width: 0;
   padding: 0;
   overflow: visible;
   pointer-events: none;
@@ -84,15 +83,21 @@
   transform-origin: top right;
   max-height: 100%;
   transition: 0.2s;
+  border-top: 1px solid #000;
 }
 .PanelContent.active {
   transform: scale(1) translate3d(0, 0, 0);
   opacity: 1;
+  width: var(--dashpanel-sidebar-width);
 }
 
-.PanelContent > div {
-  border-top: 1px solid #000;
+.PanelContent > * {
   padding-top: 1rem;
+}
+
+.noHabits p {
+  margin: 0.5rem 0 1.5rem;
+  opacity: 0.6;
 }
 
 .DataForm {
@@ -133,6 +138,9 @@
   line-height: 1.4rem;
 }
 
+.DataFormDateInputNav {
+  margin-left: 1rem;
+}
 .DataFormDateInputNav > button {
   font-size: 1rem;
 }
@@ -164,9 +172,13 @@ button.deleteEntry > span {
   .DashPanel > nav button > span:last-child {
     margin: 0;
   }
-  .DashPanel > nav button + button, .DashPanel > nav button + button.active {
+  .DashPanel > nav button + button,
+  .DashPanel > nav button + button.active {
     margin-top: 0;
     margin-right: 0.5rem;
+  }
+  .DashPanel > nav button.inactive {
+    max-width: 0;
   }
   .DashPanel > nav.active {
     padding-bottom: 0;

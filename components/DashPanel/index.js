@@ -6,10 +6,11 @@ import { faAngleDoubleRight, faCalendarAlt, faCaretRight, faPlus, faTimesCircle 
 import { DataContext, ModalContext } from "../../contexts";
 import { useForm } from "../../hooks";
 import { Entry } from "../../pages/api";
-import Form, { Input, Checkbox, Submit } from "../Form";
+import Form, { Input, Checkbox, Submit, Button } from "../Form";
 import { PageLoading } from "../Loading";
 import { ArrowNav } from "../ArrowNav";
 import { getUnitFromLabel } from "../../utils";
+import { useRouter } from "next/router";
 
 const DashPanel = ({ habits, dashPanel, updateDashPanel }) => {
   //const [panelName, setPanelName] = useState(null);
@@ -59,6 +60,7 @@ const PanelContent = ({ view, habits, dashPanelOptions }) => {
 }
 
 const DataForm = ({ habits, dashPanelOptions }) => {
+  const router = useRouter();
   const { user, entries, getEntries } = useContext(DataContext);
   const { createModal } = useContext(ModalContext);
   const [currentDate, setCurrentDate] = useState(dashPanelOptions?.date ?? dayjs().format('YYYY-MM-DD'));
@@ -119,6 +121,12 @@ const DataForm = ({ habits, dashPanelOptions }) => {
     createModal('deleteEntry', { entry: existingData });
   }
   if (!habits || !entries) return <PageLoading />;
+  if (!habits.length) return (
+    <center className={styles.noHabits}>
+      <p>you're not tracking any habits yet!</p>
+      <Button className="compact" onClick={() => router.push('/habits')}>add your first habit</Button>
+    </center>
+  );
   return (
     <div className={styles.DataForm}>
       <Form onSubmit={handleSubmit} onSuccess={handleSuccess}
