@@ -33,7 +33,10 @@ export const resolvers = {
           password
         }
       });
-      return user;
+      return {
+        __typename: 'User',
+        ...user
+      }
     },
     editUser: async (_, args) => {
       const { id, name, email } = args;
