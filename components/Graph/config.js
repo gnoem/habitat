@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { getUnitFromLabel } from "../../utils";
 
-export const config = (habits, entries, calendarPeriod, type) => {
+export const config = (habits, entries, calendarPeriod, type, isMobile) => {
   const daysInMonth = new Array(dayjs(calendarPeriod).daysInMonth()).fill('');
   const datesInMonth = daysInMonth.map((_, i) => {
     return dayjs(`${calendarPeriod}-${i + 1}`).format('YYYY-MM-DD');
@@ -18,7 +18,7 @@ export const config = (habits, entries, calendarPeriod, type) => {
       if (particularEntryRecord(currentEntry, habit.id)?.check) {
         return habit.complex
           ? particularEntryRecord(currentEntry, habit.id).amount
-          : habit.name;
+          : isMobile ? habit.icon : habit.name;
       }
       return habit.complex ? 0 : null;
     });
@@ -35,9 +35,13 @@ export const config = (habits, entries, calendarPeriod, type) => {
     return obj;
   }).filter(el => el);
   const labels = datesInMonth.map(day => dayjs(day).format('MMM DD'));
-  const yAxisLabels = type === 'simple' ? habits.map(habit => habit.name) : null;
+  const yAxisLabels = (type === 'complex')
+    ? null
+    : isMobile
+      ? habits.map(habit => habit.icon)
+      : habits.map(habit => habit.name);
   return {
-    initialSetup: chartSetup(labels, yAxisLabels, datasets, type),
+    initialSetup: chartSetup(labels, yAxisLabels, datasets, type, isMobile),
     data: {
       labels,
       yAxisLabels,
@@ -46,12 +50,13 @@ export const config = (habits, entries, calendarPeriod, type) => {
   }
 }
 
-export const chartSetup = (labels, yAxisLabels, datasets, type) => ({
+export const chartSetup = (labels, yAxisLabels, datasets, type, isMobile) => ({
   type: 'line',
   options: {
     layout: {
       padding: {
-        right: 30
+        right: isMobile ? 0 : 30,
+        bottom: (isMobile && type === 'complex') ? 32 : 0
       }
     },
     scales: {
@@ -71,12 +76,13 @@ export const chartSetup = (labels, yAxisLabels, datasets, type) => ({
         labels: yAxisLabels,
         ticks: {
           font: {
-            family: 'Inconsolata, monospace'
+            family: 'Inconsolata, monospace',
+            size: (isMobile && type === 'simple') ? 14 : 10
           },
           color: '#000'
         },
         afterSetDimensions: (axes) => {
-          axes.paddingLeft = 100;
+          axes.paddingLeft = isMobile ? 40 : 100;
         }
       }
     },

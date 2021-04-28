@@ -1,10 +1,11 @@
 import styles from "./graph.module.css";
 import dayjs from "dayjs";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Chart } from "chart.js/dist/chart";
 import { config } from "./config";
 import { NoData } from "../Timeline";
 import { useRefName } from "../../hooks";
+import { MobileContext } from "../../contexts";
 
 export const Graph = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
   if (!entries.length) return <NoData />;
@@ -17,10 +18,11 @@ export const Graph = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
 }
 
 const ChartCanvas = ({ type, habits, entries, calendarPeriod, updateDashPanel }) => {
+  const isMobile = useContext(MobileContext);
   const [chartInstance, setChartInstance] = useState(null);
   const chartRef = useRef(null);
   const { data, initialSetup } = useMemo(() => {
-    return config(habits, entries, calendarPeriod, type);
+    return config(habits, entries, calendarPeriod, type, isMobile);
   }, [entries]);
   useEffect(() => {
     if (!chartInstance) return;

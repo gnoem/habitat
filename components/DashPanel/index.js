@@ -23,21 +23,21 @@ const DashPanel = ({ habits, dashPanel, updateDashPanel }) => {
     return panelName === name ? styles.active : styles.inactive;
   }
   const isActive = (name) => {
-    if (panelName === null) return false;
+    if (panelName == null) return false;
     return panelName === name;
   }
   return (
     <div className={styles.DashPanel}>
-        <nav aria-label="Main dashboard actions">
-          <button className={isActiveClassName('data')} onClick={() => handleNavClick('data')}>
-            <span>Add data</span>
-            <span><FontAwesomeIcon icon={faPlus} /></span>
-          </button>
-          <button className={isActiveClassName('calendar')} onClick={() => handleNavClick('calendar')}>
-            <span>Jump to...</span>
-            <span><FontAwesomeIcon icon={isActive('calendar') ? faPlus : faCalendarAlt} /></span>
-          </button>
-        </nav>
+      <nav aria-label="Dashboard actions" className={(panelName == null) ? '' : styles.active}>
+        <button className={isActiveClassName('data')} onClick={() => handleNavClick('data')}>
+          <span>Add data</span>
+          <span><FontAwesomeIcon icon={faPlus} /></span>
+        </button>
+        <button className={isActiveClassName('calendar')} onClick={() => handleNavClick('calendar')}>
+          <span>Jump to...</span>
+          <span><FontAwesomeIcon icon={isActive('calendar') ? faPlus : faCalendarAlt} /></span>
+        </button>
+      </nav>
       <PanelContent {...{ view: panelName, habits, dashPanelOptions }} />
       </div>
   );
@@ -47,8 +47,7 @@ const PanelContent = ({ view, habits, dashPanelOptions }) => {
   const panelContent = () => {
     switch (view) {
       case 'data': return <DataForm {...{ habits, dashPanelOptions }} />;
-      case 'calendar': return 'Jump to date...';
-      case 'test': return 'test';
+      case 'calendar': return <PanelCalendar />;
       default: return '';
     }
   }
@@ -327,6 +326,14 @@ const DataFormFieldInput = ({ label, complex, formData, inputProps, checkboxProp
       <Checkbox name="check" label={label} checked={formData.check} checkboxAfter={true} {...checkboxProps} />
     </span>
   );
+}
+
+const PanelCalendar = () => {
+  return (
+    <div className={styles.PanelCalendar}>
+      Jump to date...
+    </div>
+  )
 }
 
 export default DashPanel;
