@@ -225,7 +225,7 @@ export const resolvers = {
     },
     settings: async (_, args) => {
       const { userId } = args;
-      const settings = await prisma.settings?.findUnique({
+      const settings = await prisma.settings.findUnique({
         where: { userId }
       });
       return settings;
