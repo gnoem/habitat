@@ -225,8 +225,8 @@ export const resolvers = {
     },
     settings: async (_, args) => {
       const { userId } = args;
-      console.dir(prisma);
-      console.dir(prisma.settings);
+      //console.dir(prisma);
+      //console.dir(prisma.settings);
       const settings = await prisma.settings?.findUnique({
         where: { userId }
       });
