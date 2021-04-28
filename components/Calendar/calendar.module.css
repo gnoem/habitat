@@ -35,7 +35,6 @@
   line-height: 2rem;
   transform: translate3d(0, -0.5rem, 0);
   box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0);
-  border: 0px solid #000;
 }
 .calendarDay > div:last-of-type {
   display: flex;
@@ -55,4 +54,35 @@
 }
 .calendarDay.filler * {
   display: none;
+}
+
+@media screen and (max-width: 900px) {
+  .Calendar {
+    gap: 0.25rem;
+  }
+  .calendarWeekLabel {
+    overflow: hidden;
+    font-size: 1rem;
+  }
+  .calendarDay {
+    padding: 0 0.25rem 0.25rem;
+    min-height: unset;
+    text-align: center;
+  }
+  .calendarDay > div.title {
+    line-height: 1;
+    transform: none;
+    box-shadow: none;
+    width: auto;
+    height: auto;
+    background: none;
+  }
+  .calendarDay > div:last-of-type {
+    font-size: 1rem;
+    justify-content: center;
+    margin: 0.25rem -0.5rem 0rem 0;
+  }
+  .calendarDay > div:last-of-type > div {
+    text-align: center;
+  }
 }

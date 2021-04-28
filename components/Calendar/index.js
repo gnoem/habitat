@@ -65,25 +65,31 @@ const CalendarDays = ({ habits, entries, totalDaysInMonth, updateDashPanel }) =>
       );
     });
     return (
-      <CalendarDay key={`calendarDay-${index}`}
-        className={isFiller ? styles.filler : ''}
-        date={date}
-        updateDashPanel={updateDashPanel}>
-          {isFiller ? null : (
-            <div className={styles.title}>
-              {date.split('-')[2]}
-            </div>
-          )}
-          <div>{recordIcons}</div>
+      <CalendarDay {...{
+        key: `calendarDay-${index}`,
+        isFiller,
+        date,
+        updateDashPanel
+      }}>
+        {isFiller ? null : (
+          <div className={styles.title}>
+            {date.split('-')[2]}
+          </div>
+        )}
+        <div>{recordIcons}</div>
       </CalendarDay>
     );
   });
 }
 
-const CalendarDay = ({ children, className, date, updateDashPanel }) => {
+const CalendarDay = ({ children, isFiller, date, updateDashPanel }) => {
+  const handleClick = () => {
+    if (isFiller) return;
+    updateDashPanel('data', { date })
+  }
   return (
-    <div className={`${styles.calendarDay} ${fancyClassName({ styles, className })}`}
-         onClick={() => updateDashPanel('data', { date })}>
+    <div className={`${styles.calendarDay} ${isFiller ? styles.filler : ''}`}
+         onClick={handleClick}>
       {children}
     </div>
   );

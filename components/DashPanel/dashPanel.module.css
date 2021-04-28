@@ -176,14 +176,15 @@ button.deleteEntry > span {
   .PanelContent {
     width: 100%;
     height: 100%;
+    overflow: hidden;
     background: #fff;
     transform: none;
     margin-top: 0;
     opacity: 1;
     max-height: 0;
+    transition: 1s;
   }
   .PanelContent.active {
-    transform: none;
     max-height: 75vh;
   }
   .DashPanel nav button.active {

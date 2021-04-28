@@ -34,12 +34,12 @@ export const Nav = () => {
             <span ref={navButtonRef} onClick={showingNav ? toggleNav : null}></span>
         </button>
       )}
-      {(!isMobile || showingNav) && <NavButtons ref={navButtonsRef} {...{ router, updateShowingNav: setShowingNav }} />}
+      <NavButtons ref={navButtonsRef} {...{ router, showingNav, updateShowingNav: setShowingNav }} />
     </Sidebar>
   );
 }
 
-const NavButtons = React.forwardRef(({ router, updateShowingNav }, ref) => {
+const NavButtons = React.forwardRef(({ router, showingNav, updateShowingNav }, ref) => {
   const handleClick = (e) => {
     updateShowingNav(false);
     const path = `/${e.currentTarget.name}`;
@@ -54,7 +54,7 @@ const NavButtons = React.forwardRef(({ router, updateShowingNav }, ref) => {
     router.push('/');
   }
   return (
-    <div className={styles.Nav} ref={ref}>
+    <div className={`${styles.Nav} ${showingNav ? styles.active : ''}`} ref={ref}>
       <button name="dashboard" className={isActive('/dashboard')} onClick={handleClick}>
         <FontAwesomeIcon icon={faHome} />
         <span>home</span>
