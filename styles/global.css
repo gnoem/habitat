@@ -44,6 +44,10 @@
 * {
   box-sizing: border-box;
 }
+*:focus {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
 
 html, body, #__next {
   width: 100%;
