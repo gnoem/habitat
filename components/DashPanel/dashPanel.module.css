@@ -6,6 +6,7 @@
     'nav'     auto
     'content' 1fr / 100%;
   justify-items: flex-end;
+  font-size: 0.9rem;
 }
 .DashPanel > nav {
   text-align: right;
@@ -83,7 +84,6 @@
   transform-origin: top right;
   max-height: 100%;
   transition: 0.2s;
-  border-top: 1px solid #000;
 }
 .PanelContent.active {
   transform: scale(1) translate3d(0, 0, 0);
@@ -92,6 +92,7 @@
 }
 
 .PanelContent > * {
+  border-top: 1px solid #000;
   padding-top: 1rem;
 }
 
@@ -198,6 +199,7 @@ button.deleteEntry > span {
   }
   .PanelContent.active {
     max-height: 75vh;
+    width: 100%;
   }
   .DashPanel nav button.active {
     transform: translate3d(0, 1rem, 0);
@@ -212,5 +214,8 @@ button.deleteEntry > span {
   }
   .DataForm input {
     background: #f7f7f7;
+  }
+  .DataFormField > span:first-child {
+    margin-right: 0.75rem;
   }
 }

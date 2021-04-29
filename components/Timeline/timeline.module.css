@@ -140,7 +140,11 @@ div button.currentTimelineView { /* including div for specificity */
     font-size: 1.2rem;
   }
   .entryTitle {
+    width: 2.5rem;
     margin-right: 0.75rem;
+  }
+  .entryTitle span.day {
+    font-size: 1.3rem;
   }
   .entryBody > div {
     font-size: 0.8rem;

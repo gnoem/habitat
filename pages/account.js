@@ -1,22 +1,23 @@
 import { useContext } from "react";
 import { User } from "./api";
 import { auth } from "./api/auth";
-import { DataContext } from "../contexts";
+import { DataContext, MobileContext } from "../contexts";
 import { useForm } from "../hooks";
 import Dashboard from "../components/Dashboard";
 import Form, { Input, Submit } from "../components/Form";
 
 const Account = ({ user }) => {
+  const isMobile = useContext(MobileContext);
   return (
     <Dashboard userId={user.id} className="Account">
       <h1>my account</h1>
-      <AccountDetails {...{ user }} />
-      <ChangePassword {...{ user }} />
+      <AccountDetails {...{ user, isMobile }} />
+      <ChangePassword {...{ user, isMobile }} />
     </Dashboard>
   );
 }
 
-const AccountDetails = ({ user }) => {
+const AccountDetails = ({ user, isMobile }) => {
   const { setUser } = useContext(DataContext);
   const { formData, handleFormError, inputProps } = useForm({
     id: user.id,
@@ -28,7 +29,7 @@ const AccountDetails = ({ user }) => {
   return (
     <Form onSubmit={handleSubmit} onSuccess={handleSuccess}
           behavior={{ checkmarkStick: false }}
-          submit={<Submit value="save changes" cancel={false} />}
+          submit={<Submit value="save changes" cancel={false} className={isMobile ? 'compact mt15' : ''} />}
           title="account details">
       <Input
         type="text"
@@ -48,7 +49,7 @@ const AccountDetails = ({ user }) => {
   );
 }
 
-const ChangePassword = ({ user }) => {
+const ChangePassword = ({ user, isMobile }) => {
   const { formData, handleFormError, inputProps, resetForm } = useForm({
     id: user.id,
     password: '',
@@ -73,6 +74,7 @@ const ChangePassword = ({ user }) => {
               disabled={!passwordIsValid}
               cancel={passwordIsValid ? 'cancel' : false}
               onCancel={passwordIsValid ? resetForm : false}
+              className={isMobile ? 'compact mt15' : ''}
             />
           )}
           title="change password">

@@ -43,10 +43,8 @@
 
 * {
   box-sizing: border-box;
-}
-*:focus {
-  -webkit-tap-highlight-color: transparent;
   outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html, body, #__next {
@@ -84,6 +82,12 @@ h2 {
 center {
   display: block;
   text-align: center;
+}
+
+@media screen and (max-width: 900px) {
+  h2 {
+    font-size: 1.5rem;
+  }
 }
 
 a, a:visited, button.link {
@@ -230,6 +234,12 @@ input[type=date] {
 .tar {
   text-align: right;
 }
+.jcfs {
+  justify-content: flex-start;
+}
+.jcc {
+  justify-content: center;
+}
 
 #nprogress {
   pointer-events: none;
@@ -257,6 +267,19 @@ input[type=date] {
 .nprogress-custom-parent #nprogress .spinner,
 .nprogress-custom-parent #nprogress .bar {
   position: absolute;
+}
+
+@media screen and (max-width: 900px) {
+  #nprogress .spinner {
+    bottom: 1rem;
+    right: unset;
+    left: 1rem;
+  }
+  #nprogress .spinner-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-width: 0.0625rem;
+  }
 }
 
 @keyframes nprogress-spinner {

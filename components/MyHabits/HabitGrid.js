@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { HabitForm, HabitIcon } from ".";
 import { ModalContext } from "../../contexts";
 import { getUnitFromLabel } from "../../utils";
+import { Button } from "../Form";
 import styles from "./myHabits.module.css";
 
 export const HabitGridItem = ({ addingNew, userId, id, name, icon, color, label, complex }) => {

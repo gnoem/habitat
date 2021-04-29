@@ -51,8 +51,10 @@
 .Nav button.active > span {
   transform: translate3d(0, 50%, 0) scale(0);
 }
-.Nav button:hover > span::before {
+.Nav button > span::before {
   content: '';
+}
+.Nav button:hover > span::before {
   z-index: -1;
   position: absolute;
   bottom: 0;
@@ -150,5 +152,8 @@
   }
   .Nav button + button {
     margin-top: 0.5rem;
+  }
+  .Nav button > span::before {
+    content: none;
   }
 }

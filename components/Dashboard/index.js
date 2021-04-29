@@ -19,9 +19,9 @@ const Dashboard = ({ children, userId, sidebar, className, dim, dimOnClick }) =>
   return (
     <div className={styles.Dashboard}>
       <Dim {...{ dim, dimOnClick }} />
-      <DateMarker {...{ user }} />
       <Nav />
       <div className={styles.Main}>
+        <DateMarker {...{ user }} />
         {sidebar && <Sidebar {...{ user }}>{sidebar}</Sidebar>}
         <Content {...{ className }}>
           {children}

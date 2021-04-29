@@ -37,7 +37,9 @@ const ModalWrapper = ({ children, selfDestruct, closeModal }) => {
       <div className={styles.modalContainer}>
         <div className={styles.modalContent} ref={modalContentRef}>
           <button className={styles.exit} onClick={closeModal}><FontAwesomeIcon icon={faTimes} /></button>
-          {children}
+          <div>
+            {children}
+          </div>
         </div>
       </div>
     </div>

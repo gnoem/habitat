@@ -14,7 +14,7 @@ export const MyHabits = ({ userId, habits }) => {
   const [habitView, setHabitView] = useState('list');
   return (
     <div className={styles.MyHabits}>
-      {(habits.length < 0) && (
+      {(habits.length > 0) && (
         <MyHabitsNav {...{
           habitView,
           updateHabitView: setHabitView
@@ -92,7 +92,7 @@ export const HabitForm = ({ title, userId, id, name, icon, color, label, complex
     <Form onSubmit={handleSubmit} onSuccess={handleSuccess} handleFormError={handleFormError}
           title={title}
           behavior={formBehavior}
-          submit={<Submit className="compact" value="save changes" cancel={false} />}>
+          submit={<Submit className="compact jcc" value="save changes" cancel={false} />}>
       <Input type="text" name="name" label="Habit name:" value={formData.name} className="stretch" {...inputProps} />
       <div className={styles.displayOptions}>
         <Input type="text" name="icon" label="Icon:" value={formData.icon} className="stretch" {...inputProps} />

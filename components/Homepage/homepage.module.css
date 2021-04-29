@@ -33,3 +33,17 @@
 .Footer {
   margin-top: 2rem;
 }
+
+@media screen and (max-width: 900px) {
+  .Main {
+    padding: 2rem;
+    padding-top: 1rem;
+  }
+  .Homepage {
+    display: block;
+    overflow: visible;
+  }
+  .Homepage h1 {
+    font-size: 3rem;
+  }
+}

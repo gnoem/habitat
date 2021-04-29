@@ -2,3 +2,10 @@
   font-size: 0.8rem;
   margin-top: 3rem;
 }
+
+@media screen and (max-width: 900px ){
+  .Footer {
+    margin-top: 1.5rem;
+    font-size: 0.75rem;
+  }
+}

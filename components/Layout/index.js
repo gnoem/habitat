@@ -20,7 +20,11 @@ export const Layout = ({ children }) => {
       <Backdrop {...{ pathname }} />
       <Modal {...modal} />
       {/* does everytime context change mean the background backdrop shifts again? todo look into this more */}
-      {homepage && <img alt="" src="/decor/hmmm.png" />}
+      {homepage && (
+        <figure>
+          <img alt="" src="/decor/hmmm.png" />
+        </figure>
+      )}
       {children}
     </div>
   );

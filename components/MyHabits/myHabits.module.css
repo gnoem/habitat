@@ -160,7 +160,7 @@ div button.currentHabitView { /* including div for specificity */
   display: flex;
 }
 .displayOptions > div:first-child {
-  flex: 1 0 auto;
+  flex: 1 1 auto;
 }
 .displayOptions > div:last-child {
   flex: 0 1 auto;
@@ -177,4 +177,17 @@ div button.currentHabitView { /* including div for specificity */
   display: inline-block;
   margin-left: 0.25rem;
   font-size: 0.75rem;
+}
+
+@media screen and (max-width: 900px) {
+  .HabitList {
+    max-width: 100%;
+  }
+  .HabitGrid {
+    grid-template-columns: repeat(auto-fit, 50%);
+    margin: 1rem -1rem -1rem 0;
+  }
+  .HabitGridItem {
+    margin: 0 1rem 1rem 0;
+  }
 }

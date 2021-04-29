@@ -6,28 +6,34 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  font-size: 1rem;
 }
 .Date .dd {
   font-family: var(--header-font);
-  font-size: 5rem;
+  font-size: 5em;
   line-height: 1;
 }
 .Date .mm {
-  font-size: 1.5rem;
+  font-size: 1.5em;
   font-weight: bold;
   text-transform: uppercase;
 }
 .Date .Time {
-  margin-top: 1.5rem;
+  margin-top: 1.5em;
   font-family: var(--mono-font);
-  font-size: 1.2rem;
+  font-size: 1.2em;
 }
 
 @media screen and (max-width: 900px) {
   .Date {
-    display: none;
-    transform: scale(0.5);
-    transform-origin: top right;
+    position: absolute;
     margin: 0.5rem 1rem;
+  }
+  .Date {
+    font-size: 0.5rem;
+  }
+  .Date .Time {
+    margin-top: 0.5em;
+    font-size: 1.75em;
   }
 }
