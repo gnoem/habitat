@@ -1,10 +1,9 @@
-import { faPen, faPlus, faPlusCircle, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faPlus, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext } from "react";
 import { HabitForm, HabitIcon } from ".";
 import { ModalContext } from "../../contexts";
 import { getUnitFromLabel } from "../../utils";
-import { Button } from "../Form";
 import styles from "./myHabits.module.css";
 
 export const HabitGridItem = ({ addingNew, userId, id, name, icon, color, label, complex }) => {
@@ -52,7 +51,7 @@ const HabitGridItemHeader = ({ name, icon }) => {
   );
 }
 
-const HabitGridItemBody = ({ id, name, label, complex, manageHabit, deleteHabit }) => {
+const HabitGridItemBody = ({ label, complex, manageHabit, deleteHabit }) => {
   const [pre, post] = [label?.split('{{')[0], label?.split('}}')[1]];
   const unit = getUnitFromLabel(label);
   return (

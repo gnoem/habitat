@@ -96,16 +96,24 @@
     padding: 1.5rem;
   }
   .modalContent {
-    width: 100%;
+    width: 500px;
   }
   .modalContent > div {
-    padding: 1.75rem;
-    max-height: calc(100vh - 3rem);
+    max-height: calc(100vh - 3rem); /* 3rem because of (2 * 1.5rem) padding on .Modal */
   }
   .Modal div[class^='submit_Submit'] {
     justify-content: center;
   }
   .Modal div[class^='submit_Submit'] button {
     padding: 0.5rem 1rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .modalContent {
+    width: 100%;
+  }
+  .modalContent > div {
+    padding: 1.75rem;
   }
 }

@@ -3,7 +3,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDoubleRight, faCalendarAlt, faCaretRight, faPlus, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
-import { DataContext, ModalContext } from "../../contexts";
+import { DataContext, MobileContext, ModalContext } from "../../contexts";
 import { useForm } from "../../hooks";
 import { Entry } from "../../pages/api";
 import Form, { Input, Checkbox, Submit, Button } from "../Form";
@@ -39,29 +39,29 @@ const DashPanel = ({ habits, dashPanel, updateDashPanel }) => {
           <span><FontAwesomeIcon icon={isActive('calendar') ? faPlus : faCalendarAlt} /></span>
         </button>
       </nav>
-      <PanelContent {...{ view: panelName, habits, dashPanelOptions }} />
+      <PanelContent {...{
+        view: panelName,
+        dashPanelOptions,
+        habits,
+        updateDashPanel
+      }} />
       </div>
   );
 }
 
-const PanelContent = ({ view, habits, dashPanelOptions }) => {
-  const panelContent = () => {
-    switch (view) {
-      case 'data': return <DataForm {...{ habits, dashPanelOptions }} />;
-      case 'calendar': return <PanelCalendar />;
-      default: return '';
-    }
-  }
+const PanelContent = ({ view, habits, dashPanelOptions, updateDashPanel }) => {
   return (
     <div className={`${styles.PanelContent} ${view ? styles.active : ''}`}>
-      {panelContent()}
+      {(view === 'data') && <DataForm {...{ habits, dashPanelOptions, updateDashPanel }} />}
+      {(view === 'calendar') && <PanelCalendar />}
     </div>
   );
 }
 
-const DataForm = ({ habits, dashPanelOptions }) => {
+const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
   const router = useRouter();
   const { user, entries, getEntries } = useContext(DataContext);
+  const isMobile = useContext(MobileContext);
   const { createModal } = useContext(ModalContext);
   const [currentDate, setCurrentDate] = useState(dashPanelOptions?.date ?? dayjs().format('YYYY-MM-DD'));
   const existingData = useMemo(() => {
@@ -116,6 +116,8 @@ const DataForm = ({ habits, dashPanelOptions }) => {
     // and then somehow change [editingDate] and [jumpingToDate] to false
     // probably just set useEffect on that component
     // with entire entries array as dependency? i guess.... or maybe currentDate would be better... or both
+    // todo deal with this
+    if (isMobile) updateDashPanel(null);
   }
   const handleDelete = () => {
     createModal('deleteEntry', { entry: existingData });

@@ -27,13 +27,21 @@
 @media screen and (max-width: 900px) {
   .Date {
     position: absolute;
-    margin: 0.5rem 1rem;
-  }
-  .Date {
-    font-size: 0.5rem;
+    margin: 1rem 1.5rem;
+    font-size: 0.7rem;
   }
   .Date .Time {
     margin-top: 0.5em;
+    font-size: 1.5em;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .Date {
+    margin: 0.5rem 1rem;
+    font-size: 0.5rem;
+  }
+  .Date .Time {
     font-size: 1.75em;
   }
 }
