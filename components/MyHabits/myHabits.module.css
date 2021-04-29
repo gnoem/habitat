@@ -154,6 +154,39 @@ div button.currentHabitView { /* including div for specificity */
 .HabitGridItemBody > div button + button {
   margin-left: 0.5rem;
 }
+.NewHabitGridItem {
+  display: flex;
+  align-items: center;
+}
+.NewHabitGridItem > div {
+  width: 2rem;
+  height: 2rem;
+  background: #000;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.NewHabitGridItem > span {
+  display: block;
+  margin-left: 0.75rem;
+  font-size: 1rem;
+  position: relative;
+}
+.NewHabitGridItem > span::before {
+  content: '';
+  display: block;
+  z-index: -1;
+  position: absolute;
+  top: 50%;
+  left: -0.5rem;
+  width: calc(100% + 1rem);
+  height: calc(100% + 0.5rem);
+  background: #fff;
+  transform: skew(-12deg) translate3d(0, -50%, 0);
+}
 
 .displayOptions {
   margin-top: 1rem;

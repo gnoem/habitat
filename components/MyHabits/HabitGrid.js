@@ -1,4 +1,4 @@
-import { faPen, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faPlus, faPlusCircle, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext } from "react";
 import { HabitForm, HabitIcon } from ".";
@@ -8,33 +8,12 @@ import { Button } from "../Form";
 import styles from "./myHabits.module.css";
 
 export const HabitGridItem = ({ addingNew, userId, id, name, icon, color, label, complex }) => {
-  return (
-    <div className={styles.HabitGridItem}>
-      <span className={styles.HabitGridColorIndicator} style={{ background: color }}></span>
-      <HabitGridItemHeader {...{ name, icon }} />
-      <HabitGridItemBody {...{ userId, id, name, icon, color, label, complex }} />
-    </div>
-  );
-}
-
-const HabitGridItemHeader = ({ name, icon }) => {
-  return (
-    <div className={styles.HabitGridItemHeader}>
-      <HabitIcon>{icon}</HabitIcon>
-      <span>{name}</span>
-    </div>
-  );
-}
-
-const HabitGridItemBody = ({ userId, id, name, icon, color, label, complex }) => {
   const { createModal } = useContext(ModalContext);
-  const [pre, post] = [label?.split('{{')[0], label?.split('}}')[1]];
-  const unit = getUnitFromLabel(label);
-  const editHabit = () => {
+  const manageHabit = () => {
     createModal('manageHabit', {
       habitForm: <HabitForm />,
       habitFormProps: {
-        title: id ? 'edit this habit' : 'create a new habit',
+        title: addingNew ? 'create a new habit' : 'edit this habit',
         userId,
         id,
         name,
@@ -49,6 +28,33 @@ const HabitGridItemBody = ({ userId, id, name, icon, color, label, complex }) =>
     const habit = { id, name };
     createModal('deleteHabit', { habit });
   }
+  if (addingNew) return (
+    <button type="button" className={styles.NewHabitGridItem} onClick={manageHabit}>
+      <div><FontAwesomeIcon icon={faPlus} /></div>
+      <span>Add new</span>
+    </button>
+  );
+  return (
+    <div className={styles.HabitGridItem}>
+      <span className={styles.HabitGridColorIndicator} style={{ background: color }}></span>
+      <HabitGridItemHeader {...{ name, icon }} />
+      <HabitGridItemBody {...{ userId, id, name, icon, color, label, complex, manageHabit, deleteHabit }} />
+    </div>
+  );
+}
+
+const HabitGridItemHeader = ({ name, icon }) => {
+  return (
+    <div className={styles.HabitGridItemHeader}>
+      <HabitIcon>{icon}</HabitIcon>
+      <span>{name}</span>
+    </div>
+  );
+}
+
+const HabitGridItemBody = ({ id, name, label, complex, manageHabit, deleteHabit }) => {
+  const [pre, post] = [label?.split('{{')[0], label?.split('}}')[1]];
+  const unit = getUnitFromLabel(label);
   return (
     <div className={styles.HabitGridItemBody}>
       {complex
@@ -56,7 +62,7 @@ const HabitGridItemBody = ({ userId, id, name, icon, color, label, complex }) =>
         : <span>{label}</span>
       }
       <div>
-        <button onClick={editHabit}><FontAwesomeIcon icon={faPen}/></button>
+        <button onClick={manageHabit}><FontAwesomeIcon icon={faPen}/></button>
         <button onClick={deleteHabit}><FontAwesomeIcon icon={faTrashAlt}/></button>
       </div>
     </div>
@@ -67,9 +73,7 @@ export const NewHabitGridItem = ({ userId }) => {
   return (
     <HabitGridItem {...{
       addingNew: true,
-      userId,
-      name: 'Add new',
-      icon: '🌱' //'🐣'
+      userId
     }} />
   );
 }
