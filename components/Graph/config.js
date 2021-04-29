@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { getUnitFromLabel } from "../../utils";
 
-export const config = (habits, entries, calendarPeriod, type, isMobile) => {
+export const config = (habits, entries, calendarPeriod, type, isMobile, includeDateMarkers) => {
   const daysInMonth = new Array(dayjs(calendarPeriod).daysInMonth()).fill('');
   const datesInMonth = daysInMonth.map((_, i) => {
     return dayjs(`${calendarPeriod}-${i + 1}`).format('YYYY-MM-DD');
@@ -41,7 +41,7 @@ export const config = (habits, entries, calendarPeriod, type, isMobile) => {
       ? habits.map(habit => habit.icon)
       : habits.map(habit => habit.name);
   return {
-    initialSetup: chartSetup(labels, yAxisLabels, datasets, type, isMobile),
+    initialSetup: chartSetup(labels, yAxisLabels, datasets, type, isMobile, includeDateMarkers),
     data: {
       labels,
       yAxisLabels,
@@ -50,7 +50,7 @@ export const config = (habits, entries, calendarPeriod, type, isMobile) => {
   }
 }
 
-export const chartSetup = (labels, yAxisLabels, datasets, type, isMobile) => ({
+export const chartSetup = (labels, yAxisLabels, datasets, type, isMobile, includeDateMarkers) => ({
   type: 'line',
   options: {
     layout: {
@@ -65,7 +65,7 @@ export const chartSetup = (labels, yAxisLabels, datasets, type, isMobile) => ({
           font: {
             family: 'Inconsolata, monospace'
           },
-          display: type === 'complex'
+          display: (type === 'complex') || includeDateMarkers
         },
         grid: {
           drawTicks: type === 'complex'

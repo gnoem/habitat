@@ -17,12 +17,12 @@ export const Graph = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
   );
 }
 
-const ChartCanvas = ({ type, habits, entries, calendarPeriod, updateDashPanel }) => {
+const ChartCanvas = ({ type, habits, entries, calendarPeriod, updateDashPanel, includeDateMarkers }) => {
   const isMobile = useContext(MobileContext);
   const [chartInstance, setChartInstance] = useState(null);
   const chartRef = useRef(null);
   const { data, initialSetup } = useMemo(() => {
-    return config(habits, entries, calendarPeriod, type, isMobile);
+    return config(habits, entries, calendarPeriod, type, isMobile, includeDateMarkers);
   }, [entries]);
   useEffect(() => {
     if (!chartInstance) return;
@@ -65,26 +65,30 @@ const ChartCanvas = ({ type, habits, entries, calendarPeriod, updateDashPanel })
 
 export const SimpleHabits = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
   const simpleHabits = habits.filter(habit => !habit.complex);
+  if (!simpleHabits.length) return null;
+  const includeDateMarkers = simpleHabits.length === habits.length;
   return (
     <ChartCanvas {...{
       type: 'simple',
       habits: simpleHabits,
       entries,
       calendarPeriod,
-      updateDashPanel
+      updateDashPanel,
+      includeDateMarkers
     }} />
-  );
-}
-
-export const ComplexHabits = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
-  const complexHabits = habits.filter(habit => habit.complex);
-  return (
-    <ChartCanvas {...{
-      type: 'complex',
-      habits: complexHabits,
-      entries,
-      calendarPeriod,
-      updateDashPanel
-    }} />
-  );
+    );
+  }
+  
+  export const ComplexHabits = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
+    const complexHabits = habits.filter(habit => habit.complex);
+    if (!complexHabits.length) return null;
+    return (
+      <ChartCanvas {...{
+        type: 'complex',
+        habits: complexHabits,
+        entries,
+        calendarPeriod,
+        updateDashPanel
+      }} />
+    );
 }

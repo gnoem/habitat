@@ -124,8 +124,13 @@ export const resolvers = {
       const deleteRecords = prisma.record.deleteMany({
         where: { habitId: id }
       });
-      const transaction = await prisma.$transaction([deleteHabit, deleteRecords]);
-      return transaction;
+      // todo!
+      // if deleteRecords leaves any entries empty, delete those entries
+      // each deleted record should have an entryId, find those entries and look at their 'records' array
+      // if !records.length || records.length > 1, return
+      // else check habitId on that one record (probably unnecessary but just to be safe) and if it matches args.id, delete it
+      const [__, deletedHabit] = await prisma.$transaction([deleteRecords, deleteHabit]);
+      return deletedHabit;
     },
     createEntry: async (_, args) => {
       const { userId, date, records } = args;
@@ -162,8 +167,8 @@ export const resolvers = {
       const deleteRecords = prisma.record.deleteMany({
         where: { entryId: id }
       });
-      const transaction = await prisma.$transaction([deleteEntry, deleteRecords]);
-      return transaction;
+      const [__, deletedEntry] = await prisma.$transaction([deleteRecords, deleteEntry]);
+      return deletedEntry;
     }
   },
   Query: {

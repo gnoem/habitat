@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import styles from "./date.module.css";
 
 export const DateMarker = ({ user }) => {
-  const { appearance__showClock, appearance__24hrClock, appearance__showClockSeconds } = user?.settings ?? {};
+  const { appearance__showClock, appearance__24hrClock, appearance__showClockSeconds } = user?.settings ?? {
+    appearance__showClock: true,
+    appearance__24hrClock: false,
+    appearance__showClockSeconds: true
+  }
   return (
     <div className={styles.Date}>
       <span className={styles.dd}>{dayjs().format('D')}</span>
