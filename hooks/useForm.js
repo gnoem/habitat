@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useWarnError } from ".";
 
 export const useFormData = (initialState = {}) => {
     const [formData, setFormData] = useState(initialState);
@@ -95,5 +96,70 @@ export const useForm = (initialFormData = {}) => {
     inputProps,
     checkboxProps,
     dropdownProps
+  }
+}
+
+export const useFormSubmit = ({ onSubmit, onSuccess, handleFormError, behavior }) => {
+  const warnError = useWarnError();
+  const defaultBehavior = {
+    showLoading: true,
+    showSuccess: true,
+    checkmarkStick: true
+  }
+  const { showLoading, showSuccess, checkmarkStick } = Object.assign(defaultBehavior, behavior);
+  const [clickedOnceAlready, setClickedOnceAlready] = useState(false);
+  const [successPending, setSuccessPending] = useState(false);
+  const [successAnimation, setSuccessAnimation] = useState(null);
+  useEffect(() => {
+    if (successAnimation === 'fade') {
+      setTimeout(() => {
+        setSuccessAnimation(null);
+      }, 500); /* length of checkmark-shrink duration */
+    }
+  }, [successAnimation]);
+  const handleResult = (result) => {
+    const validateResult = (result) => {
+      if (!result) throw new Error('no response from server');
+      if (Object.values(result)[0] == null) throw new Error('response object was null, indicates malformed query or something?')
+    }
+    validateResult(result);
+    if (showSuccess) {
+      setSuccessAnimation('check');
+      setSuccessPending(false);
+    }
+    handleSuccess(result);
+  }
+  const handleSuccess = (result) => {
+    setTimeout(() => {
+      onSuccess(result);
+      if (showSuccess && !checkmarkStick) {
+        setSuccessAnimation('fade');
+        setClickedOnceAlready(false);
+      }
+    }, showSuccess ? 1400 : 0);
+  }
+  const handleError = (err) => {
+    setSuccessPending(false);
+    setClickedOnceAlready(false);
+    const { __typename, errors } = err;
+    if (__typename === 'FormErrorReport') {
+      if (handleFormError) handleFormError(errors);
+      else warnError('unhandledFormError', errors);
+      return;
+    }
+    warnError('somethingWentWrong', err);
+  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (clickedOnceAlready) return;
+    setClickedOnceAlready(true);
+    if (!onSubmit) return console.log('missing onSubmit handler!');
+    if (showLoading) setSuccessPending(true);
+    onSubmit().then(handleResult).catch(handleError);
+  }
+  return {
+    handleSubmit,
+    successPending,
+    successAnimation
   }
 }
