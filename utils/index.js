@@ -4,7 +4,7 @@ export const fancyClassName = ({ styles, className }) => {
   const classNameArray = className.split(' ');
   return classNameArray.map(classNameString => {
     return styles[classNameString] ?? classNameString;
-  }).filter(el => el).toString().replace(',', ' ');
+  }).filter(el => el).toString().replace(/,/g, ' ');
 }
 
 export const getUnitFromLabel = (label) => {

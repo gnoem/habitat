@@ -133,7 +133,7 @@ const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
     <div className={styles.DataForm}>
       <Form onSubmit={handleSubmit} onSuccess={handleSuccess}
             behavior={{ checkmarkStick: false }}
-            submit={<Submit value="save changes" cancel={false} className="compact mt15" />}>
+            submit={<Submit value="save changes" cancel={false} className="compact jcc" />}>
         <DataFormDateInput {...{
           existingData,
           formData,

@@ -47,13 +47,12 @@
     display: flex;
     flex-direction: column;
     font-size: 0.9rem;
-    min-height: 0;
   }
   .Layout figure {
     position: static;
     width: auto;
     height: 20%;
-    padding: 2rem;
+    padding: 4rem 0 0 4rem;
     padding-bottom: 0;
   }
   .Layout figure img {
@@ -61,5 +60,11 @@
     height: auto;
     max-width: 100%;
     max-height: 100%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .Layout figure {
+    padding: 2rem 0 0 2rem;
   }
 }

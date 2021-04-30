@@ -36,8 +36,8 @@
 
 @media screen and (max-width: 900px) {
   .Main {
-    padding: 2rem;
-    padding-top: 1rem;
+    padding: 4rem;
+    padding-top: 2rem;
   }
   .Homepage {
     display: block;
@@ -45,5 +45,17 @@
   }
   .Homepage h1 {
     font-size: 3rem;
+  }
+  .Homepage nav {
+    margin-top: 2rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .Main {
+    padding: 2rem;
+  }
+  .Homepage nav {
+    margin-top: 1.5rem;
   }
 }

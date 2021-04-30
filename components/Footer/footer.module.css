@@ -5,7 +5,18 @@
 
 @media screen and (max-width: 900px ){
   .Footer {
-    margin-top: 1.5rem;
+    position: fixed;
+    bottom: 4rem;
+    left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+@media screen and (max-width: 600px ){
+  .Footer {
+    position: static;
+    padding-right: 0;
+    margin-top: 2rem;
     font-size: 0.75rem;
   }
 }

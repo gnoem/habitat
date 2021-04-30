@@ -210,12 +210,18 @@ button.deleteEntry > span {
     margin-right: 0;
   }
   .PanelContent > div {
-    padding: 1.5rem;
+    padding: 2rem;
   }
   .DataForm input {
     background: #f7f7f7;
   }
   .DataFormField > span:first-child {
     margin-right: 0.75rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .PanelContent > div {
+    padding: 1.5rem;
   }
 }
