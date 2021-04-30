@@ -19,13 +19,14 @@ model User {
 }
 
 model Settings {
-  id                              Int           @default(autoincrement()) @id
-  dashboard__defaultView          String?
-  appearance__showClock           Boolean?
-  appearance__24hrClock           Boolean?
-  appearance__showClockSeconds    Boolean?
-  user                            User?         @relation(fields: [userId], references: [id])
-  userId                          Int?          @unique
+  id                               Int           @default(autoincrement()) @id
+  dashboard__defaultView           String?
+  habits__defaultView              String?
+  appearance__showClock            Boolean?
+  appearance__24hrClock            Boolean?
+  appearance__showClockSeconds     Boolean?
+  user                             User?         @relation(fields: [userId], references: [id])
+  userId                           Int?          @unique
   @@map(name: "settings")
 }
 

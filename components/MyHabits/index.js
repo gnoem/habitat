@@ -10,8 +10,8 @@ import Form, { Checkbox, Input, Submit } from "../Form";
 import { Habit } from "../../pages/api";
 import { DataContext } from "../../contexts";
 
-export const MyHabits = ({ userId, habits }) => {
-  const [habitView, setHabitView] = useState('list');
+export const MyHabits = ({ user, habits }) => {
+  const [habitView, setHabitView] = useState(user.settings?.habits__defaultView ?? 'list');
   return (
     <div className={styles.MyHabits}>
       {(habits.length > 0) && (
@@ -22,7 +22,7 @@ export const MyHabits = ({ userId, habits }) => {
       )}
       <Habits {...{
         habitView,
-        userId,
+        userId: user.id,
         habits
       }} />
     </div>

@@ -12,7 +12,7 @@ const Habits = ({ user }) => {
       <h1>my habits</h1>
       {habits
         ? <MyHabits {...{
-            userId: user.id,
+            user,
             habits
           }} />
         : <PageLoading className="jcfs" />

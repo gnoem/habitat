@@ -56,11 +56,8 @@ const ChangePassword = ({ user, isMobile }) => {
     confirmPassword: ''
   });
   const handleSubmit = () => User.editPassword(formData);
-  const handleSuccess = (result) => {
-    console.log(result);
-    resetForm();
-  }
-  const passwordIsValid = (() => {
+  const handleSuccess = () => resetForm();
+  const passwordIsOk = (() => {
     if (!formData.password || !formData.confirmPassword) return false;
     if (formData.password.length < 6) return false;
     return formData.password === formData.confirmPassword;
@@ -71,9 +68,9 @@ const ChangePassword = ({ user, isMobile }) => {
           submit={(
             <Submit
               value="save changes"
-              disabled={!passwordIsValid}
-              cancel={passwordIsValid ? 'cancel' : false}
-              onCancel={passwordIsValid ? resetForm : false}
+              disabled={!passwordIsOk}
+              cancel={passwordIsOk ? 'cancel' : false}
+              onCancel={passwordIsOk ? resetForm : false}
               className={isMobile ? 'compact mt15' : ''}
             />
           )}

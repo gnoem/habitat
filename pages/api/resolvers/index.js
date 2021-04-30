@@ -1,4 +1,7 @@
-import prisma from "../../../lib/prisma"
+import bcrypt from "bcryptjs";
+import prisma from "../../../lib/prisma";
+
+const { BCRYPT_SECRET } = process.env;
 
 export const resolvers = {
   Mutation: {
@@ -30,7 +33,7 @@ export const resolvers = {
       const user = await prisma.user.create({
         data: {
           email,
-          password
+          password: bcrypt.hashSync(password, 8)
         }
       });
       return {
@@ -54,7 +57,7 @@ export const resolvers = {
       const user = await prisma.user.update({
         where: { id },
         data: {
-          password
+          password: bcrypt.hashSync(password, 8)
         }
       });
       return user;
@@ -63,12 +66,14 @@ export const resolvers = {
       const {
         userId,
         dashboard__defaultView,
+        habits__defaultView,
         appearance__showClock,
         appearance__24hrClock,
         appearance__showClockSeconds
       } = args;
       const settingsObj = {
         dashboard__defaultView,
+        habits__defaultView,
         appearance__showClock,
         appearance__24hrClock,
         appearance__showClockSeconds
@@ -188,7 +193,8 @@ export const resolvers = {
           location: 'email'
         }]
       }
-      if (user.password !== password) return {
+      const passwordIsValid = bcrypt.compareSync(password, user.password);
+      if (!passwordIsValid) return {
         __typename: 'FormErrorReport',
         errors: [{
           message: 'Invalid password',

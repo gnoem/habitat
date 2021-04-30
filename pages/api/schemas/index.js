@@ -14,6 +14,7 @@ export const typeDefs = gql`
   type Settings {
     id: Int,
     dashboard__defaultView: String,
+    habits__defaultView: String,
     appearance__showClock: Boolean,
     appearance__24hrClock: Boolean,
     appearance__showClockSeconds: Boolean
@@ -85,6 +86,7 @@ export const typeDefs = gql`
     editSettings(
       userId: Int,
       dashboard__defaultView: String,
+      habits__defaultView: String,
       appearance__showClock: Boolean,
       appearance__24hrClock: Boolean,
       appearance__showClockSeconds: Boolean): Settings

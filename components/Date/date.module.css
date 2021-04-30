@@ -19,7 +19,7 @@
   text-transform: uppercase;
 }
 .Date .Time {
-  margin-top: 1.5em;
+  margin-top: 1em;
   font-family: var(--mono-font);
   font-size: 1.2em;
 }

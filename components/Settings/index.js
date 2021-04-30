@@ -11,6 +11,7 @@ export const SettingsForm = ({ user }) => {
   const { formData, checkboxProps, dropdownProps } = useForm({
     userId: user.id,
     dashboard__defaultView: user.settings?.dashboard__defaultView ?? 'list',
+    habits__defaultView: user.settings?.habits__defaultView ?? 'list',
     appearance__showClock: user.settings?.appearance__showClock ?? true,
     appearance__24hrClock: user.settings?.appearance__24hrClock ?? false,
     appearance__showClockSeconds: user.settings?.appearance__showClockSeconds ?? true
@@ -37,10 +38,14 @@ const DashboardSettings = ({ formData, dropdownProps, checkboxProps }) => {
     { value: 'graph', display: 'graph' }
   ];
   const dashboardViewDefaultValue = dashboardViewListItems.find(item => item.value === formData.dashboard__defaultView)?.display;
+  const habitViewListItems = [
+    { value: 'list', display: 'list' },
+    { value: 'grid', display: 'grid' }
+  ];
+  const habitViewDefaultValue = dashboardViewListItems.find(item => item.value === formData.habits__defaultView)?.display;
   return (
     <div className={styles.Settings}>
       <h2>dashboard</h2>
-      <h3>general</h3>
       <div>
         <span>default dashboard view</span>
         <Dropdown
@@ -50,6 +55,17 @@ const DashboardSettings = ({ formData, dropdownProps, checkboxProps }) => {
           {...dropdownProps}
         />
       </div>
+      <h2>habits</h2>
+      <div>
+        <span>default habit view</span>
+        <Dropdown
+          name="habits__defaultView"
+          defaultValue={habitViewDefaultValue}
+          listItems={habitViewListItems}
+          {...dropdownProps}
+        />
+      </div>
+      <h2>appearance</h2>
       <h3>clock</h3>
       <div>
         <span>show clock</span>

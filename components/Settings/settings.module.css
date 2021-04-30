@@ -6,11 +6,15 @@
   margin-top: 1rem;
 }
 .Settings h2 {
-  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+.Settings h2:not(:first-of-type) {
+  margin-top: 1.5rem;
 }
 .Settings h3 {
   font-size: 1rem;
-  margin: 1rem 0;
+  margin: 1.5rem 0 1rem;
   text-transform: uppercase;
 }
 .Settings > div {

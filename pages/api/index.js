@@ -32,6 +32,7 @@ const queries = {
         email
         settings {
           dashboard__defaultView
+          habits__defaultView
           appearance__showClock
           appearance__24hrClock
           appearance__showClockSeconds
@@ -81,6 +82,7 @@ const queries = {
           email
           settings {
             dashboard__defaultView
+            habits__defaultView
             appearance__showClock
             appearance__24hrClock
             appearance__showClockSeconds
@@ -108,6 +110,7 @@ const mutations = {
           email
           settings {
             dashboard__defaultView
+            habits__defaultView
             appearance__showClock
             appearance__24hrClock
             appearance__showClockSeconds
@@ -138,16 +141,19 @@ const mutations = {
     mutation (
       $userId: Int,
       $dashboard__defaultView: String,
+      $habits__defaultView: String,
       $appearance__showClock: Boolean,
       $appearance__24hrClock: Boolean,
       $appearance__showClockSeconds: Boolean) {
       editSettings(
         userId: $userId,
         dashboard__defaultView: $dashboard__defaultView,
+        habits__defaultView: $habits__defaultView,
         appearance__showClock: $appearance__showClock,
         appearance__24hrClock: $appearance__24hrClock,
         appearance__showClockSeconds: $appearance__showClockSeconds) {
         dashboard__defaultView
+        habits__defaultView
         appearance__showClock
         appearance__24hrClock
         appearance__showClockSeconds

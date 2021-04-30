@@ -50,8 +50,9 @@ const CalendarDays = ({ habits, entries, totalDaysInMonth, updateDashPanel }) =>
       const unit = complex ? getUnitFromLabel(label) : null;
       const recordDetails = (
         <span>
-          <b>{name}:</b> {
-            complex ? `${amount} ${unit}` : <FontAwesomeIcon icon={faCheck} />
+          {complex
+            ? <><b>{name}:</b> {amount} {unit}</>
+            : <>{label}</>
           }
         </span>
       );
