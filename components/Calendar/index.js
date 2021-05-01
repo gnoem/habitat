@@ -1,11 +1,10 @@
-import { faCheck, faPen } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
-import { fancyClassName, getUnitFromLabel } from "../../utils";
-import { TooltipElement } from "../Tooltip";
-import styles from "./calendar.module.css";
 
-export const Calendar = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
+import styles from "./calendar.module.css";
+import { getUnitFromLabel } from "../../utils";
+import TooltipElement from "../Tooltip";
+
+const Calendar = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
   const daysInMonth = new Array(dayjs(calendarPeriod).daysInMonth()).fill('').map((_, index) => {
     return dayjs(`${calendarPeriod}-${index + 1}`).format('YYYY-MM-DD');
   });
@@ -96,4 +95,4 @@ const CalendarDay = ({ children, isFiller, date, updateDashPanel }) => {
   );
 }
 
-// map entries to daysInMonth for calendarPeriod
+export default Calendar;

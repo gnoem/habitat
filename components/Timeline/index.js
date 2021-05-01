@@ -1,17 +1,19 @@
-import { faChartLine, faListOl, faPen, faTh } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import dayjs from "dayjs";
-import styles from "./timeline.module.css";
-import { LinkButton } from "../LinkButton";
-import { Graph } from "../Graph";
 import { useState } from "react";
-import { ArrowNav } from "../ArrowNav";
-import { Calendar } from "../Calendar";
-import { TooltipElement } from "../Tooltip";
-import { getUnitFromLabel } from "../../utils";
-import { ViewOptions } from "../ViewOptions";
 
-export const Timeline = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod, updateDashPanel }) => {
+import dayjs from "dayjs";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChartLine, faListOl, faPen, faTh } from "@fortawesome/free-solid-svg-icons";
+
+import styles from "./timeline.module.css";
+import { getUnitFromLabel } from "../../utils";
+import Graph from "../Graph";
+import Calendar from "../Calendar";
+import LinkButton from "../LinkButton";
+import ArrowNav from "../ArrowNav";
+import TooltipElement from "../Tooltip";
+import ViewOptions from "../ViewOptions";
+
+const Timeline = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod, updateDashPanel }) => {
   const [timelineView, setTimelineView] = useState(user.settings?.dashboard__defaultView ?? 'list');
   const timelineEntries = () => {
     if (!entries.length) return <NoData />;
@@ -158,3 +160,5 @@ const EntryRecord = ({ habit, record }) => {
     </div>
   );
 }
+
+export default Timeline;

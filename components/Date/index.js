@@ -1,8 +1,8 @@
-import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import dayjs from "dayjs";
 import styles from "./date.module.css";
 
-export const DateMarker = ({ user }) => {
+const DateMarker = ({ user }) => {
   const { appearance__showClock, appearance__24hrClock, appearance__showClockSeconds } = user?.settings ?? {
     appearance__showClock: true,
     appearance__24hrClock: false,
@@ -39,3 +39,5 @@ const Time = ({ appearance__24hrClock, appearance__showClockSeconds }) => {
     <div className={styles.Time}>{hours}:{minutes}{seconds} {ampm}</div>
   );
 }
+
+export default DateMarker;

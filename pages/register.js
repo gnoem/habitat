@@ -1,11 +1,12 @@
-import { useRouter } from "next/router";
 import { useContext } from "react";
+import { useRouter } from "next/router";
+
 import { handleRequest, User } from "./api";
 import { DataContext } from "../contexts";
 import { useForm } from "../hooks";
 import Homepage from "../components/Homepage";
+import Footer from "../components/Footer";
 import Form, { Input, Submit } from "../components/Form";
-import { Footer } from "../components/Footer";
 
 const Register = () => {
   const router = useRouter();

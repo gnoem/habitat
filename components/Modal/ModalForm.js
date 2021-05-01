@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
+
 import { ModalContext } from "../../contexts";
 import Form, { Submit } from "../Form";
 
-export const ModalForm = (props) => {
+const ModalForm = (props) => {
   const { children, onSuccess, submit } = props;
   const { closeModal } = useContext(ModalContext);
   const handleSuccess = () => {
@@ -38,3 +39,5 @@ export const ModalizedForm = ({ originalFormComponent, originalFormProps }) => {
   });
   return componentToReturn;
 }
+
+export default ModalForm;

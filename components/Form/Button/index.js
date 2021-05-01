@@ -1,8 +1,9 @@
-import styles from "./button.module.css";
 import { useRouter } from "next/router";
+
+import styles from "./button.module.css";
 import { fancyClassName } from "../../../utils";
 
-export const Button = ({ children, type, onClick, href, className, disabled }) => {
+const Button = ({ children, type, onClick, href, className, disabled }) => {
   const router = useRouter();
   const handleClick = () => {
     if (onClick) return onClick();
@@ -17,3 +18,5 @@ export const Button = ({ children, type, onClick, href, className, disabled }) =
     </button>
   );
 }
+
+export default Button;

@@ -1,13 +1,15 @@
-import styles from "./nav.module.css";
-import { useRouter } from "next/router";
-import { faCog, faHome, faList, faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { handleRequest } from "../../pages/api";
-import { Sidebar } from "../Sidebar";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { MobileContext } from "../../contexts";
+import { useRouter } from "next/router";
 
-export const Nav = () => {
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCog, faHome, faList, faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
+
+import styles from "./nav.module.css";
+import { handleRequest } from "../../pages/api";
+import { MobileContext } from "../../contexts";
+import Sidebar from "../Sidebar";
+
+const Nav = () => {
   const router = useRouter();
   const isMobile = useContext(MobileContext);
   const [showingNav, setShowingNav] = useState(false);
@@ -78,3 +80,5 @@ const NavButtons = React.forwardRef(({ router, showingNav, updateShowingNav }, r
     </div>
   );
 });
+
+export default Nav;

@@ -1,16 +1,17 @@
-import styles from "./layout.module.css";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { Header } from "../Header";
 import { useContext, useEffect, useRef } from "react";
+import { useRouter } from "next/router";
+
 import '@fortawesome/fontawesome-svg-core/styles.css';
 // Prevent fontawesome from adding its CSS since we did it manually above:
 import { config } from '@fortawesome/fontawesome-svg-core';
-import { Modal } from "../Modal";
-import { ModalContext } from "../../contexts";
 config.autoAddCss = false; /* eslint-disable import/first */
 
-export const Layout = ({ children }) => {
+import styles from "./layout.module.css";
+import { ModalContext } from "../../contexts";
+import Header from "../Header";
+import Modal from "../Modal";
+
+const Layout = ({ children }) => {
   const { pathname } = useRouter();
   const { modal } = useContext(ModalContext);
   const homepage = ['/', '/login', '/register'].includes(pathname);
@@ -84,3 +85,5 @@ const Blob = ({ initial, hue, translation, size }) => {
     }}></div>
   );
 }
+
+export default Layout;

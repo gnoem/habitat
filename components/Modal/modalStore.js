@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
+
+import { Entry, Habit } from "../../pages/api";
 import { DataContext } from "../../contexts";
 import { useForm } from "../../hooks";
-import { Entry, Habit } from "../../pages/api";
 import { Submit, Button } from "../Form";
-import { ModalForm, ModalizedForm } from "./ModalForm";
+import ModalForm, { ModalizedForm } from "./ModalForm";
 
 export const modalStore = {
   'somethingWentWrong': (props) => <SomethingWentWrong {...props} />,

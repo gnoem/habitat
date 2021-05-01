@@ -1,12 +1,13 @@
-import styles from "./settings.module.css";
-import { DataContext } from "../../contexts";
-import Form, { Submit, Switch } from "../Form";
-import { Dropdown } from "../Dropdown";
-import { useForm } from "../../hooks";
-import { User } from "../../pages/api";
 import { useContext } from "react";
 
-export const SettingsForm = ({ user }) => {
+import styles from "./settings.module.css";
+import { User } from "../../pages/api";
+import { DataContext } from "../../contexts";
+import { useForm } from "../../hooks";
+import Form, { Submit, Switch } from "../Form";
+import Dropdown from "../Dropdown";
+
+const SettingsForm = ({ user }) => {
   const { getUser } = useContext(DataContext);
   const { formData, checkboxProps, dropdownProps } = useForm({
     userId: user.id,
@@ -17,13 +18,10 @@ export const SettingsForm = ({ user }) => {
     appearance__showClockSeconds: user.settings?.appearance__showClockSeconds ?? true
   });
   const handleSubmit = async () => User.editSettings(formData);
-  const handleSuccess = () => {
-    getUser();
-  }
   return (
     <Form
       onSubmit={handleSubmit}
-      onSuccess={handleSuccess}
+      onSuccess={getUser}
       behavior={{ checkmarkStick: false }}
       submit={<Submit value="save changes" cancel={false} className="mt25" />}>
         <DashboardSettings {...{ formData, dropdownProps, checkboxProps }} />
@@ -94,3 +92,5 @@ const DashboardSettings = ({ formData, dropdownProps, checkboxProps }) => {
     </div>
   );
 }
+
+export default SettingsForm;

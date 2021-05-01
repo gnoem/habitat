@@ -1,14 +1,16 @@
-import styles from "./myHabits.module.css";
 import { useContext, useState } from "react";
-import { HabitListItem, NewHabitListItem } from "./HabitList";
-import { HabitGridItem, NewHabitGridItem } from "./HabitGrid";
-import { ViewOptions } from "../ViewOptions";
-import { faListUl, faTh } from "@fortawesome/free-solid-svg-icons";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useForm } from "../../hooks";
-import Form, { Checkbox, Input, Submit } from "../Form";
+import { faListUl, faTh } from "@fortawesome/free-solid-svg-icons";
+
+import styles from "./myHabits.module.css";
 import { Habit } from "../../pages/api";
 import { DataContext } from "../../contexts";
+import { useForm } from "../../hooks";
+import Form, { Checkbox, Input, Submit } from "../Form";
+import { HabitListItem, NewHabitListItem } from "./HabitList";
+import { HabitGridItem, NewHabitGridItem } from "./HabitGrid";
+import ViewOptions from "../ViewOptions";
 
 export const MyHabits = ({ user, habits }) => {
   const [habitView, setHabitView] = useState(user.settings?.habits__defaultView ?? 'list');

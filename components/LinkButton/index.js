@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { fancyClassName } from "../../utils";
 
-export const LinkButton = ({ children, onClick, href, className }) => {
+const LinkButton = ({ children, onClick, href, className }) => {
   const router = useRouter();
   const handleClick = () => {
     if (onClick) return onClick();
@@ -13,3 +13,5 @@ export const LinkButton = ({ children, onClick, href, className }) => {
     </button>
   );
 }
+
+export default LinkButton;

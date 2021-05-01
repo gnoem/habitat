@@ -1,9 +1,10 @@
-import { auth } from "./api/auth";
-import Dashboard from "../components/Dashboard";
 import { useContext } from "react";
+
+import { auth } from "./api/auth";
+import { DataContext } from "../contexts";
+import Dashboard from "../components/Dashboard";
 import { MyHabits } from "../components/MyHabits";
 import { PageLoading } from "../components/Loading";
-import { DataContext } from "../contexts";
 
 const Habits = ({ user }) => {
   const { habits } = useContext(DataContext);

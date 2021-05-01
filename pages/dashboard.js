@@ -1,11 +1,13 @@
+import { useContext, useMemo, useState } from "react";
+
+import dayjs from "dayjs";
+
 import { auth } from "./api/auth";
+import { DataContext, MobileContext } from "../contexts";
 import Dash from "../components/Dashboard";
 import DashPanel from "../components/DashPanel";
-import { useContext, useMemo, useState } from "react";
-import { DataContext, MobileContext } from "../contexts";
 import { PageLoading } from "../components/Loading";
-import { Timeline } from "../components/Timeline";
-import dayjs from "dayjs";
+import Timeline from "../components/Timeline";
 
 const Dashboard = ({ user }) => {
   const { habits, entries } = useContext(DataContext);

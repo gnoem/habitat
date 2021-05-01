@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-export const Header = () => {
+const Header = () => {
   return (
     <Head>
       <title>habitat</title>
@@ -8,3 +8,5 @@ export const Header = () => {
     </Head>
   );
 }
+
+export default Header;

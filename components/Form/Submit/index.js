@@ -1,9 +1,9 @@
 import styles from "./submit.module.css";
-import { Button } from "../Button";
-import { Loading } from "../../Loading";
 import { fancyClassName } from "../../../utils";
+import Button from "../Button";
+import Loading from "../../Loading";
 
-export const Submit = ({ value, onClick, cancel, onCancel, successPending, successAnimation, className, disabled }) => {
+const Submit = ({ value, onClick, cancel, onCancel, successPending, successAnimation, className, disabled }) => {
   const hideText = !!successPending || !!successAnimation;
   return (
     <div className={`${styles.Submit} ${fancyClassName({ styles, className })}`}>
@@ -31,3 +31,5 @@ const SuccessAnimation = ({ status }) => {
     </div>
   );
 }
+
+export default Submit;

@@ -1,16 +1,18 @@
-import styles from "./dashPanel.module.css";
 import { useContext, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
+
 import dayjs from "dayjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDoubleRight, faCalendarAlt, faCaretRight, faPlus, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDoubleRight, faCalendarAlt, faPlus, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+
+import styles from "./dashPanel.module.css";
+import { Entry } from "../../pages/api";
 import { DataContext, MobileContext, ModalContext } from "../../contexts";
 import { useForm } from "../../hooks";
-import { Entry } from "../../pages/api";
+import { getUnitFromLabel } from "../../utils";
 import Form, { Input, Checkbox, Submit, Button } from "../Form";
 import { PageLoading } from "../Loading";
-import { ArrowNav } from "../ArrowNav";
-import { getUnitFromLabel } from "../../utils";
-import { useRouter } from "next/router";
+import ArrowNav from "../ArrowNav";
 
 const DashPanel = ({ habits, dashPanel, updateDashPanel }) => {
   //const [panelName, setPanelName] = useState(null);

@@ -1,12 +1,14 @@
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useEffect, useRef } from "react";
-import { ModalContext } from "../../contexts";
-import { useRefName } from "../../hooks";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+
 import styles from "./modal.module.css";
 import { modalStore } from "./modalStore";
+import { ModalContext } from "../../contexts";
+import { useRefName } from "../../hooks";
 
-export const Modal = ({ keyphrase, options, selfDestruct }) => {
+const Modal = ({ keyphrase, options, selfDestruct }) => {
   const { closeModal } = useContext(ModalContext);
   if (!keyphrase) return null;
   const modalProps = {
@@ -45,3 +47,5 @@ const ModalWrapper = ({ children, selfDestruct, closeModal }) => {
     </div>
   );
 }
+
+export default Modal;

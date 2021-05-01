@@ -1,13 +1,15 @@
-import styles from "./graph.module.css";
-import dayjs from "dayjs";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { Chart } from "chart.js/dist/chart";
-import { config } from "./config";
-import { NoData } from "../Timeline";
-import { useRefName } from "../../hooks";
-import { MobileContext } from "../../contexts";
 
-export const Graph = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
+import dayjs from "dayjs";
+import { Chart } from "chart.js/dist/chart";
+
+import styles from "./graph.module.css";
+import { config } from "./config";
+import { MobileContext } from "../../contexts";
+import { useRefName } from "../../hooks";
+import { NoData } from "../Timeline";
+
+const Graph = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
   if (!entries.length) return <NoData />;
   return (
     <div className={styles.Graph}>
@@ -79,7 +81,7 @@ export const SimpleHabits = ({ habits, entries, calendarPeriod, updateDashPanel 
     );
   }
   
-  export const ComplexHabits = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
+export const ComplexHabits = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
     const complexHabits = habits.filter(habit => habit.complex);
     if (!complexHabits.length) return null;
     return (
@@ -92,3 +94,5 @@ export const SimpleHabits = ({ habits, entries, calendarPeriod, updateDashPanel 
       }} />
     );
 }
+
+export default Graph;

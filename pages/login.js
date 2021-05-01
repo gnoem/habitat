@@ -1,12 +1,13 @@
+import { useContext } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Form, { Input, Submit } from "../components/Form";
-import Homepage from "../components/Homepage";
-import { useForm } from "../hooks";
+
 import { handleRequest, User } from "./api";
 import { auth } from "./api/auth";
-import { useContext } from "react";
 import { DataContext } from "../contexts";
+import { useForm } from "../hooks";
+import Form, { Input, Submit } from "../components/Form";
+import Homepage from "../components/Homepage";
 
 const Login = () => {
   const router = useRouter();

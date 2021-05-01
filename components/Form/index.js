@@ -1,11 +1,11 @@
 import React from "react";
 import { useFormSubmit } from "../../hooks";
 import { fancyClassName } from "../../utils";
-import { Button } from "./Button";
-import { Checkbox } from "./Checkbox";
-import { Input } from "./Input";
-import { Submit } from "./Submit";
-import { Switch } from "./Switch";
+import Button from "./Button";
+import Checkbox from "./Checkbox";
+import Input from "./Input";
+import Submit from "./Submit";
+import Switch from "./Switch";
 
 const Form = ({ children, title, submit, onSubmit, onSuccess, handleFormError, behavior, className }) => {
   const { handleSubmit, successPending, successAnimation } = useFormSubmit({ onSubmit, onSuccess, handleFormError, behavior });

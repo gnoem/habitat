@@ -1,9 +1,10 @@
-import { Nav } from "../Nav";
-import { DateMarker } from "../Date";
-import styles from "./dashboard.module.css";
 import { useContext, useEffect } from "react";
+
+import styles from "./dashboard.module.css";
 import { DataContext } from "../../contexts";
 import { fancyClassName } from "../../utils";
+import DateMarker from "../Date";
+import Nav from "../Nav";
 
 const Dashboard = ({ children, userId, sidebar, className, dim, dimOnClick }) => {
   const { user, getUser, habits, getHabits, entries, getEntries } = useContext(DataContext);

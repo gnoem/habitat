@@ -1,10 +1,12 @@
+import { useEffect, useRef, useState } from "react";
+
 import { faCaretLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useRef, useState } from "react";
+
 import styles from "./dropdown.module.css";
 import { useRefName } from "../../hooks";
 
-export const Dropdown = ({ name, defaultValue, listItems, onChange }) => {
+const Dropdown = ({ name, defaultValue, listItems, onChange }) => {
   const [displayValue, setDisplayValue] = useState(defaultValue ?? 'Select one...');
   const [expanded, setExpanded] = useState(false);
   const toggleExpanded = () => setExpanded(state => !state);
@@ -65,3 +67,5 @@ const List = ({ listItems, onChange, updateDisplayValue, updateExpanded }) => {
     </div>
   );
 }
+
+export default Dropdown;

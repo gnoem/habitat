@@ -1,10 +1,12 @@
-import { fancyClassName } from "../../utils";
 import styles from "./viewOptions.module.css";
+import { fancyClassName } from "../../utils";
 
-export const ViewOptions = ({ children, className }) => {
+const ViewOptions = ({ children, className }) => {
   return (
     <div className={`${styles.viewOptions} ${fancyClassName({ styles, className })}`}>
       {children}
     </div>
   );
 }
+
+export default ViewOptions;

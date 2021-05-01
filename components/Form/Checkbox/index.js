@@ -1,7 +1,7 @@
 import styles from "./checkbox.module.css";
 import { fancyClassName } from "../../../utils";
 
-export const Checkbox = ({ label, name, detailedLabel, checkboxAfter, className, checked, onChange }) => {
+const Checkbox = ({ label, name, detailedLabel, checkboxAfter, className, checked, onChange }) => {
   const checkboxClassName = () => {
     let stringToReturn = '';
     if (detailedLabel) stringToReturn += `${styles.detailed}`;
@@ -27,3 +27,5 @@ export const Checkbox = ({ label, name, detailedLabel, checkboxAfter, className,
     </div>
   );
 }
+
+export default Checkbox;

@@ -1,6 +1,6 @@
 import { auth } from "./api/auth";
 import Dashboard from "../components/Dashboard";
-import { AppearanceSettings, DashboardSettings, SettingsForm } from "../components/Settings";
+import SettingsForm from "../components/Settings";
 
 const Settings = ({ user }) => {
   return (

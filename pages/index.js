@@ -1,8 +1,8 @@
-import { Footer } from "../components/Footer";
-import { Button } from "../components/Form";
 import Homepage from "../components/Homepage";
+import Footer from "../components/Footer";
+import { Button } from "../components/Form";
 
-export default function Home() {
+const Home = () => {
   return (
     <Homepage>
       <p>habitat is a web app designed & created by <a href="https://ngw.dev/">naomi g.w.</a> as a project for her portfolio and also as a personal tool to track her habits / hopefully organize her life. feel free to use this, if you want.</p>
@@ -14,3 +14,5 @@ export default function Home() {
     </Homepage>
   );
 }
+
+export default Home;

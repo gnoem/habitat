@@ -1,8 +1,6 @@
 import bcrypt from "bcryptjs";
 import prisma from "../../../lib/prisma";
 
-const { BCRYPT_SECRET } = process.env;
-
 export const resolvers = {
   Mutation: {
     createUser: async (_, args) => {

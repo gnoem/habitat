@@ -1,6 +1,6 @@
 import styles from "./loading.module.css";
 
-export const Loading = ({ className }) => {
+const Loading = ({ className }) => {
   return (
     <div className={`${styles.Loading} ${className ?? ''}`}>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
@@ -19,3 +19,5 @@ export const PageLoading = ({ className }) => {
     </div>
   );
 }
+
+export default Loading;

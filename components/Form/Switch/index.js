@@ -1,6 +1,6 @@
 import styles from "./switch.module.css";
 
-export const Switch = ({ name, on, onChange }) => {
+const Switch = ({ name, on, onChange }) => {
   return (
     <div className={styles.Switch}>
       <input name={name} type="checkbox" defaultChecked={on} onChange={onChange} />
@@ -8,3 +8,5 @@ export const Switch = ({ name, on, onChange }) => {
     </div>
   );
 }
+
+export default Switch;

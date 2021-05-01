@@ -1,10 +1,12 @@
-import { faExclamation, faExclamationTriangle, faRadiation } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { fancyClassName } from "../../../utils";
-import styles from "./input.module.css";
 
-export const Input = ({
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import styles from "./input.module.css";
+import { fancyClassName } from "../../../utils";
+
+const Input = ({
     type,
     name,
     label,
@@ -59,3 +61,5 @@ const ColorInput = ({ color }) => {
     <span className={styles.ColorInput} style={{ background: color }}></span>
   );
 }
+
+export default Input;

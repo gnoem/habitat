@@ -1,11 +1,11 @@
-import styles from "./myHabits.module.css";
 import { useContext, useEffect, useRef, useState } from "react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";
-import { Habit } from "../../pages/api";
-import { DataContext, ModalContext } from "../../contexts";
-import { useForm, useRefName } from "../../hooks";
-import Form, { Input, Submit, Checkbox } from "../Form";
+
+import styles from "./myHabits.module.css";
+import { ModalContext } from "../../contexts";
+import { useRefName } from "../../hooks";
 import { HabitForm, HabitIcon } from ".";
 
 export const HabitListItem = ({ addingNew, userId, id, name, icon, color, label, complex }) => {

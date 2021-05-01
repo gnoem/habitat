@@ -1,8 +1,10 @@
-import "../styles/global.css";
 import Router from "next/router";
+
 import nprogress from "nprogress";
+
+import "../styles/global.css";
 import { AppContextProvider } from "../contexts";
-import { Layout } from "../components/Layout";
+import Layout from "../components/Layout";
 
 Router.events.on('routeChangeStart', () => nprogress.start());
 Router.events.on('routeChangeComplete', () => nprogress.done());

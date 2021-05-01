@@ -1,10 +1,12 @@
-import { faPen, faPlus, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext } from "react";
-import { HabitForm, HabitIcon } from ".";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen, faPlus, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+
+import styles from "./myHabits.module.css";
 import { ModalContext } from "../../contexts";
 import { getUnitFromLabel } from "../../utils";
-import styles from "./myHabits.module.css";
+import { HabitForm, HabitIcon } from ".";
 
 export const HabitGridItem = ({ addingNew, userId, id, name, icon, color, label, complex }) => {
   const { createModal } = useContext(ModalContext);
