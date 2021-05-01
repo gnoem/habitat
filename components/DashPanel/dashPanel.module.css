@@ -90,72 +90,9 @@
   opacity: 1;
   width: var(--dashpanel-sidebar-width);
 }
-
 .PanelContent > * {
   border-top: 1px solid #000;
   padding-top: 1rem;
-}
-
-.noHabits p {
-  margin: 0.5rem 0 1.5rem;
-  opacity: 0.6;
-}
-
-.DataForm {
-  display: flex;
-  flex-direction: column;
-}
-.DataFormField {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-.DataFormField + .DataFormField {
-  margin-top: 0.5rem;
-}
-.DataFormField > span:first-child {
-  font-size: 1.5rem;
-  margin-right: 0.5rem;
-  align-self: flex-start;
-  filter: grayscale();
-  transition: 0.2s;
-}
-.DataFormField > span.check:first-child {
-  filter: none;
-}
-.DataFormField > span:last-child {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-.DataForm input {
-  border: 0;
-  background: #fff;
-}
-.DataForm input[type=number] {
-  width: 4rem;
-  padding-right: 0;
-  margin: 0 0.4rem;
-  line-height: 1.4rem;
-}
-
-.DataFormDateInputNav {
-  margin-left: 1rem;
-}
-.DataFormDateInputNav > button {
-  font-size: 1rem;
-}
-
-button.deleteEntry {
-  font-size: 0.5rem;
-  padding: 0.3rem 0.6rem;
-  margin-top: 1rem;
-  align-self: center;
-}
-button.deleteEntry > span {
-  display: inline-block;
-  margin-left: 0.375rem;
-  font-size: 0.75rem;
 }
 
 @media screen and (max-width: 900px) {
@@ -186,6 +123,15 @@ button.deleteEntry > span {
     height: 0;
     overflow: visible;
   }
+  .DashPanel > nav button.active {
+    transform: translate3d(0, 1rem, 0);
+    position: relative;
+    z-index: 51;
+  }
+  .DashPanel > nav button + button.active {
+    margin-right: 0;
+  }
+  
   .PanelContent {
     width: 100%;
     height: 100%;
@@ -201,22 +147,8 @@ button.deleteEntry > span {
     max-height: 75vh;
     width: 100%;
   }
-  .DashPanel nav button.active {
-    transform: translate3d(0, 1rem, 0);
-    position: relative;
-    z-index: 51;
-  }
-  .DashPanel nav button + button.active {
-    margin-right: 0;
-  }
   .PanelContent > div {
     padding: 2rem;
-  }
-  .DataForm input {
-    background: #f7f7f7;
-  }
-  .DataFormField > span:first-child {
-    margin-right: 0.75rem;
   }
 }
 
