@@ -110,5 +110,6 @@
 @media screen and (max-width: 600px) {
   .Content {
     padding: 1.5rem;
+    padding-bottom: 2.5rem;
   }
 }

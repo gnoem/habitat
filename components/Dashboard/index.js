@@ -23,7 +23,7 @@ const Dashboard = ({ children, userId, sidebar, className, dim, dimOnClick }) =>
       <Nav />
       <div className={styles.Main}>
         <DateMarker {...{ user }} />
-        {sidebar && <Sidebar {...{ user }}>{sidebar}</Sidebar>}
+        <Sidebar>{sidebar}</Sidebar>
         <Content {...{ className }}>
           {children}
         </Content>
@@ -46,7 +46,8 @@ export const Content = ({ children, className }) => {
   );
 }
 
-export const Sidebar = ({ children, user }) => {
+export const Sidebar = ({ children }) => {
+  if (!children) return null;
   return (
     <div className={styles.Sidebar}>
       {children}

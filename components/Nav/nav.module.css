@@ -1,12 +1,19 @@
 .Nav {
-  width: 100%;
+  position: fixed;
+  z-index: 200;
+  top: 0;
+  left: 0;
+  width: var(--dashboard-nav-width);
+  height: 100%;
+}
+.Nav nav {
   height: 70%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-.Nav button {
+.Nav nav button {
   margin: 0;
   padding: 0;
   border: 1px solid #000;
@@ -22,14 +29,14 @@
   justify-content: center;
   transition: 0.2s;
 }
-.Nav button + button {
+.Nav nav button + button {
   margin-top: 1rem;
 }
-.Nav button:hover, .Nav button.active {
+.Nav nav button:hover, .Nav nav button.active {
   background: #000;
   color: #fff;
 }
-.Nav button > span {
+.Nav nav button > span {
   display: block;
   position: absolute;
   bottom: 50%;
@@ -45,16 +52,16 @@
   transform-origin: center left;
   transition: 0.2s; 
 }
-.Nav button:hover > span {
+.Nav nav button:hover > span {
   transform: translate3d(0, 50%, 0) scale(1);
 }
-.Nav button.active > span {
+.Nav nav button.active > span {
   transform: translate3d(0, 50%, 0) scale(0);
 }
-.Nav button > span::before {
+.Nav nav button > span::before {
   content: '';
 }
-.Nav button:hover > span::before {
+.Nav nav button:hover > span::before {
   z-index: -1;
   position: absolute;
   bottom: 0;
@@ -119,6 +126,10 @@
     transform: rotate(-45deg) translate3d(1.5px, -1.5px, 0);
   }
   .Nav {
+    height: auto;
+    pointer-events: none;
+  }
+  .Nav nav {
     margin-top: 1rem;
     margin-left: 2rem;
     display: inline-flex;
@@ -131,29 +142,29 @@
     transition: 0.2s;
     pointer-events: none;
   }
-  .Nav.active {
+  .Nav nav.active {
     opacity: 1;
     transform: scale(1);
     transition: 0.5s 0.1s;
     pointer-events: auto;
   }
-  .Nav button {
+  .Nav nav button {
     width: 2.5rem;
     height: 2.5rem;
     font-size: 1.1rem;
   }
-  .Nav button > span,
-  .Nav button.active > span {
+  .Nav nav button > span,
+  .Nav nav button.active > span {
     line-height: 2.5rem;
     transform: translate3d(0, 50%, 0);
     margin-left: 0;
     padding-left: 0.75rem;
     padding-right: 2rem;
   }
-  .Nav button + button {
+  .Nav nav button + button {
     margin-top: 0.5rem;
   }
-  .Nav button > span::before {
+  .Nav nav button > span::before {
     content: none;
   }
 }

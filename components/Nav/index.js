@@ -7,7 +7,6 @@ import { faCog, faHome, faList, faSignOutAlt, faUser } from "@fortawesome/free-s
 import styles from "./nav.module.css";
 import { handleRequest } from "../../pages/api";
 import { MobileContext } from "../../contexts";
-import Sidebar from "../Sidebar";
 
 const Nav = () => {
   const router = useRouter();
@@ -28,7 +27,7 @@ const Nav = () => {
     return () => window.removeEventListener('click', closeNav);
   }, [showingNav, navButtonRef.current, navButtonsRef.current]);
   return (
-    <Sidebar>
+    <div className={styles.Nav}>
       {isMobile && (
         <button
           className={`${styles.MobileNavButton} ${showingNav ? styles.expanded : ''}`}
@@ -37,7 +36,7 @@ const Nav = () => {
         </button>
       )}
       <NavButtons ref={navButtonsRef} {...{ router, showingNav, updateShowingNav: setShowingNav }} />
-    </Sidebar>
+    </div>
   );
 }
 
@@ -56,7 +55,7 @@ const NavButtons = React.forwardRef(({ router, showingNav, updateShowingNav }, r
     router.push('/');
   }
   return (
-    <div className={`${styles.Nav} ${showingNav ? styles.active : ''}`} ref={ref}>
+    <nav className={`${showingNav ? styles.active : ''}`} ref={ref} aria-label="Main site">
       <button name="dashboard" className={isActive('/dashboard')} onClick={handleClick}>
         <FontAwesomeIcon icon={faHome} />
         <span>home</span>
@@ -77,7 +76,7 @@ const NavButtons = React.forwardRef(({ router, showingNav, updateShowingNav }, r
         <FontAwesomeIcon icon={faSignOutAlt} />
         <span>log out</span>
       </button>
-    </div>
+    </nav>
   );
 });
 

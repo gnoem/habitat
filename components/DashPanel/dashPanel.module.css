@@ -117,6 +117,9 @@
   }
   .DashPanel > nav button.inactive {
     max-width: 0;
+    transform: scale(0);
+    overflow: visible;
+    transition: transform 0.2s, max-width 0s 0.2s;
   }
   .DashPanel > nav.active {
     padding-bottom: 0;
@@ -137,13 +140,14 @@
     height: 100%;
     overflow: hidden;
     background: #fff;
-    transform: none;
+    transform: translate3d(0, 100%, 0);
     margin-top: 0;
-    opacity: 1;
     max-height: 0;
-    transition: 1s;
+    opacity: 1;
+    transition: 0.2s;
   }
   .PanelContent.active {
+    transform: translate3d(0, 0, 0);
     max-height: 75vh;
     width: 100%;
   }

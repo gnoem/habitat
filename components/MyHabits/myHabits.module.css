@@ -14,7 +14,6 @@ div button.currentHabitView { /* including div for specificity */
   display: inline-flex;
   flex-direction: column;
   width: 300px;
-  margin-bottom: 5rem;
 }
 .HabitListItem + .HabitListItem {
   margin-top: 1.4rem;
@@ -230,7 +229,7 @@ div button.currentHabitView { /* including div for specificity */
   .HabitGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, 33%);
-    margin: 0 -1rem -1rem 0;
+    margin: 0 -1rem 0 0;
   }
   .HabitGridItem {
     margin: 0 1rem 1rem 0;

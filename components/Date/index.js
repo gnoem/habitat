@@ -10,7 +10,7 @@ const DateMarker = ({ user }) => {
   }
   return (
     <div className={styles.Date}>
-      <span className={styles.dd}>{dayjs().format('D')}</span>
+      <span className={styles.dd}>{dayjs().format('DD')}</span>
       <span className={styles.mm}>{dayjs().format('MMMM')}</span>
       {appearance__showClock && <Time {...{ appearance__24hrClock, appearance__showClockSeconds }} />}
     </div>
