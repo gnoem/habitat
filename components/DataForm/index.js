@@ -120,6 +120,24 @@ const DeleteEntry = () => {
   );
 }
 
+const DataFormFields = ({ wholeFormData, habits, existingData, currentDate }) => {
+  return habits?.map(habit => {
+    let record;
+    if (existingData?.records) {
+      const { id } = habit;
+      const index = existingData.records.findIndex(item => item.habitId === id);
+      record = (index !== -1) ? existingData.records[index] : {};
+    }
+    return (
+      <DataFormField
+        key={`dataFormField-habitId-${habit.id}`}
+        {...habit}
+        {...{ wholeFormData, currentDate, record }}
+      />
+    );
+  });
+}
+
 const DataFormDateInput = ({ existingData, formData, setFormData, inputProps, currentDate, setCurrentDate }) => {
   const [editingDate, setEditingDate] = useState(false);
   const [jumpingToDate, setJumpingToDate] = useState(false);
@@ -218,24 +236,6 @@ const DataFormDateInput = ({ existingData, formData, setFormData, inputProps, cu
       note={inputAttributes().note}
     />
   );
-}
-
-const DataFormFields = ({ wholeFormData, habits, existingData, currentDate }) => {
-  return habits?.map(habit => {
-    let record;
-    if (existingData?.records) {
-      const { id } = habit;
-      const index = existingData.records.findIndex(item => item.habitId === id);
-      record = (index !== -1) ? existingData.records[index] : {};
-    }
-    return (
-      <DataFormField
-        key={`dataFormField-habitId-${habit.id}`}
-        {...habit}
-        {...{ wholeFormData, currentDate, record }}
-      />
-    );
-  });
 }
 
 const DataFormField = ({ wholeFormData, currentDate, id, icon, label, complex, record }) => {
