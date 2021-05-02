@@ -14,18 +14,12 @@ import Form, { Input, Checkbox, Submit, Button } from "../Form";
 import { PageLoading } from "../Loading";
 import ArrowNav from "../ArrowNav";
 
-
-const useExistingData = (entries, initialState = dayjs().format('YYYY-MM-DD'), dashPanelOptions) => {
+const useCurrentDate = (initialState = dayjs().format('YYYY-MM-DD'), dashPanelOptions) => {
   const [currentDate, setCurrentDate] = useState(initialState);
-  const existingData = useMemo(() => {
-    const index = entries?.findIndex(entry => entry.date === currentDate);
-    return entries?.[index] ?? null;
-  }, [entries, currentDate]);
   useEffect(() => {
     if (dashPanelOptions?.date) setCurrentDate(dashPanelOptions?.date);
   }, [dashPanelOptions?.date]);
   return {
-    existingData,
     currentDate,
     setCurrentDate
   }
@@ -42,7 +36,8 @@ const useExistingData = ({ entries, currentDate }) => {
 const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
   const { user, entries, getEntries } = useContext(DataContext);
   const isMobile = useContext(MobileContext);
-  const { existingData, currentDate, setCurrentDate } = useExistingData(entries, dashPanelOptions?.date, dashPanelOptions);
+  const { currentDate, setCurrentDate } = useCurrentDate(dashPanelOptions?.date, dashPanelOptions);
+  const existingData = useExistingData({ entries, currentDate });
   const { formData, resetForm, setFormData, inputProps } = useForm({
     userId: user.id,
     id: existingData?.id,
@@ -52,22 +47,6 @@ const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
   useEffect(() => {
     resetForm();
   }, [entries, currentDate, existingData]);
-  const updateRecordsArray = (newRecord) => {
-    const { records } = formData;
-    const arrayToReturn = [...records];
-    const { habitId } = newRecord;
-    const index = records.findIndex(item => item.habitId === habitId);
-    if (index === -1) {
-      arrayToReturn.push(newRecord);
-    }
-    else {
-      arrayToReturn[index] = newRecord;
-    }
-    setFormData(prevData => ({
-      ...prevData,
-      records: arrayToReturn
-    }))
-  }
   const handleSubmit = async () => {
     // first getting rid of empty string values for 'amount' field in each record object
     // and replacing them with null
@@ -106,7 +85,12 @@ const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
           currentDate,
           setCurrentDate
         }} />
-        <DataFormFields {...{ habits, existingData, currentDate, updateRecordsArray }} />
+        <DataFormFields {...{
+          wholeFormData: formData,
+          habits,
+          existingData,
+          currentDate
+        }} />
       </Form>
       {existingData && <DeleteEntry />}
     </div>
@@ -134,24 +118,6 @@ const DeleteEntry = () => {
       <span>delete this entry</span>
     </button>
   );
-}
-
-const DataFormFields = ({ habits, existingData, currentDate, updateRecordsArray }) => {
-  return habits?.map(habit => {
-    let record;
-    if (existingData?.records) {
-      const { id } = habit;
-      const index = existingData.records.findIndex(item => item.habitId === id);
-      record = (index !== -1) ? existingData.records[index] : {};
-    }
-    return (
-      <DataFormField
-        key={`dataFormField-habitId-${habit.id}`}
-        {...habit}
-        {...{ currentDate, record, updateRecordsArray }}
-      />
-    );
-  });
 }
 
 const DataFormDateInput = ({ existingData, formData, setFormData, inputProps, currentDate, setCurrentDate }) => {
@@ -254,7 +220,25 @@ const DataFormDateInput = ({ existingData, formData, setFormData, inputProps, cu
   );
 }
 
-const DataFormField = ({ currentDate, id, icon, label, complex, record, updateRecordsArray }) => {
+const DataFormFields = ({ wholeFormData, habits, existingData, currentDate }) => {
+  return habits?.map(habit => {
+    let record;
+    if (existingData?.records) {
+      const { id } = habit;
+      const index = existingData.records.findIndex(item => item.habitId === id);
+      record = (index !== -1) ? existingData.records[index] : {};
+    }
+    return (
+      <DataFormField
+        key={`dataFormField-habitId-${habit.id}`}
+        {...habit}
+        {...{ wholeFormData, currentDate, record }}
+      />
+    );
+  });
+}
+
+const DataFormField = ({ wholeFormData, currentDate, id, icon, label, complex, record }) => {
   const { formData, inputProps, checkboxProps, setFormData, resetForm } = useForm({
     habitId: id,
     amount: record?.amount ?? '',
@@ -267,6 +251,22 @@ const DataFormField = ({ currentDate, id, icon, label, complex, record, updateRe
     if (!record) resetForm();
   }, [record]);
   useEffect(() => {
+    const updateRecordsArray = (newRecord) => {
+      const { records } = wholeFormData;
+      const arrayToReturn = [...records];
+      const { habitId } = newRecord;
+      const index = records.findIndex(item => item.habitId === habitId);
+      if (index === -1) {
+        arrayToReturn.push(newRecord);
+      }
+      else {
+        arrayToReturn[index] = newRecord;
+      }
+      setFormData(prevData => ({
+        ...prevData,
+        records: arrayToReturn
+      }))
+    }
     updateRecordsArray(formData); // immediately update parent formData with this record
   }, [formData.check, formData.amount]);
   useEffect(() => {
