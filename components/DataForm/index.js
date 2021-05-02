@@ -87,6 +87,7 @@ const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
         }} />
         <DataFormFields {...{
           wholeFormData: formData,
+          setWholeFormData: setFormData,
           habits,
           existingData,
           currentDate
@@ -120,7 +121,7 @@ const DeleteEntry = () => {
   );
 }
 
-const DataFormFields = ({ wholeFormData, habits, existingData, currentDate }) => {
+const DataFormFields = ({ wholeFormData, setWholeFormData, habits, existingData, currentDate }) => {
   return habits?.map(habit => {
     let record;
     if (existingData?.records) {
@@ -132,7 +133,7 @@ const DataFormFields = ({ wholeFormData, habits, existingData, currentDate }) =>
       <DataFormField
         key={`dataFormField-habitId-${habit.id}`}
         {...habit}
-        {...{ wholeFormData, currentDate, record }}
+        {...{ wholeFormData, setWholeFormData, currentDate, record }}
       />
     );
   });
@@ -238,7 +239,7 @@ const DataFormDateInput = ({ existingData, formData, setFormData, inputProps, cu
   );
 }
 
-const DataFormField = ({ wholeFormData, currentDate, id, icon, label, complex, record }) => {
+const DataFormField = ({ wholeFormData, setWholeFormData, currentDate, id, icon, label, complex, record }) => {
   const { formData, inputProps, checkboxProps, setFormData, resetForm } = useForm({
     habitId: id,
     amount: record?.amount ?? '',
@@ -262,10 +263,10 @@ const DataFormField = ({ wholeFormData, currentDate, id, icon, label, complex, r
       else {
         arrayToReturn[index] = newRecord;
       }
-      setFormData(prevData => ({
+      setWholeFormData(prevData => ({
         ...prevData,
         records: arrayToReturn
-      }))
+      }));
     }
     updateRecordsArray(formData); // immediately update parent formData with this record
   }, [formData.check, formData.amount]);
