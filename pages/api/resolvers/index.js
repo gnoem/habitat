@@ -1,33 +1,28 @@
 import bcrypt from "bcryptjs";
+import * as Validator from "validatorjs";
+
 import prisma from "../../../lib/prisma";
+import { validationError } from "./validation";
 
 export const resolvers = {
   Mutation: {
     createUser: async (_, args) => {
-      const { email, password } = args;
+      const { email = '', password } = args;
       const emailIsInUse = await prisma.user.findUnique({
         where: { email }
       });
-      const errors = [];
-      if (!email || email.length === 0) errors.push({
-        location: 'email',
-        message: 'this field is required'
+      Validator.register('isUntaken', () => !emailIsInUse);
+      const validation = new Validator({ email, password }, {
+        email: 'required|email|isUntaken|max:50',
+        password: 'required|min:6'
+      }, {
+        required: 'this field is required!',
+        email: 'please use a valid email address!',
+        isUntaken: 'email address is already in use!',
+        max: 'maximum 50 characters!',
+        min: 'minimum 6 characters!'
       });
-      if (emailIsInUse) errors.push({
-        location: 'email',
-        message: 'email is already in use'
-      });
-      if (!password || password.length === 0) errors.push({
-        location: 'password',
-        message: 'this field is required'
-      }); else if (password.length < 6) errors.push({
-        location: 'password',
-        message: 'minimum 6 characters'
-      });
-      if (errors.length > 0) return {
-        __typename: 'FormErrorReport',
-        errors
-      }
+      if (validation.fails()) return validationError(validation.errors.all());
       const user = await prisma.user.create({
         data: {
           email,
@@ -180,25 +175,21 @@ export const resolvers = {
       return users;
     },
     login: async (_, args) => {
-      const { email, password } = args;
+      const { email = '', password } = args;
       const user = await prisma.user.findUnique({
         where: { email }
       });
-      if (!user) return {
-        __typename: 'FormErrorReport',
-        errors: [{
-          message: 'User not found',
-          location: 'email'
-        }]
-      }
+      Validator.register('userExists', () => !!user);
+      let validation = new Validator({ email, password }, {
+        email: 'required|userExists',
+        password: 'required'
+      }, {
+        userExists: 'user not found!', 
+        required: 'this field is required!'
+      });
+      if (validation.fails()) return validationError(validation.errors.all());
       const passwordIsValid = bcrypt.compareSync(password, user.password);
-      if (!passwordIsValid) return {
-        __typename: 'FormErrorReport',
-        errors: [{
-          message: 'Invalid password',
-          location: 'password'
-        }]
-      }
+      if (!passwordIsValid) return validationError({ password: 'invalid password' });
       return {
         __typename: 'User',
         ...user
