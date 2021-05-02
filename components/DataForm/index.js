@@ -14,35 +14,25 @@ import Form, { Input, Checkbox, Submit, Button } from "../Form";
 import { PageLoading } from "../Loading";
 import ArrowNav from "../ArrowNav";
 
-
-const useExistingData = (entries, initialState = dayjs().format('YYYY-MM-DD'), dashPanelOptions) => {
+const useCurrentDate = (initialState = dayjs().format('YYYY-MM-DD'), dashPanelOptions) => {
   const [currentDate, setCurrentDate] = useState(initialState);
-  const existingData = useMemo(() => {
-    const index = entries?.findIndex(entry => entry.date === currentDate);
-    return entries?.[index] ?? null;
-  }, [entries, currentDate]);
   useEffect(() => {
     if (dashPanelOptions?.date) setCurrentDate(dashPanelOptions?.date);
   }, [dashPanelOptions?.date]);
   return {
-    existingData,
     currentDate,
     setCurrentDate
   }
 }
 
-const useExistingData = ({ entries, currentDate }) => {
+const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
+  const { user, entries, getEntries } = useContext(DataContext);
+  const isMobile = useContext(MobileContext);
+  const { currentDate, setCurrentDate } = useCurrentDate(dashPanelOptions?.date, dashPanelOptions);
   const existingData = useMemo(() => {
     const index = entries?.findIndex(entry => entry.date === currentDate);
     return entries?.[index] ?? null;
   }, [entries, currentDate]);
-  return existingData;
-}
-
-const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
-  const { user, entries, getEntries } = useContext(DataContext);
-  const isMobile = useContext(MobileContext);
-  const { existingData, currentDate, setCurrentDate } = useExistingData(entries, dashPanelOptions?.date, dashPanelOptions);
   const { formData, resetForm, setFormData, inputProps } = useForm({
     userId: user.id,
     id: existingData?.id,
