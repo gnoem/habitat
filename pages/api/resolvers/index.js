@@ -46,14 +46,27 @@ export const resolvers = {
       return user;
     },
     editPassword: async (_, args) => {
-      const { id, password } = args;
+      const { id, password, confirmPassword } = args;
+      Validator.register('matchesConfirmPassword', () => {
+        return password === confirmPassword;
+      });
+      const validation = new Validator({ password }, {
+        password: 'matchesConfirmPassword|min:6'
+      }, {
+        matchesConfirmPassword: 'passwords do not match!',
+        min: 'minimum 6 characters!'
+      });
+      if (validation.fails()) return validationError(validation.errors.all());
       const user = await prisma.user.update({
         where: { id },
         data: {
           password: bcrypt.hashSync(password, 8)
         }
       });
-      return user;
+      return {
+        __typename: 'User',
+        ...user
+      }
     },
     editSettings: async (_, args) => {
       const {

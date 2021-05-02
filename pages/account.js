@@ -28,7 +28,7 @@ const AccountDetails = ({ user, isMobile }) => {
   const handleSubmit = () => User.edit(formData);
   const handleSuccess = ({ editUser }) => setUser(editUser);
   return (
-    <Form onSubmit={handleSubmit} onSuccess={handleSuccess}
+    <Form onSubmit={handleSubmit} onSuccess={handleSuccess} handleFormError={handleFormError}
           behavior={{ checkmarkStick: false }}
           submit={<Submit value="save changes" cancel={false} className={isMobile ? 'compact mt15' : ''} />}
           title="account details">
@@ -63,18 +63,19 @@ const ChangePassword = ({ user, isMobile }) => {
     if (formData.password.length < 6) return false;
     return formData.password === formData.confirmPassword;
   })();
+  const formSubmit = (
+    <Submit
+      value="save changes"
+      disabled={!passwordIsOk}
+      cancel={passwordIsOk ? 'cancel' : false}
+      onCancel={passwordIsOk ? resetForm : false}
+      className={isMobile ? 'compact mt15' : ''}
+    />
+  );
   return (
-    <Form onSubmit={handleSubmit} onSuccess={handleSuccess}
+    <Form onSubmit={handleSubmit} onSuccess={handleSuccess} handleFormError={handleFormError}
           behavior={{ checkmarkStick: false }}
-          submit={(
-            <Submit
-              value="save changes"
-              disabled={!passwordIsOk}
-              cancel={passwordIsOk ? 'cancel' : false}
-              onCancel={passwordIsOk ? resetForm : false}
-              className={isMobile ? 'compact mt15' : ''}
-            />
-          )}
+          submit={formSubmit}
           title="change password">
       <Input
         type="password"

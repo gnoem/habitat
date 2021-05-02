@@ -82,7 +82,7 @@ export const typeDefs = gql`
   type Mutation {
     createUser(email: String, password: String): UserResult
     editUser(id: Int, name: String, email: String): User
-    editPassword(id: Int, password: String): User
+    editPassword(id: Int, password: String, confirmPassword: String): UserResult
     editSettings(
       userId: Int,
       dashboard__defaultView: String,

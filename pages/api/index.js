@@ -129,11 +129,20 @@ const mutations = {
     }
   `,
   editPassword: `
-    mutation ($id: Int, $password: String) {
-      editPassword(id: $id, password: $password) {
-        id
-        name
-        email
+    mutation ($id: Int, $password: String, $confirmPassword: String) {
+      editPassword(id: $id, password: $password, confirmPassword: $confirmPassword) {
+        ... on FormErrorReport {
+          __typename
+          errors {
+            location
+            message
+          }
+        }
+        ... on User {
+          id
+          name
+          email
+        }
       }
     }
   `,
