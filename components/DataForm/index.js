@@ -14,25 +14,41 @@ import Form, { Input, Checkbox, Submit, Button } from "../Form";
 import { PageLoading } from "../Loading";
 import ArrowNav from "../ArrowNav";
 
-const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
-  const router = useRouter();
-  const { user, entries, getEntries } = useContext(DataContext);
-  const isMobile = useContext(MobileContext);
-  const { createModal } = useContext(ModalContext);
-  const [currentDate, setCurrentDate] = useState(dashPanelOptions?.date ?? dayjs().format('YYYY-MM-DD'));
+
+const useExistingData = (entries, initialState = dayjs().format('YYYY-MM-DD'), dashPanelOptions) => {
+  const [currentDate, setCurrentDate] = useState(initialState);
   const existingData = useMemo(() => {
     const index = entries?.findIndex(entry => entry.date === currentDate);
     return entries?.[index] ?? null;
   }, [entries, currentDate]);
+  useEffect(() => {
+    if (dashPanelOptions?.date) setCurrentDate(dashPanelOptions?.date);
+  }, [dashPanelOptions?.date]);
+  return {
+    existingData,
+    currentDate,
+    setCurrentDate
+  }
+}
+
+const useExistingData = ({ entries, currentDate }) => {
+  const existingData = useMemo(() => {
+    const index = entries?.findIndex(entry => entry.date === currentDate);
+    return entries?.[index] ?? null;
+  }, [entries, currentDate]);
+  return existingData;
+}
+
+const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
+  const { user, entries, getEntries } = useContext(DataContext);
+  const isMobile = useContext(MobileContext);
+  const { existingData, currentDate, setCurrentDate } = useExistingData(entries, dashPanelOptions?.date, dashPanelOptions);
   const { formData, resetForm, setFormData, inputProps } = useForm({
     userId: user.id,
     id: existingData?.id,
     date: existingData?.date ?? currentDate,
     records: existingData?.records ?? []
   });
-  useEffect(() => {
-    if (dashPanelOptions?.date) setCurrentDate(dashPanelOptions?.date);
-  }, [dashPanelOptions?.date]);
   useEffect(() => {
     resetForm();
   }, [entries, currentDate, existingData]);
@@ -75,16 +91,8 @@ const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
     // todo deal with this
     if (isMobile) updateDashPanel(null);
   }
-  const handleDelete = () => {
-    createModal('deleteEntry', { entry: existingData });
-  }
   if (!habits || !entries) return <PageLoading />;
-  if (!habits.length) return (
-    <center className={styles.noHabits}>
-      <p>you're not tracking any habits yet!</p>
-      <Button className="compact" onClick={() => router.push('/habits')}>add your first habit</Button>
-    </center>
-  );
+  if (!habits.length) return <NoHabits />;
   return (
     <div className={styles.DataForm}>
       <Form onSubmit={handleSubmit} onSuccess={handleSuccess}
@@ -100,13 +108,31 @@ const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
         }} />
         <DataFormFields {...{ habits, existingData, currentDate, updateRecordsArray }} />
       </Form>
-      {existingData && (
-        <button className={styles.deleteEntry} onClick={handleDelete}>
-          <FontAwesomeIcon icon={faAngleDoubleRight} />
-          <span>delete this entry</span>
-        </button>
-      )}
+      {existingData && <DeleteEntry />}
     </div>
+  );
+}
+
+const NoHabits = () => {
+  const router = useRouter();
+  return (
+    <center className={styles.noHabits}>
+      <p>you're not tracking any habits yet!</p>
+      <Button className="compact" onClick={() => router.push('/habits')}>add your first habit</Button>
+    </center>
+  );
+}
+
+const DeleteEntry = () => {
+  const { createModal } = useContext(ModalContext);
+  const handleDelete = () => {
+    createModal('deleteEntry', { entry: existingData });
+  }
+  return (
+    <button className={styles.deleteEntry} onClick={handleDelete}>
+      <FontAwesomeIcon icon={faAngleDoubleRight} />
+      <span>delete this entry</span>
+    </button>
   );
 }
 
