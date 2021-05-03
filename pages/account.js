@@ -22,8 +22,8 @@ const AccountDetails = ({ user, isMobile }) => {
   const { setUser } = useContext(DataContext);
   const { formData, handleFormError, inputProps } = useForm({
     id: user.id,
-    name: user.name,
-    email: user.email
+    name: user.name ?? '',
+    email: user.email ?? ''
   });
   const handleSubmit = () => User.edit(formData);
   const handleSuccess = ({ editUser }) => setUser(editUser);

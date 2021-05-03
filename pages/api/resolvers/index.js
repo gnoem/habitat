@@ -11,14 +11,14 @@ export const resolvers = {
       const emailIsInUse = await prisma.user.findUnique({
         where: { email }
       });
-      Validator.register('isUntaken', () => !emailIsInUse);
+      Validator.register('isAvailable', () => !emailIsInUse);
       const validation = new Validator({ email, password }, {
-        email: 'required|email|isUntaken|max:50',
+        email: 'required|email|isAvailable|max:50',
         password: 'required|min:6'
       }, {
         required: 'this field is required!',
-        email: 'please use a valid email address!',
-        isUntaken: 'email address is already in use!',
+        email: 'please enter a valid email address!',
+        isAvailable: 'email address is already in use!',
         max: 'maximum 50 characters!',
         min: 'minimum 6 characters!'
       });
@@ -36,6 +36,23 @@ export const resolvers = {
     },
     editUser: async (_, args) => {
       const { id, name, email } = args;
+      const userWithThisEmail = await prisma.user.findUnique({
+        where: { email }
+      });
+      Validator.register('isAvailable', () => {
+        if (!userWithThisEmail) return true;
+        return userWithThisEmail.id === id;
+      });
+      const validation = new Validator({ name, email }, {
+        name: 'max:50',
+        email: 'required|email|isAvailable|max:50'
+      }, {
+        required: 'this field is required!',
+        email: 'please enter a valid email address!',
+        isAvailable: 'email address is already in use!',
+        max: 'maximum 50 characters!'
+      });
+      if (validation.fails()) return validationError(validation.errors.all());
       const user = await prisma.user.update({
         where: { id },
         data: {
@@ -43,7 +60,10 @@ export const resolvers = {
           email
         }
       });
-      return user;
+      return {
+        __typename: 'User',
+        ...user
+      }
     },
     editPassword: async (_, args) => {
       const { id, password, confirmPassword } = args;

@@ -25,7 +25,7 @@ export const Entry = {
 
 const queries = {
   getUser: `
-    query ($id: Int) {
+    query($id: Int) {
       user(id: $id) {
         id
         name
@@ -41,7 +41,7 @@ const queries = {
     }
   `,
   getHabits: `
-    query ($userId: Int) {
+    query($userId: Int) {
       habits(userId: $userId) {
         id
         name
@@ -53,7 +53,7 @@ const queries = {
     }
   `,
   getEntries: `
-    query ($userId: Int) {
+    query($userId: Int) {
       entries(userId: $userId) {
         id
         date
@@ -67,7 +67,7 @@ const queries = {
     }
   `,
   loginUser: `
-    query ($email: String, $password: String) {
+    query($email: String, $password: String) {
       login(email: $email, password: $password) {
         ... on FormErrorReport {
           __typename
@@ -95,7 +95,7 @@ const queries = {
 
 const mutations = {
   createUser: `
-    mutation ($email: String, $password: String) {
+    mutation($email: String, $password: String) {
       createUser(email: $email, password: $password) {
         ... on FormErrorReport {
           __typename
@@ -120,16 +120,25 @@ const mutations = {
     }
   `,
   editUser: `
-    mutation ($id: Int, $name: String, $email: String) {
+    mutation($id: Int, $name: String, $email: String) {
       editUser(id: $id, name: $name, email: $email) {
-        id
-        name
-        email
+        ... on FormErrorReport {
+          __typename
+          errors {
+            location
+            message
+          }
+        }
+        ... on User {
+          id
+          name
+          email
+        }
       }
     }
   `,
   editPassword: `
-    mutation ($id: Int, $password: String, $confirmPassword: String) {
+    mutation($id: Int, $password: String, $confirmPassword: String) {
       editPassword(id: $id, password: $password, confirmPassword: $confirmPassword) {
         ... on FormErrorReport {
           __typename
@@ -147,20 +156,22 @@ const mutations = {
     }
   `,
   editSettings: `
-    mutation (
+    mutation(
       $userId: Int,
       $dashboard__defaultView: String,
       $habits__defaultView: String,
       $appearance__showClock: Boolean,
       $appearance__24hrClock: Boolean,
-      $appearance__showClockSeconds: Boolean) {
+      $appearance__showClockSeconds: Boolean
+    ) {
       editSettings(
         userId: $userId,
         dashboard__defaultView: $dashboard__defaultView,
         habits__defaultView: $habits__defaultView,
         appearance__showClock: $appearance__showClock,
         appearance__24hrClock: $appearance__24hrClock,
-        appearance__showClockSeconds: $appearance__showClockSeconds) {
+        appearance__showClockSeconds: $appearance__showClockSeconds
+      ) {
         dashboard__defaultView
         habits__defaultView
         appearance__showClock
@@ -170,7 +181,7 @@ const mutations = {
     }
   `,
   createHabit: `
-    mutation ($name: String, $icon: String, $color: String, $label: String, $complex: Boolean, $userId: Int) {
+    mutation($name: String, $icon: String, $color: String, $label: String, $complex: Boolean, $userId: Int) {
       createHabit(name: $name, icon: $icon, color: $color, label: $label, complex: $complex, userId: $userId) {
         name
         icon
@@ -182,7 +193,7 @@ const mutations = {
     }
   `,
   editHabit: `
-    mutation ($id: Int, $name: String, $icon: String, $color: String, $label: String, $complex: Boolean) {
+    mutation($id: Int, $name: String, $icon: String, $color: String, $label: String, $complex: Boolean) {
       editHabit(id: $id, name: $name, icon: $icon, color: $color, label: $label, complex: $complex) {
         id
         name
@@ -194,7 +205,7 @@ const mutations = {
     }
   `,
   deleteHabit: `
-    mutation ($id: Int) {
+    mutation($id: Int) {
       deleteHabit(id: $id) {
         id
         name
@@ -206,7 +217,7 @@ const mutations = {
     }
   `,
   createEntry: `
-    mutation ($userId: Int, $date: String, $records: [RecordInput]) {
+    mutation($userId: Int, $date: String, $records: [RecordInput]) {
       createEntry(userId: $userId, date: $date, records: $records) {
         id
         date
@@ -219,7 +230,7 @@ const mutations = {
     }
   `,
   editEntry: `
-    mutation ($id: Int, $date: String, $records: [RecordInput]) {
+    mutation($id: Int, $date: String, $records: [RecordInput]) {
       editEntry(id: $id, date: $date, records: $records) {
         id
         date
@@ -232,7 +243,7 @@ const mutations = {
     }
   `,
   deleteEntry: `
-    mutation ($id: Int) {
+    mutation($id: Int) {
       deleteEntry(id: $id) {
         id
         date
