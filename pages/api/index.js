@@ -25,7 +25,7 @@ export const Entry = {
 
 const queries = {
   getUser: `
-    query($id: Int) {
+    query($id: String) {
       user(id: $id) {
         id
         name
@@ -41,7 +41,7 @@ const queries = {
     }
   `,
   getHabits: `
-    query($userId: Int) {
+    query($userId: String) {
       habits(userId: $userId) {
         id
         name
@@ -49,11 +49,12 @@ const queries = {
         color
         label
         complex
+        retired
       }
     }
   `,
   getEntries: `
-    query($userId: Int) {
+    query($userId: String) {
       entries(userId: $userId) {
         id
         date
@@ -120,7 +121,7 @@ const mutations = {
     }
   `,
   editUser: `
-    mutation($id: Int, $name: String, $email: String) {
+    mutation($id: String, $name: String, $email: String) {
       editUser(id: $id, name: $name, email: $email) {
         ... on FormErrorReport {
           __typename
@@ -138,7 +139,7 @@ const mutations = {
     }
   `,
   editPassword: `
-    mutation($id: Int, $password: String, $confirmPassword: String) {
+    mutation($id: String, $password: String, $confirmPassword: String) {
       editPassword(id: $id, password: $password, confirmPassword: $confirmPassword) {
         ... on FormErrorReport {
           __typename
@@ -157,7 +158,7 @@ const mutations = {
   `,
   editSettings: `
     mutation(
-      $userId: Int,
+      $userId: String,
       $dashboard__defaultView: String,
       $habits__defaultView: String,
       $appearance__showClock: Boolean,
@@ -181,8 +182,8 @@ const mutations = {
     }
   `,
   createHabit: `
-    mutation($name: String, $icon: String, $color: String, $label: String, $complex: Boolean, $userId: Int) {
-      createHabit(name: $name, icon: $icon, color: $color, label: $label, complex: $complex, userId: $userId) {
+    mutation($name: String, $icon: String, $color: String, $label: String, $complex: Boolean, $retired: Boolean, $userId: String) {
+      createHabit(name: $name, icon: $icon, color: $color, label: $label, complex: $complex, retired: $retired, userId: $userId) {
         name
         icon
         color
@@ -193,8 +194,8 @@ const mutations = {
     }
   `,
   editHabit: `
-    mutation($id: Int, $name: String, $icon: String, $color: String, $label: String, $complex: Boolean) {
-      editHabit(id: $id, name: $name, icon: $icon, color: $color, label: $label, complex: $complex) {
+    mutation($id: String, $name: String, $icon: String, $color: String, $label: String, $complex: Boolean, $retired: Boolean) {
+      editHabit(id: $id, name: $name, icon: $icon, color: $color, label: $label, complex: $complex, retired: $retired) {
         id
         name
         icon
@@ -205,7 +206,7 @@ const mutations = {
     }
   `,
   deleteHabit: `
-    mutation($id: Int) {
+    mutation($id: String) {
       deleteHabit(id: $id) {
         id
         name
@@ -213,11 +214,12 @@ const mutations = {
         color
         label
         complex
+        retired
       }
     }
   `,
   createEntry: `
-    mutation($userId: Int, $date: String, $records: [RecordInput]) {
+    mutation($userId: String, $date: String, $records: [RecordInput]) {
       createEntry(userId: $userId, date: $date, records: $records) {
         id
         date
@@ -230,7 +232,7 @@ const mutations = {
     }
   `,
   editEntry: `
-    mutation($id: Int, $date: String, $records: [RecordInput]) {
+    mutation($id: String, $date: String, $records: [RecordInput]) {
       editEntry(id: $id, date: $date, records: $records) {
         id
         date
@@ -243,7 +245,7 @@ const mutations = {
     }
   `,
   deleteEntry: `
-    mutation($id: Int) {
+    mutation($id: String) {
       deleteEntry(id: $id) {
         id
         date

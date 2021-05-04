@@ -8,7 +8,7 @@ generator client {
 }
 
 model User {
-  id            Int           @default(autoincrement()) @id
+  id            String        @default(cuid()) @id
   name          String?
   email         String        @unique
   password      String?
@@ -19,46 +19,47 @@ model User {
 }
 
 model Settings {
-  id                               Int           @default(autoincrement()) @id
+  id                               String           @default(cuid()) @id
   dashboard__defaultView           String?
   habits__defaultView              String?
   appearance__showClock            Boolean?
   appearance__24hrClock            Boolean?
   appearance__showClockSeconds     Boolean?
-  user                             User?         @relation(fields: [userId], references: [id])
-  userId                           Int?          @unique
+  user                             User?            @relation(fields: [userId], references: [id])
+  userId                           String?          @unique
   @@map(name: "settings")
 }
 
 model Habit {
-  id            Int           @default(autoincrement()) @id
+  id            String        @default(cuid()) @id
   name          String
   icon          String?
   color         String?
   label         String?
   complex       Boolean?
+  retired       Boolean       @default(false)
   records       Record[]
-  user          User?          @relation(fields: [userId], references: [id])
-  userId        Int?
+  user          User?         @relation(fields: [userId], references: [id])
+  userId        String?
   @@map(name: "habits")
 }
 
 model Entry {
-  id            Int           @default(autoincrement()) @id
+  id            String        @default(cuid()) @id
   date          String
   records       Record[]
   user          User          @relation(fields: [userId], references: [id])
-  userId        Int
+  userId        String
   @@map(name: "entries")
 }
 
 model Record {
-  id            Int           @default(autoincrement()) @id
+  id            String        @default(cuid()) @id
   habit         Habit?        @relation(fields: [habitId], references: [id])
-  habitId       Int?
+  habitId       String?
   amount        Int?
   check         Boolean
   entry         Entry?        @relation(fields: [entryId], references: [id])
-  entryId       Int?
+  entryId       String?
   @@map(name: "records")
 }

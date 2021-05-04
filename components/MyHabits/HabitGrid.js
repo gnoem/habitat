@@ -8,7 +8,7 @@ import { ModalContext } from "../../contexts";
 import { getUnitFromLabel } from "../../utils";
 import { HabitForm, HabitIcon } from ".";
 
-export const HabitGridItem = ({ addingNew, userId, id, name, icon, color, label, complex }) => {
+export const HabitGridItem = ({ addingNew, userId, id, name, icon, color, label, complex, retired }) => {
   const { createModal } = useContext(ModalContext);
   const manageHabit = () => {
     createModal('manageHabit', {
@@ -21,7 +21,8 @@ export const HabitGridItem = ({ addingNew, userId, id, name, icon, color, label,
         icon,
         color,
         label,
-        complex
+        complex,
+        retired
       }
     });
   }
@@ -36,7 +37,7 @@ export const HabitGridItem = ({ addingNew, userId, id, name, icon, color, label,
     </button>
   );
   return (
-    <div className={styles.HabitGridItem}>
+    <div className={`${styles.HabitGridItem} ${retired ? styles.retired : ''}`}>
       <span className={styles.HabitGridColorIndicator} style={{ background: color }}></span>
       <HabitGridItemHeader {...{ name, icon }} />
       <HabitGridItemBody {...{ userId, id, name, icon, color, label, complex, manageHabit, deleteHabit }} />

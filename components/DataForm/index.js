@@ -239,7 +239,7 @@ const DataFormDateInput = ({ existingData, formData, setFormData, inputProps, cu
   );
 }
 
-const DataFormField = ({ wholeFormData, setWholeFormData, currentDate, id, icon, label, complex, record }) => {
+const DataFormField = ({ wholeFormData, setWholeFormData, currentDate, id, icon, label, complex, retired, record }) => {
   const { formData, inputProps, checkboxProps, setFormData, resetForm } = useForm({
     habitId: id,
     amount: record?.amount ?? '',
@@ -290,6 +290,7 @@ const DataFormField = ({ wholeFormData, setWholeFormData, currentDate, id, icon,
       }));
     }
   }, [formData.amount]);
+  if (retired && !record?.check) return null;
   return (
     <div className={styles.DataFormField}>
       <span className={formData.check ? styles.check : ''}>{icon}</span>

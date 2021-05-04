@@ -120,7 +120,7 @@ export const resolvers = {
       }
     },
     createHabit: async (_, args) => {
-      const { name, icon, color, label, complex, userId } = args;
+      const { name, icon, color, label, complex, retired, userId } = args;
       const habit = await prisma.habit.create({
         data: {
           name,
@@ -128,13 +128,14 @@ export const resolvers = {
           color,
           label,
           complex,
+          retired,
           userId
         }
       });
       return habit;
     },
     editHabit: async (_, args) => {
-      const { id, name, icon, color, label, complex } = args;
+      const { id, name, icon, color, label, retired, complex } = args;
       const habit = await prisma.habit.update({
         where: { id },
         data: {
@@ -142,7 +143,8 @@ export const resolvers = {
           icon,
           color,
           label,
-          complex
+          complex,
+          retired
         }
       });
       return habit;
@@ -165,6 +167,9 @@ export const resolvers = {
     },
     createEntry: async (_, args) => {
       const { userId, date, records } = args;
+      // todo filter records - only include those with check = true
+      // no use clogging up the db
+      // also for editEntry
       const entry = await prisma.entry.create({
         data: {
           userId,

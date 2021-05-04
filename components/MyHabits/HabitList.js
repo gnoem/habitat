@@ -8,14 +8,14 @@ import { ModalContext } from "../../contexts";
 import { useRefName } from "../../hooks";
 import { HabitForm, HabitIcon } from ".";
 
-export const HabitListItem = ({ addingNew, userId, id, name, icon, color, label, complex }) => {
+export const HabitListItem = ({ addingNew, userId, id, name, icon, color, label, complex, retired }) => {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className={`${styles.HabitListItem} ${expanded ? styles.expanded : ''}`}>
       <HabitListItemHeader {...{
         name,
         icon,
-        expanded,
+        retired,
         toggleExpanded: () => setExpanded(state => !state)
       }} />
       <HabitListItemBody {...{
@@ -27,6 +27,7 @@ export const HabitListItem = ({ addingNew, userId, id, name, icon, color, label,
         color,
         label,
         complex,
+        retired,
         expanded,
         updateExpanded: setExpanded
       }} />
@@ -34,16 +35,16 @@ export const HabitListItem = ({ addingNew, userId, id, name, icon, color, label,
   );
 }
 
-const HabitListItemHeader = ({ name, icon, color, toggleExpanded }) => {
+const HabitListItemHeader = ({ name, icon, retired, toggleExpanded }) => {
   return (
-    <div className={styles.HabitListItemHeader} onClick={toggleExpanded}>
+    <div className={`${styles.HabitListItemHeader} ${retired ? styles.retired : ''}`} onClick={toggleExpanded}>
       <HabitIcon>{icon}</HabitIcon>
       <h3>{name}</h3>
     </div>
   );
 }
 
-const HabitListItemBody = ({ addingNew, userId, id, name, icon, color, label, complex, expanded, updateExpanded }) => {
+const HabitListItemBody = ({ addingNew, userId, id, name, icon, color, label, complex, retired, expanded, updateExpanded }) => {
   const habitBodyRef = useRef(null);
   useEffect(() => {
     const habitBody = useRefName(habitBodyRef);
@@ -65,6 +66,7 @@ const HabitListItemBody = ({ addingNew, userId, id, name, icon, color, label, co
           color,
           label,
           complex,
+          retired,
           formBehavior: { checkmarkStick: false },
           onSuccess: () => updateExpanded(false),
           resetFormAfter: !!addingNew

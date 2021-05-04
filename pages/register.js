@@ -26,7 +26,7 @@ const Register = () => {
       <h2>register</h2>
       <p>create an account by filling out the fields below:</p>
       <Form onSubmit={handleSubmit} onSuccess={handleSuccess} handleFormError={handleFormError}
-            behavior={{ checkmarkStick: false }}
+            behavior={{ showSuccess: false }}
             submit={<Submit value="continue" cancel="go back" onCancel={() => router.back()} />}>
         <Input type="text" name="email" label="your email address:*" {...inputProps} />
         <Input type="password" name="password" label="choose a secure password:" note="minimum 6 chars." {...inputProps} />

@@ -10,6 +10,19 @@ div button.currentHabitView { /* including div for specificity */
   opacity: 1;
 }
 
+.retired {
+  opacity: 0.5;
+  transition: 0.2s;
+}
+.retired:hover {
+  opacity: 1;
+}
+
+.HabitsContainer h2 {
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+
 .HabitList {
   display: inline-flex;
   flex-direction: column;
@@ -98,7 +111,11 @@ div button.currentHabitView { /* including div for specificity */
 .HabitGrid {
   display: flex;
   flex-flow: row wrap;
-  margin: 1rem -1.5rem -1.5rem 0;
+  margin: 1rem -1.5rem 0 0;
+}
+.HabitGrid h2 {
+  flex: 1 0 100%;
+  margin-bottom: 2rem;
 }
 .HabitGridItem {
   flex: 1 0 0;

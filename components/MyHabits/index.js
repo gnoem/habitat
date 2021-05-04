@@ -56,23 +56,37 @@ const Habits = ({ habitView, userId, habits }) => {
   const [Habit, NewHabit] = habitView === 'list'
     ? [HabitListItem, NewHabitListItem]
     : [HabitGridItem, NewHabitGridItem];
-  const boxes = habits.map(habit => (
-    <Habit key={`habit-habitId(${habit.id})`} userId={userId} {...habit} />
-  ));
+  const activeHabits = habits.map(habit => {
+    if (habit.retired) return null;
+    return <Habit key={`habit-habitId(${habit.id})`} userId={userId} {...habit} />;
+  });
+  const retiredHabits = habits.map(habit => {
+    if (!habit.retired) return null;
+    return <Habit key={`habit-habitId(${habit.id})`} userId={userId} {...habit} retired />;
+  }).filter(el => el);
   return (
-    <div className={habitView === 'list' ? styles.HabitList : styles.HabitGrid}>
-      {boxes}
-      <NewHabit {...{ habits, userId }} />
+    <div className={styles.HabitsContainer}>
+      <div className={habitView === 'list' ? styles.HabitList : styles.HabitGrid}>
+        {activeHabits}
+        <NewHabit {...{ habits, userId }} />
+      </div>
+      {retiredHabits.length > 0 && (
+        <div className={habitView === 'grid' ? styles.HabitGrid : ''}>
+          <h2>retired habits</h2>
+          {retiredHabits}
+        </div>
+      )}
     </div>
   );
 }
 
-export const HabitForm = ({ title, userId, id, name, icon, color, label, complex, formBehavior, onSuccess, resetFormAfter }) => {
+export const HabitForm = ({ title, userId, id, name, icon, color, label, complex, retired, formBehavior, onSuccess, resetFormAfter }) => {
   const addingNew = !id;
   const { getHabits } = useContext(DataContext);
   const { formData, handleFormError, resetForm, inputProps, checkboxProps } = useForm({
     userId,
     id: addingNew ? '' : id,
+    retired: addingNew ? false : retired,
     name: addingNew ? '' : name,
     icon: addingNew ? '' : icon,
     color: addingNew ? '#45DAC8' : color,
@@ -105,6 +119,12 @@ export const HabitForm = ({ title, userId, id, name, icon, color, label, complex
         "enable complex tracking",
         "if checked, you will be able to record an amount when tracking this habit, e.g. how many hours of studying, how many oz. of water"
       ]} {...checkboxProps} />
+      {!addingNew && (
+        <Checkbox name="retired" className="mt10" checked={formData.retired} detailedLabel={[
+          "mark as retired",
+          "if checked, this habit will no longer show up when adding/editing records - perfect for habits you no longer want to track but still want to preserve existing data for"
+        ]} {...checkboxProps} />
+      )}
     </Form>
   );
 }

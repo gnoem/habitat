@@ -2,7 +2,7 @@ import { gql } from "apollo-server-micro";
 
 export const typeDefs = gql`
   type User {
-    id: Int
+    id: String
     name: String
     email: String
     password: String
@@ -12,7 +12,7 @@ export const typeDefs = gql`
   }
 
   type Settings {
-    id: Int,
+    id: String,
     dashboard__defaultView: String,
     habits__defaultView: String,
     appearance__showClock: Boolean,
@@ -21,29 +21,30 @@ export const typeDefs = gql`
   }
 
   type Habit {
-    id: Int
+    id: String
     name: String
     icon: String
     color: String
     label: String
     complex: Boolean
-    userId: Int
+    retired: Boolean
+    userId: String
   }
 
   type Entry {
-    id: Int
+    id: String
     date: String
     records: [Record]
     user: User
-    userId: Int
+    userId: String
   }
 
   type Record {
-    id: Int
-    habitId: Int
+    id: String
+    habitId: String
     amount: Int
     check: Boolean
-    entryId: Int
+    entryId: String
   }
 
   type FormErrorReport {
@@ -61,8 +62,8 @@ export const typeDefs = gql`
   }
 
   input RecordInput {
-    id: Int
-    habitId: Int
+    id: String
+    habitId: String
     amount: Int
     check: Boolean
   }
@@ -72,29 +73,46 @@ export const typeDefs = gql`
   type Query {
     users: [User]
     login(email: String, password: String): UserResult
-    user(id: Int): User
-    settings(userId: Int): Settings
-    habits(userId: Int): [Habit]
-    entries(userId: Int): [Entry]
-    records(entryId: Int): [Record]
+    user(id: String): User
+    settings(userId: String): Settings
+    habits(userId: String): [Habit]
+    entries(userId: String): [Entry]
+    records(entryId: String): [Record]
   }
   
   type Mutation {
     createUser(email: String, password: String): UserResult
-    editUser(id: Int, name: String, email: String): UserResult
-    editPassword(id: Int, password: String, confirmPassword: String): UserResult
+    editUser(id: String, name: String, email: String): UserResult
+    editPassword(id: String, password: String, confirmPassword: String): UserResult
     editSettings(
-      userId: Int,
+      userId: String,
       dashboard__defaultView: String,
       habits__defaultView: String,
       appearance__showClock: Boolean,
       appearance__24hrClock: Boolean,
-      appearance__showClockSeconds: Boolean): Settings
-    createHabit(name: String, icon: String, color: String, label: String, complex: Boolean, userId: Int): Habit
-    editHabit(id: Int, name: String, icon: String, color: String, label: String, complex: Boolean): Habit
-    deleteHabit(id: Int): Habit
-    createEntry(userId: Int, date: String, records: [RecordInput]): Entry
-    editEntry(id: Int, date: String, records: [RecordInput]): Entry
-    deleteEntry(id: Int): Entry
+      appearance__showClockSeconds: Boolean
+    ): Settings
+    createHabit(
+      name: String,
+      icon: String,
+      color: String,
+      label: String,
+      complex: Boolean,
+      retired: Boolean,
+      userId: String
+    ): Habit
+    editHabit(
+      id: String,
+      name: String,
+      icon: String,
+      color: String,
+      label: String,
+      complex: Boolean,
+      retired: Boolean
+    ): Habit
+    deleteHabit(id: String): Habit
+    createEntry(userId: String, date: String, records: [RecordInput]): Entry
+    editEntry(id: String, date: String, records: [RecordInput]): Entry
+    deleteEntry(id: String): Entry
   }
 `;
