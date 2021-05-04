@@ -31,10 +31,12 @@ export const HabitGridItem = ({ addingNew, userId, id, name, icon, color, label,
     createModal('deleteHabit', { habit });
   }
   if (addingNew) return (
-    <button type="button" className={styles.NewHabitGridItem} onClick={manageHabit}>
-      <div><FontAwesomeIcon icon={faPlus} /></div>
-      <span>Add new</span>
-    </button>
+    <div className={styles.NewHabitGridItem}>
+      <button type="button" onClick={manageHabit}>
+        <div><FontAwesomeIcon icon={faPlus} /></div>
+        <span>Add new</span>
+      </button>
+    </div>
   );
   return (
     <div className={`${styles.HabitGridItem} ${retired ? styles.retired : ''}`}>

@@ -12,7 +12,7 @@ export const typeDefs = gql`
   }
 
   type Settings {
-    id: String,
+    userId: String,
     dashboard__defaultView: String,
     habits__defaultView: String,
     appearance__showClock: Boolean,

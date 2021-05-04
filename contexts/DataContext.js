@@ -10,7 +10,6 @@ export const DataContextProvider = ({ children }) => {
   const getUser = async (userId = user.id) => {
     if (!userId) return console.log('userId is undefined!');
     const { user } = await User.get({ id: userId });
-    console.dir(user);
     setUser(user);
     return user;
   }

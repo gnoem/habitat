@@ -169,12 +169,13 @@ div button.currentHabitView { /* including div for specificity */
   margin-left: 0.5rem;
 }
 .NewHabitGridItem {
-  grid-column: 1 / -1;
   flex: 1 0 100%;
+}
+.NewHabitGridItem > button {
   display: flex;
   align-items: center;
 }
-.NewHabitGridItem > div {
+.NewHabitGridItem > button > div {
   width: 2rem;
   height: 2rem;
   background: #000;
@@ -185,13 +186,13 @@ div button.currentHabitView { /* including div for specificity */
   align-items: center;
   justify-content: center;
 }
-.NewHabitGridItem > span {
+.NewHabitGridItem > button > span {
   display: block;
   margin-left: 0.75rem;
   font-size: 1rem;
   position: relative;
 }
-.NewHabitGridItem > span::before {
+.NewHabitGridItem > button > span::before {
   content: '';
   display: block;
   z-index: -1;

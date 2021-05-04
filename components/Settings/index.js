@@ -18,10 +18,11 @@ const SettingsForm = ({ user }) => {
     appearance__showClockSeconds: user.settings?.appearance__showClockSeconds ?? true
   });
   const handleSubmit = async () => User.editSettings(formData);
+  const handleSuccess = () => getUser();
   return (
     <Form
       onSubmit={handleSubmit}
-      onSuccess={getUser}
+      onSuccess={handleSuccess}
       behavior={{ checkmarkStick: false }}
       submit={<Submit value="save changes" cancel={false} className="mt25" />}>
         <DashboardSettings {...{ formData, dropdownProps, checkboxProps }} />
