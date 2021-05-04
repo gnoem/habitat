@@ -137,7 +137,7 @@ export const resolvers = {
     editHabit: async (_, args) => {
       const { id, name, icon, color, label, retired, complex } = args;
       const habit = await prisma.habit.update({
-        where: { id },
+        where: { id: null },
         data: {
           name,
           icon,

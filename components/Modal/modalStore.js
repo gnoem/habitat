@@ -22,7 +22,13 @@ const SomethingWentWrong = ({ error, closeModal }) => {
   return (
     <div>
       <h2>something went wrong</h2>
-      <p>an unknown error occurred, please reload the page and try again or <button type="button" onClick={() => console.log(error)}>click to console.log error</button></p>
+      <p>an unknown error occurred, please reload the page and try again</p>
+      <details className="errorReport">
+        <summary>View details</summary>
+        <div className="errorDetails">
+          <code>{error?.caughtErrors ?? "nothing to see here, sorry :("}</code>
+        </div>
+      </details>
       <Button onClick={handleClick}>close & reload</Button>
     </div>
   );

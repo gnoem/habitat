@@ -83,6 +83,13 @@ center {
   display: block;
   text-align: center;
 }
+code {
+  font-family: var(--mono-font);
+  font-size: 0.8rem;
+  line-height: 1rem;
+  padding: 0 0.2rem;
+  letter-spacing: -0.02rem;
+}
 
 @media screen and (max-width: 900px) {
   h2 {
@@ -268,6 +275,31 @@ input[type=date] {
 .nprogress-custom-parent #nprogress .spinner,
 .nprogress-custom-parent #nprogress .bar {
   position: absolute;
+}
+
+details.errorReport {
+  margin-bottom: 1.5rem;
+}
+details.errorReport summary {
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: #333;
+  outline: none;
+}
+details.errorReport .errorDetails {
+  white-space: pre-line;
+  word-wrap: break-word;
+  display: block;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ddd;
+  max-height: 6rem;
+  overflow: auto;
+}
+details.errorReport .errorDetails code {
+  line-height: 1rem;
+  display: block;
 }
 
 @media screen and (max-width: 900px) {
