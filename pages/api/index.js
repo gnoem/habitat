@@ -6,7 +6,8 @@ export const User = {
   edit: async (formData) => await handleQuery(mutations.editUser, formData),
   editPassword: async (formData) => await handleQuery(mutations.editPassword, formData),
   editSettings: async (formData) => await handleQuery(mutations.editSettings, formData),
-  login: async (params) => await handleQuery(queries.loginUser, params)
+  login: async (params) => await handleQuery(queries.loginUser, params),
+  generateDemoData: async (id) => await handleQuery(mutations.generateDemoData, id)
 }
 
 export const Habit = {
@@ -252,6 +253,13 @@ const mutations = {
       }
     }
   `,
+  generateDemoData: `
+    mutation($id: String) {
+      generateDemoData(id: $id) {
+        success
+      }
+    }
+  `
 }
 
 export { handleRequest }

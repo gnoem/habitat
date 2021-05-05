@@ -3,6 +3,7 @@ import * as Validator from "validatorjs";
 
 import prisma from "../../../lib/prisma";
 import { validationError } from "./validation";
+import { habitsList, entriesList, recordsList } from "./demo";
 
 export const resolvers = {
   Mutation: {
@@ -137,7 +138,7 @@ export const resolvers = {
     editHabit: async (_, args) => {
       const { id, name, icon, color, label, retired, complex } = args;
       const habit = await prisma.habit.update({
-        where: { id: null },
+        where: { id },
         data: {
           name,
           icon,
@@ -205,6 +206,33 @@ export const resolvers = {
       });
       const [__, deletedEntry] = await prisma.$transaction([deleteRecords, deleteEntry]);
       return deletedEntry;
+    },
+    generateDemoData: async (_, args) => {
+      const { id } = args;
+      // create demo habits and entries
+      await prisma.habit.createMany({
+        data: habitsList(id)
+      });
+      await prisma.entry.createMany({
+        data: entriesList(id)
+      });
+      const entries = await prisma.entry.findMany({
+        where: { demo: true }
+      });
+      // for each entry, loop through recordsArray and add entry id, then prisma.record.createMany
+      const records = entries.map((entry, index) => {
+        return recordsList[index].map(record => {
+          const recordWithEntryId = {...record};
+          recordWithEntryId.entryId = entry.id;
+          return recordWithEntryId;
+        });
+      }).flat();
+      await prisma.record.createMany({
+        data: records
+      });
+      return {
+        success: true
+      }
     }
   },
   Query: {
@@ -228,6 +256,15 @@ export const resolvers = {
       if (validation.fails()) return validationError(validation.errors.all());
       const passwordIsValid = bcrypt.compareSync(password, user.password);
       if (!passwordIsValid) return validationError({ password: 'invalid password' });
+      if (email === 'demo') {
+        const whereDemo = {
+          where: { demo: true }
+        }
+        // reset demo records, entries, and habits
+        await prisma.record.deleteMany(whereDemo);
+        await prisma.entry.deleteMany(whereDemo);
+        await prisma.habit.deleteMany(whereDemo);
+      }
       return {
         __typename: 'User',
         ...user

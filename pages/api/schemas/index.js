@@ -56,6 +56,10 @@ export const typeDefs = gql`
     location: String
   }
 
+  type Success {
+    success: Boolean
+  }
+
   input UserInput {
     email: String
     password: String
@@ -114,5 +118,6 @@ export const typeDefs = gql`
     createEntry(userId: String, date: String, records: [RecordInput]): Entry
     editEntry(id: String, date: String, records: [RecordInput]): Entry
     deleteEntry(id: String): Entry
+    generateDemoData(id: String): Success
   }
 `;

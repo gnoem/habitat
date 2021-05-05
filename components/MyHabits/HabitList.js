@@ -83,7 +83,7 @@ export const NewHabitListItem = ({ habits, userId }) => {
       addingNew: true,
       userId,
       name: habits.length ? 'Add new' : 'Create your first habit',
-      icon: '🌱' //'🐣'
+      icon: '🐛'
     }} />
   );
 }

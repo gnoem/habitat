@@ -70,7 +70,7 @@ div button.currentTimelineView { /* including div for specificity */
   font-size: 1.2rem;
   animation: timelineEntriesAnimation 0.2s 1 forwards;
 }
-.noData span {
+.noData > span {
   opacity: 0.4;
 }
 

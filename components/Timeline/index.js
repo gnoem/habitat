@@ -12,11 +12,13 @@ import LinkButton from "../LinkButton";
 import ArrowNav from "../ArrowNav";
 import TooltipElement from "../Tooltip";
 import ViewOptions from "../ViewOptions";
+import { Submit } from "../Form";
+import { User } from "../../pages/api";
 
 const Timeline = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod, updateDashPanel }) => {
   const [timelineView, setTimelineView] = useState(user.settings?.dashboard__defaultView ?? 'list');
   const timelineEntries = () => {
-    if (!entries.length) return <NoData />;
+    if (!entries.length) return <NoData user={user} />;
     return (
       <div className={styles.timelineEntries} key={calendarPeriod}>
         {entries.map(entry => <DashboardEntry key={`dashboardEntry-entryId(${entry.id})`} {...{ entry, habits, updateDashPanel }} />)}
@@ -43,11 +45,25 @@ const Timeline = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod,
   );
 }
 
-export const NoData = () => {
+export const NoData = ({ user }) => {
+  const [successPending, setSuccessPending] = useState(false);
+  const handleClick = () => {
+    setSuccessPending(true);
+    return User.generateDemoData({ id: user.id }).then(() => window.location.reload());
+  }
   return (
-    <div className={styles.noData}><span>
-      you haven't added any data for this period
-    </span></div>
+    <div className={styles.noData}>
+      <span>you haven't added any data for this period</span>
+      {user?.email === 'demo' && (
+        <Submit
+          value="click to generate test data"
+          onClick={handleClick}
+          className="mt15"
+          successPending={successPending}
+          cancel={false}
+        />
+      )}
+    </div>
   );
 }
 
