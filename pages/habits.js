@@ -2,14 +2,22 @@ import { useContext } from "react";
 
 import { auth } from "./api/auth";
 import { DataContext } from "../contexts";
-import Dashboard from "../components/Dashboard";
+import { DashboardComponent } from "../components/DashboardLayout";
 import { MyHabits } from "../components/MyHabits";
 import { PageLoading } from "../components/Loading";
 
 const Habits = ({ user }) => {
+  return (
+    <DashboardComponent userId={user.id}>
+      <HabitsContent {...{ user }} />
+    </DashboardComponent>
+  );
+}
+
+const HabitsContent = ({ user }) => {
   const { habits } = useContext(DataContext);
   return (
-    <Dashboard userId={user.id}>
+    <>
       <h1>my habits</h1>
       {habits
         ? <MyHabits {...{
@@ -18,7 +26,7 @@ const Habits = ({ user }) => {
           }} />
         : <PageLoading className="jcfs" />
       }
-    </Dashboard>
+    </>
   );
 }
 

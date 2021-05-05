@@ -4,19 +4,19 @@ import { User } from "./api";
 import { auth } from "./api/auth";
 import { DataContext, MobileContext } from "../contexts";
 import { useForm } from "../hooks";
-import Dashboard from "../components/Dashboard";
+import { DashboardComponent } from "../components/DashboardLayout";
 import Form, { Input, Submit } from "../components/Form";
 
 const Account = ({ user }) => {
   const isMobile = useContext(MobileContext);
   const demo = user.email === 'demo';
   return (
-    <Dashboard userId={user.id} className="Account">
+    <DashboardComponent userId={user.id} className="Account">
       <h1>my account</h1>
       {demo && <p><b>note:</b> these forms have been disabled for the demo account - i'm keeping them here so you can see what's going on in this section, but nothing will happen if you try to submit them</p>}
       <AccountDetails {...{ demo, user, isMobile }} />
       <ChangePassword {...{ demo, user, isMobile }} />
-    </Dashboard>
+    </DashboardComponent>
   );
 }
 

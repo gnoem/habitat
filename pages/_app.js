@@ -1,21 +1,30 @@
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 
 import nprogress from "nprogress";
 
 import "../styles/global.css";
 import { AppContextProvider } from "../contexts";
-import Layout from "../components/Layout";
+import AppLayout from "../components/Layout";
+import DashboardLayout from "../components/DashboardLayout";
+import HomepageLayout from "../components/HomepageLayout";
 
 Router.events.on('routeChangeStart', () => nprogress.start());
 Router.events.on('routeChangeComplete', () => nprogress.done());
 Router.events.on('routeChangeError', () => nprogress.done());
 
 const App = ({ Component, pageProps }) => {
+  const router = useRouter();
+  const protectedRoutes = ['/dashboard', '/habits', '/account', '/settings'];
+  const PageLayout = (protectedRoutes.includes(router.pathname))
+    ? DashboardLayout
+    : HomepageLayout;
   return (
     <AppContextProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <AppLayout>
+        <PageLayout>
+          <Component {...pageProps} />
+        </PageLayout>
+      </AppLayout>
     </AppContextProvider>
   );
 }

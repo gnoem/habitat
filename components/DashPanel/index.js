@@ -3,9 +3,11 @@ import { faCalendarAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./dashPanel.module.css";
 import DataForm from "../DataForm";
+import { useContext } from "react";
+import { DataContext } from "../../contexts";
 
-const DashPanel = ({ habits, dashPanel, updateDashPanel }) => {
-  //const [panelName, setPanelName] = useState(null);
+const DashPanel = ({ dashPanel, updateDashPanel }) => {
+  const { habits } = useContext(DataContext);
   const { view: panelName, options: dashPanelOptions } = dashPanel ?? {};
   const handleNavClick = (newPanelName) => {
     if (panelName === newPanelName) updateDashPanel(null);

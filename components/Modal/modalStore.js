@@ -37,7 +37,6 @@ const SomethingWentWrong = ({ error, closeModal }) => {
 
 const UnhandledFormError = ({ error, closeModal }) => {
   const { parseFormError } = useForm();
-  console.dir(error);
   return (
     <div>
       <h2>oopsies</h2>

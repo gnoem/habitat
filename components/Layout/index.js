@@ -14,18 +14,12 @@ import Modal from "../Modal";
 const Layout = ({ children }) => {
   const { pathname } = useRouter();
   const { modal } = useContext(ModalContext);
-  const homepage = ['/', '/login', '/register'].includes(pathname);
   return (
     <div className={styles.Layout}>
       <Header />
       <Backdrop {...{ pathname }} />
       <Modal {...modal} />
       {/* does everytime context change mean the background backdrop shifts again? todo look into this more */}
-      {homepage && (
-        <figure>
-          <img alt="" src="/decor/hmmm.png" />
-        </figure>
-      )}
       {children}
     </div>
   );

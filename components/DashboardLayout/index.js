@@ -1,12 +1,20 @@
 import { useContext, useEffect } from "react";
 
 import styles from "./dashboard.module.css";
-import { DataContext } from "../../contexts";
+import { DataContext, DataContextProvider } from "../../contexts";
 import { fancyClassName } from "../../utils";
 import DateMarker from "../Date";
 import Nav from "../Nav";
 
-const Dashboard = ({ children, userId, sidebar, className, dim, dimOnClick }) => {
+const DashboardLayout = ({ children }) => {
+  return (
+    <DataContextProvider>
+      {children}
+    </DataContextProvider>
+  );
+}
+
+export const DashboardComponent = ({ children, userId, sidebar, className, dim, dimOnClick }) => {
   const { user, getUser, habits, getHabits, entries, getEntries } = useContext(DataContext);
   useEffect(() => {
     if (user == null) return getUser(userId);
@@ -55,4 +63,4 @@ export const Sidebar = ({ children }) => {
   );
 }
 
-export default Dashboard;
+export default DashboardLayout;

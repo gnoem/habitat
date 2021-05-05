@@ -4,22 +4,19 @@ import Link from "next/link";
 
 import { handleRequest, User } from "./api";
 import { auth } from "./api/auth";
-import { DataContext } from "../contexts";
 import { useForm } from "../hooks";
 import Form, { Input, Submit } from "../components/Form";
 import Homepage from "../components/Homepage";
 
 const Login = () => {
   const router = useRouter();
-  const { setUser } = useContext(DataContext);
   const { formData, handleFormError, inputProps } = useForm({
     username: '',
     password: ''
   });
   const handleSubmit = () => User.login(formData);
   const handleSuccess = async ({ login: user }) => {
-    const result = await handleRequest('/api/auth/login', { user });
-    setUser(result.user);
+    await handleRequest('/api/auth/login', { user });
     router.push('/dashboard');
   }
   const forgotPasswordNote = <Link href="/">forgot your password?</Link>;

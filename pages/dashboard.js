@@ -4,17 +4,28 @@ import dayjs from "dayjs";
 
 import { auth } from "./api/auth";
 import { DataContext, MobileContext } from "../contexts";
-import Dash from "../components/Dashboard";
+import { DashboardComponent } from "../components/DashboardLayout";
 import DashPanel from "../components/DashPanel";
 import { PageLoading } from "../components/Loading";
 import Timeline from "../components/Timeline";
 
 const Dashboard = ({ user }) => {
-  const { habits, entries } = useContext(DataContext);
   const isMobile = useContext(MobileContext);
-  const [calendarPeriod, setCalendarPeriod] = useState(dayjs().format('YYYY-MM'));
   const [dashPanel, setDashPanel] = useState(null);
   const updateDashPanel = (view, options) => setDashPanel({ view, options });
+  return (
+    <DashboardComponent userId={user.id}
+          dim={isMobile && dashPanel?.view}
+          dimOnClick={() => setDashPanel(null)}
+          sidebar={<DashPanel {...{ dashPanel, updateDashPanel }} />}>
+      <DashboardContent {...{ user, dashPanel, updateDashPanel }} />
+    </DashboardComponent>
+  );
+}
+
+const DashboardContent = ({ user, dashPanel, updateDashPanel }) => {
+  const { habits, entries } = useContext(DataContext);
+  const [calendarPeriod, setCalendarPeriod] = useState(dayjs().format('YYYY-MM'));
   const entriesToDisplay = useMemo(() => {
     if (!entries) return [];
     return entries.filter(entry => {
@@ -24,10 +35,7 @@ const Dashboard = ({ user }) => {
     });
   }, [entries, calendarPeriod]);
   return (
-    <Dash userId={user.id}
-          dim={isMobile && dashPanel?.view}
-          dimOnClick={() => setDashPanel(null)}
-          sidebar={<DashPanel {...{ habits, dashPanel, updateDashPanel }} />}>
+    <>
       <h1>dashboard</h1>
       {(!habits || !entries) && <PageLoading className="jcfs" />}
       {(habits && entries) && (
@@ -41,7 +49,7 @@ const Dashboard = ({ user }) => {
           updateDashPanel
         }} />
       )}
-    </Dash>
+    </>
   );
 }
 

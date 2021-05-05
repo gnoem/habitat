@@ -18,7 +18,6 @@ import { User } from "../../pages/api";
 const Timeline = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod, updateDashPanel }) => {
   const [timelineView, setTimelineView] = useState(user.settings?.dashboard__defaultView ?? 'list');
   const timelineEntries = () => {
-    if (!entries.length) return <NoData user={user} />;
     return (
       <div className={styles.timelineEntries} key={calendarPeriod}>
         {entries.map(entry => <DashboardEntry key={`dashboardEntry-entryId(${entry.id})`} {...{ entry, habits, updateDashPanel }} />)}
@@ -34,6 +33,7 @@ const Timeline = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod,
         updateTimelineView: setTimelineView
       }} />
       <TimelineContent {...{
+        user,
         habits,
         entries,
         calendarPeriod,
@@ -109,7 +109,8 @@ const TimelineHeader = ({ calendarPeriod, updateCalendarPeriod, timelineView, up
   );
 }
 
-const TimelineContent = ({ habits, entries, calendarPeriod, updateDashPanel, timelineView, content }) => {
+const TimelineContent = ({ user, habits, entries, calendarPeriod, updateDashPanel, timelineView, content }) => {
+  if (!entries.length) return <NoData user={user} />;
   switch (timelineView) {
     case 'list': return content;
     case 'grid': return <Calendar {...{ habits, entries, calendarPeriod, updateDashPanel }} />;
