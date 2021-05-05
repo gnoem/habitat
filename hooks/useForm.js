@@ -147,6 +147,9 @@ export const useFormSubmit = ({ onSubmit, onSuccess, handleFormError, behavior }
       else warnError('unhandledFormError', errors);
       return;
     }
+    if (__typename === 'NiceTry') {
+      return warnError('niceTry');
+    }
     warnError('somethingWentWrong', err);
   }
   const handleSubmit = (e) => {

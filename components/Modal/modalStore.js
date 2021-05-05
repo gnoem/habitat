@@ -9,6 +9,7 @@ import ModalForm, { ModalizedForm } from "./ModalForm";
 export const modalStore = {
   'somethingWentWrong': (props) => <SomethingWentWrong {...props} />,
   'unhandledFormError': (props) => <UnhandledFormError {...props} />,
+  'niceTry': (props) => <NiceTry {...props} />,
   'manageHabit': (props) => <ManageHabit {...props} />,
   'deleteHabit': (props) => <DeleteHabit {...props} />,
   'deleteEntry': (props) => <DeleteEntry {...props} />,
@@ -46,7 +47,17 @@ const UnhandledFormError = ({ error, closeModal }) => {
         <Button onClick={closeModal}>try again</Button>
       </div>
     </div>
-  )
+  );
+}
+
+const NiceTry = ({ closeModal }) => {
+  return (
+    <>
+      <h2>nice try</h2>
+      <p>you think im going to let my app be defeated by some nerd who knows how to use dev tools? try again sweetie</p>
+      <Button onClick={closeModal}>close</Button>
+    </>
+  );
 }
 
 const ManageHabit = ({ habitForm, habitFormProps }) => {
