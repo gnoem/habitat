@@ -110,7 +110,8 @@ export const typeDefs = gql`
       label: String,
       complex: Boolean,
       retired: Boolean,
-      userId: String
+      userId: String,
+      demo: Boolean
     ): Habit
     editHabit(
       id: String,

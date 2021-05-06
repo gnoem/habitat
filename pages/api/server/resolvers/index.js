@@ -14,7 +14,6 @@ export const resolvers = {
           id: tokenId
         }
       });
-      console.dir(token);
       if (!token) return validationError({ tokenId: 'code is invalid' });
       return {
         __typename: 'Token',
@@ -141,7 +140,7 @@ export const resolvers = {
       }
     },
     createHabit: async (_, args) => {
-      const { name, icon, color, label, complex, retired, userId } = args;
+      const { name, icon, color, label, complex, retired, userId, demo } = args;
       const habit = await prisma.habit.create({
         data: {
           name,
@@ -150,7 +149,8 @@ export const resolvers = {
           label,
           complex,
           retired,
-          userId
+          userId,
+          demo
         }
       });
       return habit;

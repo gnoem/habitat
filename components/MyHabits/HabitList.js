@@ -8,7 +8,7 @@ import { ModalContext } from "../../contexts";
 import { useRefName } from "../../hooks";
 import { HabitForm, HabitIcon } from ".";
 
-export const HabitListItem = ({ addingNew, userId, id, name, icon, color, label, complex, retired }) => {
+export const HabitListItem = ({ addingNew, user, id, name, icon, color, label, complex, retired }) => {
   const [expanded, setExpanded] = useState(false);
   return (
     <div className={`${styles.HabitListItem} ${expanded ? styles.expanded : ''}`}>
@@ -20,7 +20,7 @@ export const HabitListItem = ({ addingNew, userId, id, name, icon, color, label,
       }} />
       <HabitListItemBody {...{
         addingNew,
-        userId,
+        user,
         id,
         name,
         icon,
@@ -44,7 +44,7 @@ const HabitListItemHeader = ({ name, icon, retired, toggleExpanded }) => {
   );
 }
 
-const HabitListItemBody = ({ addingNew, userId, id, name, icon, color, label, complex, retired, expanded, updateExpanded }) => {
+const HabitListItemBody = ({ addingNew, user, id, name, icon, color, label, complex, retired, expanded, updateExpanded }) => {
   const habitBodyRef = useRef(null);
   useEffect(() => {
     const habitBody = useRefName(habitBodyRef);
@@ -59,7 +59,7 @@ const HabitListItemBody = ({ addingNew, userId, id, name, icon, color, label, co
     <div className={styles.HabitListItemBody} ref={habitBodyRef}>
       <div>
         <HabitForm {...{
-          userId,
+          user,
           id,
           name,
           icon,
@@ -77,11 +77,11 @@ const HabitListItemBody = ({ addingNew, userId, id, name, icon, color, label, co
   );
 }
 
-export const NewHabitListItem = ({ habits, userId }) => {
+export const NewHabitListItem = ({ habits, user }) => {
   return (
     <HabitListItem {...{
       addingNew: true,
-      userId,
+      user,
       name: habits.length ? 'Add new' : 'Create your first habit',
       icon: '🐛'
     }} />

@@ -26,7 +26,7 @@ const ModalWrapper = ({ children, selfDestruct, closeModal }) => {
   const modalRef = useRef(null);
   const modalContentRef = useRef(null);
   useEffect(() => {
-    const modalContent = useRefName(modalContentRef);
+    const { current: modalContent } = modalContentRef;
     const handleClick = (e) => {
       if (modalContent.contains(e.target)) return;
       closeModal();

@@ -7,18 +7,14 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 config.autoAddCss = false; /* eslint-disable import/first */
 
 import styles from "./layout.module.css";
-import { ModalContext } from "../../contexts";
 import Header from "../Header";
-import Modal from "../Modal";
 
 const Layout = ({ children }) => {
   const { pathname } = useRouter();
-  const { modal } = useContext(ModalContext);
   return (
     <div className={styles.Layout}>
       <Header />
       <Backdrop {...{ pathname }} />
-      <Modal {...modal} />
       {/* does everytime context change mean the background backdrop shifts again? todo look into this more */}
       {children}
     </div>

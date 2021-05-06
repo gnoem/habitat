@@ -24,7 +24,7 @@ export const MyHabits = ({ user, habits }) => {
       )}
       <Habits {...{
         habitView,
-        userId: user.id,
+        user,
         habits
       }} />
     </div>
@@ -52,23 +52,23 @@ const MyHabitsNav = ({ habitView, updateHabitView }) => {
   );
 }
 
-const Habits = ({ habitView, userId, habits }) => {
+const Habits = ({ habitView, user, habits }) => {
   const [Habit, NewHabit] = habitView === 'list'
     ? [HabitListItem, NewHabitListItem]
     : [HabitGridItem, NewHabitGridItem];
   const activeHabits = habits.map(habit => {
     if (habit.retired) return null;
-    return <Habit key={`habit-habitId(${habit.id})`} userId={userId} {...habit} />;
+    return <Habit key={`habit-habitId(${habit.id})`} user={user} {...habit} />;
   });
   const retiredHabits = habits.map(habit => {
     if (!habit.retired) return null;
-    return <Habit key={`habit-habitId(${habit.id})`} userId={userId} {...habit} retired />;
+    return <Habit key={`habit-habitId(${habit.id})`} user={user} {...habit} retired />;
   }).filter(el => el);
   return (
     <div className={styles.HabitsContainer}>
       <div className={habitView === 'list' ? styles.HabitList : styles.HabitGrid}>
         {activeHabits}
-        <NewHabit {...{ habits, userId }} />
+        <NewHabit {...{ habits, user }} />
       </div>
       {retiredHabits.length > 0 && (
         <div className={habitView === 'grid' ? styles.HabitGrid : ''}>
@@ -80,11 +80,12 @@ const Habits = ({ habitView, userId, habits }) => {
   );
 }
 
-export const HabitForm = ({ title, userId, id, name, icon, color, label, complex, retired, formBehavior, onSuccess, resetFormAfter }) => {
+export const HabitForm = ({ title, user, id, name, icon, color, label, complex, retired, formBehavior, onSuccess, resetFormAfter }) => {
   const addingNew = !id;
   const { getHabits } = useContext(DataContext);
   const { formData, handleFormError, resetForm, inputProps, checkboxProps } = useForm({
-    userId,
+    userId: user.id,
+    demo: user.email === 'demo',
     id: addingNew ? '' : id,
     retired: addingNew ? false : retired,
     name: addingNew ? '' : name,

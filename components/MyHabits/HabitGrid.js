@@ -8,14 +8,14 @@ import { ModalContext } from "../../contexts";
 import { getUnitFromLabel } from "../../utils";
 import { HabitForm, HabitIcon } from ".";
 
-export const HabitGridItem = ({ addingNew, userId, id, name, icon, color, label, complex, retired }) => {
+export const HabitGridItem = ({ addingNew, user, id, name, icon, color, label, complex, retired }) => {
   const { createModal } = useContext(ModalContext);
   const manageHabit = () => {
     createModal('manageHabit', {
       habitForm: <HabitForm />,
       habitFormProps: {
         title: addingNew ? 'create a new habit' : 'edit this habit',
-        userId,
+        user,
         id,
         name,
         icon,
@@ -42,7 +42,7 @@ export const HabitGridItem = ({ addingNew, userId, id, name, icon, color, label,
     <div className={`${styles.HabitGridItem} ${retired ? styles.retired : ''}`}>
       <span className={styles.HabitGridColorIndicator} style={{ background: color }}></span>
       <HabitGridItemHeader {...{ name, icon }} />
-      <HabitGridItemBody {...{ userId, id, name, icon, color, label, complex, manageHabit, deleteHabit }} />
+      <HabitGridItemBody {...{ user, id, name, icon, color, label, complex, manageHabit, deleteHabit }} />
     </div>
   );
 }
@@ -73,11 +73,11 @@ const HabitGridItemBody = ({ label, complex, manageHabit, deleteHabit }) => {
   );
 }
 
-export const NewHabitGridItem = ({ userId }) => {
+export const NewHabitGridItem = ({ user }) => {
   return (
     <HabitGridItem {...{
       addingNew: true,
-      userId
+      user
     }} />
   );
 }
