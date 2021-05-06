@@ -281,7 +281,13 @@ export const resolvers = {
           where: { demo: true }
         }
         // reset demo records, entries, and habits
-        await prisma.record.deleteMany(whereDemo);
+        await prisma.record.deleteMany({
+          where: {
+            entry: {
+              demo: true
+            }
+          }
+        });
         await prisma.entry.deleteMany(whereDemo);
         await prisma.habit.deleteMany(whereDemo);
       }
