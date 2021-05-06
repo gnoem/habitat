@@ -97,8 +97,8 @@ const queries = {
 
 const mutations = {
   createUser: `
-    mutation($email: String, $password: String) {
-      createUser(email: $email, password: $password) {
+    mutation($email: String, $password: String, $code: String) {
+      createUser(email: $email, password: $password, code: $code) {
         ... on FormErrorReport {
           __typename
           errors {

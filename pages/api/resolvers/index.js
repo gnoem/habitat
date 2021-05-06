@@ -8,7 +8,7 @@ import { habitsList, entriesList, recordsList } from "./demo";
 export const resolvers = {
   Mutation: {
     createUser: async (_, args) => {
-      const { email = '', password } = args;
+      const { email = '', password, code } = args;
       const emailIsInUse = await prisma.user.findUnique({
         where: { email }
       });
@@ -24,12 +24,14 @@ export const resolvers = {
         min: 'minimum 6 characters!'
       });
       if (validation.fails()) return validationError(validation.errors.all());
-      const user = await prisma.user.create({
+      const createUser = prisma.user.create({
         data: {
           email,
           password: bcrypt.hashSync(password, 8)
         }
       });
+      const deleteRegistrationToken = Promise.resolve(console.log('deleting code', code));
+      const [user] = await prisma.$transaction([createUser]);
       return {
         __typename: 'User',
         ...user
