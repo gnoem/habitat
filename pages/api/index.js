@@ -255,8 +255,8 @@ const mutations = {
     }
   `,
   createEntry: `
-    mutation($userId: String, $date: String, $records: [RecordInput]) {
-      createEntry(userId: $userId, date: $date, records: $records) {
+    mutation($userId: String, $date: String, $records: [RecordInput], $demo: Boolean) {
+      createEntry(userId: $userId, date: $date, records: $records, demo: $demo) {
         id
         date
         records {

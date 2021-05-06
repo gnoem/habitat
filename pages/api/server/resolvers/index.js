@@ -187,7 +187,7 @@ export const resolvers = {
       return deletedHabit;
     },
     createEntry: async (_, args) => {
-      const { userId, date, records } = args;
+      const { userId, date, records, demo } = args;
       // todo filter records - only include those with check = true
       // no use clogging up the db
       // also for editEntry
@@ -197,7 +197,8 @@ export const resolvers = {
           date,
           records: {
             create: records
-          }
+          },
+          demo
         }
       });
       return entry;

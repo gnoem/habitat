@@ -42,7 +42,8 @@ const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
     userId: user.id,
     id: existingData?.id,
     date: existingData?.date ?? currentDate,
-    records: existingData?.records ?? []
+    records: existingData?.records ?? [],
+    demo: user.email === 'demo'
   });
   useEffect(() => {
     resetForm();

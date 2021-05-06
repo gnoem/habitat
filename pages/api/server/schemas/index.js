@@ -123,7 +123,7 @@ export const typeDefs = gql`
       retired: Boolean
     ): Habit
     deleteHabit(id: String): Habit
-    createEntry(userId: String, date: String, records: [RecordInput]): Entry
+    createEntry(userId: String, date: String, records: [RecordInput], demo: Boolean): Entry
     editEntry(id: String, date: String, records: [RecordInput]): Entry
     deleteEntry(id: String): Entry
     generateDemoData(id: String): Success
