@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import * as Validator from "validatorjs";
 
-import prisma from "../../../lib/prisma";
+import prisma from "../../../../lib/prisma";
 import { validationError } from "./validation";
 import { habitsList, entriesList, recordsList } from "./demo";
 
