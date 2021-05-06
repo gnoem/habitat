@@ -5,6 +5,7 @@ import { DataContext, DataContextProvider } from "../../contexts";
 import { fancyClassName } from "../../utils";
 import DateMarker from "../Date";
 import Nav from "../Nav";
+import { PageLoading } from "../Loading";
 
 const DashboardLayout = ({ children }) => {
   return (
@@ -25,6 +26,7 @@ export const DashboardComponent = ({ children, userId, sidebar, className, dim, 
   useEffect(() => {
     if (user && !entries) return getEntries();
   }, [user, entries]);
+  if (!user) return <PageLoading className="h80p jcc aic" />;
   return (
     <div className={styles.Dashboard}>
       <Dim {...{ dim, dimOnClick }} />

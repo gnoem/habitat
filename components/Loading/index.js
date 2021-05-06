@@ -1,3 +1,4 @@
+import { fancyClassName } from "../../utils";
 import styles from "./loading.module.css";
 
 const Loading = ({ className }) => {
@@ -14,7 +15,7 @@ const Loading = ({ className }) => {
 
 export const PageLoading = ({ className }) => {
   return (
-    <div className={`${styles.PageLoading} ${styles[className] ?? ''} ${className ?? ''}`}>
+    <div className={`${styles.PageLoading} ${fancyClassName({ styles, className })}`}>
       <Loading />
     </div>
   );

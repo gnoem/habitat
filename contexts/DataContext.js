@@ -25,16 +25,6 @@ export const DataContextProvider = ({ children }) => {
     setEntries(entries);
     return entries;
   }
-  useEffect(() => {
-    // keep session up to date if user edits account details/settings
-    // todo come up with a better workaround, session should probably just store user id
-    // just gotta make sure things like settings are already stored somewhere on first load, e.g. so clock doesn't flicker
-    // maybe add a useEffect in dashboard layout that if !user, grabs the userId from session, makes fetch call
-    // and immediately stores the complete user object in state - this will run on first render, whether the user is getting there
-    // from logging in -> dashboard or visits a protected route directly via url bar
-    const setSession = async () => await handleRequest('/api/auth/login', { user });
-    setSession();
-  }, [user]);
   const dataContext = {
     user, setUser, getUser,
     habits, setHabits, getHabits,

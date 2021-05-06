@@ -16,12 +16,13 @@
   width: 100%;
   height: 20%;
 }
-.PageLoading.jcfs {
-  justify-content: flex-start;
-}
 .PageLoading .Loading {
   height: 2rem;
 }
 .PageLoading circle {
   stroke: #000;
+}
+
+.PageLoading.h80p {
+  height: 80%;
 }

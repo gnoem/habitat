@@ -243,10 +243,13 @@ input[type=date] {
   text-align: right;
 }
 .jcfs {
-  justify-content: flex-start;
+  justify-content: flex-start !important;
 }
 .jcc {
   justify-content: center;
+}
+.aic {
+  align-items: center;
 }
 
 #nprogress {
