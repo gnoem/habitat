@@ -1,8 +1,6 @@
-import { useContext } from "react";
 import { useRouter } from "next/router";
 
 import { handleRequest, User } from "./api";
-import { DataContext } from "../contexts";
 import { useForm } from "../hooks";
 import Homepage from "../components/Homepage";
 import Footer from "../components/Footer";
@@ -10,15 +8,13 @@ import Form, { Input, Submit } from "../components/Form";
 
 const Register = () => {
   const router = useRouter();
-  const { setUser } = useContext(DataContext);
   const { formData, handleFormError, inputProps } = useForm({
     email: '',
     password: ''
   });
   const handleSubmit = () => User.create(formData);
   const handleSuccess = async ({ createUser }) => {
-    const body = await handleRequest('/api/auth/login', { user: createUser });
-    setUser(body.user);
+    await handleRequest('/api/auth/login', { user: createUser });
     router.push('/dashboard');
   }
   return (
