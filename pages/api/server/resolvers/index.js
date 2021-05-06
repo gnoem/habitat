@@ -229,20 +229,33 @@ export const resolvers = {
       return deletedEntry;
     },
     generateDemoData: async (_, args) => {
-      const { id } = args;
+      const { id, calendarPeriod, alsoHabits } = args;
       // create demo habits and entries
-      await prisma.habit.createMany({
-        data: habitsList(id)
-      });
+      if (alsoHabits) {
+        await prisma.habit.createMany({
+          data: habitsList(id)
+        });
+      }
       await prisma.entry.createMany({
-        data: entriesList(id)
+        data: entriesList(id, calendarPeriod)
       });
       const entries = await prisma.entry.findMany({
-        where: { demo: true }
+        where: {
+          AND: [
+            {
+              demo: true
+            },
+            {
+              date: {
+                startsWith: calendarPeriod
+              }
+            }
+          ]
+        }
       });
       // for each entry, loop through recordsArray and add entry id, then prisma.record.createMany
       const records = entries.map((entry, index) => {
-        return recordsList[index].map(record => {
+        return recordsList(calendarPeriod)[index].map(record => {
           const recordWithEntryId = {...record};
           recordWithEntryId.entryId = entry.id;
           return recordWithEntryId;

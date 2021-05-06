@@ -7,10 +7,8 @@ import styles from "./graph.module.css";
 import { config } from "./config";
 import { MobileContext } from "../../contexts";
 import { useRefName } from "../../hooks";
-import { NoData } from "../Timeline";
 
 const Graph = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
-  if (!entries.length) return <NoData />;
   return (
     <div className={styles.Graph}>
       <SimpleHabits {...{ habits, entries, calendarPeriod, updateDashPanel }} />

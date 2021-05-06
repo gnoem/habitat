@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import dayjs from "dayjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartLine, faListOl, faPen, faTh } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./timeline.module.css";
+import { User } from "../../pages/api";
+import { DataContext } from "../../contexts";
 import { getUnitFromLabel } from "../../utils";
 import Graph from "../Graph";
 import Calendar from "../Calendar";
@@ -13,7 +15,6 @@ import ArrowNav from "../ArrowNav";
 import TooltipElement from "../Tooltip";
 import ViewOptions from "../ViewOptions";
 import { Submit } from "../Form";
-import { User } from "../../pages/api";
 
 const Timeline = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod, updateDashPanel }) => {
   const [timelineView, setTimelineView] = useState(user.settings?.dashboard__defaultView ?? 'list');
@@ -45,25 +46,38 @@ const Timeline = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod,
   );
 }
 
-export const NoData = ({ user }) => {
-  const [successPending, setSuccessPending] = useState(false);
-  const handleClick = () => {
-    setSuccessPending(true);
-    return User.generateDemoData({ id: user.id }).then(() => window.location.reload());
-  }
+export const NoData = ({ user,habits, calendarPeriod }) => {
+  const showButton = user?.email === 'demo';
   return (
     <div className={styles.noData}>
       <span>you haven't added any data for this period</span>
-      {user?.email === 'demo' && (
-        <Submit
-          value="click to generate test data"
-          onClick={handleClick}
-          className="mt15"
-          successPending={successPending}
-          cancel={false}
-        />
-      )}
+      {showButton && <ButtonToGenerateTestData {...{ user, calendarPeriod }} />}
     </div>
+  );
+}
+
+const ButtonToGenerateTestData = ({ user, calendarPeriod }) => {
+  const { habits, getHabits, getEntries } = useContext(DataContext);
+  const [successPending, setSuccessPending] = useState(false);
+  const handleClick = () => {
+    setSuccessPending(true);
+    return User.generateDemoData({
+      id: user.id, 
+      calendarPeriod,
+      alsoHabits: !habits?.length
+    }).then(() => {
+      getHabits();
+      getEntries();
+    });
+  }
+  return (
+    <Submit
+      value="click to generate test data"
+      onClick={handleClick}
+      className="mt15"
+      successPending={successPending}
+      cancel={false}
+    />
   );
 }
 
@@ -110,7 +124,7 @@ const TimelineHeader = ({ calendarPeriod, updateCalendarPeriod, timelineView, up
 }
 
 const TimelineContent = ({ user, habits, entries, calendarPeriod, updateDashPanel, timelineView, content }) => {
-  if (!entries.length) return <NoData user={user} />;
+  if (!entries.length) return <NoData {...{ user, habits, calendarPeriod }} />;
   switch (timelineView) {
     case 'list': return content;
     case 'grid': return <Calendar {...{ habits, entries, calendarPeriod, updateDashPanel }} />;

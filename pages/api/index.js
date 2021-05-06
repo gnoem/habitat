@@ -289,8 +289,8 @@ const mutations = {
     }
   `,
   generateDemoData: `
-    mutation($id: String) {
-      generateDemoData(id: $id) {
+    mutation($id: String, $calendarPeriod: String, $alsoHabits: Boolean) {
+      generateDemoData(id: $id, calendarPeriod: $calendarPeriod, alsoHabits: $alsoHabits) {
         success
       }
     }
