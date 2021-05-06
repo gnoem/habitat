@@ -7,7 +7,8 @@ export const User = {
   editPassword: async (formData) => await handleQuery(mutations.editPassword, formData),
   editSettings: async (formData) => await handleQuery(mutations.editSettings, formData),
   login: async (params) => await handleQuery(queries.loginUser, params),
-  generateDemoData: async (id) => await handleQuery(mutations.generateDemoData, id)
+  generateDemoData: async (id) => await handleQuery(mutations.generateDemoData, id),
+  validateSignupToken: async ({ tokenId }) => await handleQuery(mutations.validateSignupToken, { tokenId })
 }
 
 export const Habit = {
@@ -96,9 +97,25 @@ const queries = {
 }
 
 const mutations = {
+  validateSignupToken: `
+    mutation($tokenId: String) {
+      validateSignupToken(tokenId: $tokenId) {
+        ... on FormErrorReport {
+          __typename
+          errors {
+            location
+            message
+          }
+        }
+        ... on Token {
+          id
+        }
+      }
+    }
+  `,
   createUser: `
-    mutation($email: String, $password: String, $code: String) {
-      createUser(email: $email, password: $password, code: $code) {
+    mutation($email: String, $password: String, $token: String) {
+      createUser(email: $email, password: $password, token: $token) {
         ... on FormErrorReport {
           __typename
           errors {

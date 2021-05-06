@@ -67,3 +67,9 @@ model Record {
   demo          Boolean       @default(false)
   @@map(name: "records")
 }
+
+model SignupToken {
+  id            String        @default(cuid()) @id
+  createdAt     DateTime      @default(now())
+  @@map(name: "signupToken")
+}

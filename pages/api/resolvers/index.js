@@ -7,8 +7,22 @@ import { habitsList, entriesList, recordsList } from "./demo";
 
 export const resolvers = {
   Mutation: {
+    validateSignupToken: async (_, args) => {
+      const { tokenId } = args;
+      const token = await prisma.signupToken.findUnique({
+        where: {
+          id: tokenId
+        }
+      });
+      console.dir(token);
+      if (!token) return validationError({ tokenId: 'code is invalid' });
+      return {
+        __typename: 'Token',
+        ...token
+      }
+    },
     createUser: async (_, args) => {
-      const { email = '', password, code } = args;
+      const { email = '', password, token } = args;
       const emailIsInUse = await prisma.user.findUnique({
         where: { email }
       });
@@ -30,8 +44,12 @@ export const resolvers = {
           password: bcrypt.hashSync(password, 8)
         }
       });
-      const deleteRegistrationToken = Promise.resolve(console.log('deleting code', code));
-      const [user] = await prisma.$transaction([createUser]);
+      const deleteToken = prisma.signupToken.delete({
+        where: {
+          id: token
+        }
+      });
+      const [__, user] = await prisma.$transaction([deleteToken, createUser]);
       return {
         __typename: 'User',
         ...user
@@ -329,6 +347,17 @@ export const resolvers = {
       }
       if (obj.__typename === 'User') {
         return 'User';
+      }
+      return null;
+    }
+  },
+  TokenResult: {
+    __resolveType(obj) {
+      if (obj.__typename === 'FormErrorReport') {
+        return 'FormErrorReport';
+      }
+      if (obj.__typename === 'Token') {
+        return 'Token';
       }
       return null;
     }

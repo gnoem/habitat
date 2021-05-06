@@ -9,50 +9,52 @@ import Form, { Input, Submit } from "../components/Form";
 import Link from "next/link";
 
 const Register = () => {
-  const [code, setCode] = useState(null);
+  const [token, setToken] = useState(null);
   return (
     <Homepage>
       <h2>register</h2>
-      {code
-        ? <RegisterForm code={code} />
-        : <RegistrationIsClosed updateCode={setCode} />
+      {token
+        ? <RegisterForm token={token} />
+        : <RegistrationIsClosed updateToken={setToken} />
       }
     </Homepage>
   );
 }
 
-const RegistrationIsClosed = ({ updateCode }) => {
+const RegistrationIsClosed = ({ updateToken }) => {
   return (
     <>
       <p>sorry, account registration is closed for the time being!* if i've given you a registration code, you can enter it below:</p>
-      <RegistrationCodeForm {...{ updateCode }} />
+      <RegistrationCodeForm {...{ updateToken }} />
       <Footer>*you can still demo the app by <Link href="/login">logging in</Link> with the username <b>demo</b> and password <b>habitat</b>. if you want to join for real, <a href="mailto:contact@ngw.dev">contact me</a> and we'll talk</Footer>
     </>
   );
 }
 
-const RegistrationCodeForm = ({ updateCode }) => {
+const RegistrationCodeForm = ({ updateToken }) => {
   const { formData, handleFormError, inputProps } = useForm({
-    registrationCode: ''
+    tokenId: ''
   });
-  const handleSubmit = () => Promise.resolve(formData);
-  const handleSuccess = ({ code }) => updateCode(code ?? 'noice');
+  const handleSubmit = () => User.validateSignupToken(formData);
+  const handleSuccess = ({ validateSignupToken }) => {
+    updateToken(validateSignupToken.id);
+  }
   return (
     <Form onSubmit={handleSubmit}
           onSuccess={handleSuccess}
           handleFormError={handleFormError}
           behavior={{ showSuccess: false }}>
-      <Input type="text" name="registrationCode" label="registration code:" {...inputProps} />
+      <Input type="text" name="tokenId" label="registration code:" {...inputProps} />
     </Form>
   )
 }
 
-const RegisterForm = ({ code }) => {
+const RegisterForm = ({ token }) => {
   const router = useRouter();
   const { formData, handleFormError, inputProps } = useForm({
     email: '',
     password: '',
-    code
+    token
   });
   const handleSubmit = () => User.create(formData);
   const handleSuccess = async ({ createUser }) => {

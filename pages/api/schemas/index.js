@@ -72,7 +72,13 @@ export const typeDefs = gql`
     check: Boolean
   }
 
+  type Token {
+    id: String
+  }
+
   union UserResult = User | FormErrorReport
+
+  union TokenResult = Token | FormErrorReport
 
   type Query {
     users: [User]
@@ -85,7 +91,8 @@ export const typeDefs = gql`
   }
   
   type Mutation {
-    createUser(email: String, password: String, code: String): UserResult
+    validateSignupToken(tokenId: String): TokenResult
+    createUser(email: String, password: String, token: String): UserResult
     editUser(id: String, name: String, email: String): UserResult
     editPassword(id: String, password: String, confirmPassword: String): UserResult
     editSettings(
