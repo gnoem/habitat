@@ -8,8 +8,8 @@ const habitDefs = [
   { name: 'Sunshine', icon: '☀️', color: '#ffe74d', label: 'Spent time outdoors', complex: false, retired: false }
 ]
 
-const ids = habitDefs.map(habit => {
-  return habit.name;
+const ids = habitDefs.map((_, index) => {
+  return `demo-${index}`;
 });
 
 // for each entry that will be in entriesArray (28-31 depending on calendar period), create a record for each habit in habitDefs

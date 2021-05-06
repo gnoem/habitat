@@ -57,7 +57,7 @@ export const NoData = ({ user,habits, calendarPeriod }) => {
 }
 
 const ButtonToGenerateTestData = ({ user, calendarPeriod }) => {
-  const { habits, getHabits, getEntries } = useContext(DataContext);
+  const { demoGenOption, habits, getHabits, getEntries } = useContext(DataContext);
   const [successPending, setSuccessPending] = useState(false);
   const handleClick = () => {
     setSuccessPending(true);
@@ -70,6 +70,7 @@ const ButtonToGenerateTestData = ({ user, calendarPeriod }) => {
       getEntries();
     });
   }
+  if (!demoGenOption) return null;
   return (
     <Submit
       value="click to generate test data"
