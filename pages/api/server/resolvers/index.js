@@ -178,13 +178,15 @@ export const resolvers = {
       const deleteRecords = prisma.record.deleteMany({
         where: { habitId: id }
       });
-      // todo!
-      // if deleteRecords leaves any entries empty, delete those entries
-      // each deleted record should have an entryId, find those entries and look at their 'records' array
-      // if !records.length || records.length > 1, return
-      // else check habitId on that one record (probably unnecessary but just to be safe) and if it matches args.id, delete it
-      const [__, deletedHabit] = await prisma.$transaction([deleteRecords, deleteHabit]);
-      return deletedHabit;
+      const deleteEntries = prisma.entry.deleteMany({
+        where: {
+          records: {
+            none: {}
+          }
+        }
+      });
+      const transaction = await prisma.$transaction([deleteRecords, deleteEntries, deleteHabit]);
+      return transaction[2];
     },
     createEntry: async (_, args) => {
       const { userId, date, records, demo } = args;

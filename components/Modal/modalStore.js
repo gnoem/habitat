@@ -69,12 +69,16 @@ const ManageHabit = ({ habitForm, habitFormProps }) => {
 }
 
 const DeleteHabit = ({ habit }) => {
-  const { getHabits } = useContext(DataContext);
+  const { getHabits, getEntries } = useContext(DataContext);
   const handleSubmit = async () => Habit.delete({ id: habit.id });
+  const handleSuccess = () => {
+    getHabits();
+    getEntries(); // in case any entries were left empty by deleting this habit and all its records, since those entries will have been deleted too
+  }
   return (
     <ModalForm
         onSubmit={handleSubmit}
-        onSuccess={getHabits}
+        onSuccess={handleSuccess}
         title="delete this habit"
         submit={<Submit value="yes, i'm sure" />}>
       <p>are you sure you want to delete the habit <b>{habit.name}</b> and all data associated with it? this action cannot be undone.</p>

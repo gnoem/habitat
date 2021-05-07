@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { User, Habit, Entry, handleRequest } from "../pages/api";
+import React, { useState } from "react";
+import { User, Habit, Entry } from "../pages/api";
 
 export const DataContext = React.createContext(null);
 
