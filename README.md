@@ -53,8 +53,10 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 ### priorities
 
 - [ ] add delete account feature
+- [ ] password recovery!
 - [ ] prevent duplicate entries (more than one for a given date)
 - [ ] better unhandledFormError message
 - [ ] emoji picker for habit icons ([use this maybe?](https://github.com/iamcal/emoji-data))
 - [ ] instructions for label template for complex habits + regex validation error if no handlebars are found in string
+- [ ] figure out switching from simple -> complex habits - should maybe prompt the user for an amount to put in for entries that record that habit as completed
 - [ ] figure out better system for demo habits/data - unlikely scenario but what if someone logs into the demo account when someone else is already in there, don't want their data to suddenly get deleted - maybe demo flag should be a unique string for each session/logged in user, rather than a bool, and instead of getting cleared on login, they're deleted after 24 hours? bummer that prisma doesn't let you add a ttl index though

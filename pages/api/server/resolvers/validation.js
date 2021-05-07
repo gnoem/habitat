@@ -14,3 +14,10 @@ export const validationError = (errorObject) => {
     errors
   }
 }
+
+export const habitLabelIsValid = (label) => {
+  if (label.indexOf('{') === -1) return false;
+  if (label.indexOf('}') === -1) return false;
+  if (label.indexOf('{') > label.indexOf('}')) return false;
+  return true;
+}

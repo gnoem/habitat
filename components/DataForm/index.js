@@ -94,7 +94,7 @@ const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
           currentDate
         }} />
       </Form>
-      {existingData && <DeleteEntry />}
+      {existingData && <DeleteEntry {...{ existingData }} />}
     </div>
   );
 }
@@ -109,7 +109,7 @@ const NoHabits = () => {
   );
 }
 
-const DeleteEntry = () => {
+const DeleteEntry = ({ existingData }) => {
   const { createModal } = useContext(ModalContext);
   const handleDelete = () => {
     createModal('deleteEntry', { entry: existingData });
@@ -302,8 +302,8 @@ const DataFormField = ({ wholeFormData, setWholeFormData, currentDate, id, icon,
 
 const DataFormFieldInput = ({ label, complex, formData, inputProps, checkboxProps }) => {
   if (complex) {
-    const pre = label.split('{{')[0];
-    const post = label.split('}}')[1];
+    const pre = label.split('{')[0];
+    const post = label.split('}')[1];
     const unit = ' ' + getUnitFromLabel(label);
     return (
       <span>

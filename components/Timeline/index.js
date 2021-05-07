@@ -178,8 +178,8 @@ const EntryRecord = ({ habit, record }) => {
   if (!check || ((complex && check) && !amount)) return null;
   const preparedLabel = () => {
     if (!complex) return <span>{label}</span>;
-    const pre = label.split('{{')[0].trim();
-    const post = label.split('}}')[1].trim();
+    const pre = label.split('{')[0].trim();
+    const post = label.split('}')[1].trim();
     const unit = getUnitFromLabel(label);
     return (
       <span>{pre} <b>{amount ?? 'some'} {unit}</b> {post}</span>

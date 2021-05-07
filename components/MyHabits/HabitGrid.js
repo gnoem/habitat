@@ -57,7 +57,7 @@ const HabitGridItemHeader = ({ name, icon }) => {
 }
 
 const HabitGridItemBody = ({ label, complex, manageHabit, deleteHabit }) => {
-  const [pre, post] = [label?.split('{{')[0], label?.split('}}')[1]];
+  const [pre, post] = [label?.split('{')[0], label?.split('}')[1]];
   const unit = getUnitFromLabel(label);
   return (
     <div className={styles.HabitGridItemBody}>

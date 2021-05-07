@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 
 const habitDefs = [
-  { name: 'Hydration', icon: '💦', color: '#94e4ff', label: 'Drank {{oz}} of water', complex: true, retired: false, range: '35-60' },
-  { name: 'Sleep', icon: '💤', color: '#bfa8ff', label: 'Slept {{hours}}', complex: true, retired: false, range: '5-9' },
+  { name: 'Hydration', icon: '💦', color: '#94e4ff', label: 'Drank {oz} of water', complex: true, retired: false, range: '35-60' },
+  { name: 'Sleep', icon: '💤', color: '#bfa8ff', label: 'Slept {hours}', complex: true, retired: false, range: '5-9' },
   { name: 'Cardio', icon: '💓', color: '#ff94d2', label: 'Did cardio', complex: false, retired: false },
   { name: 'Plants', icon: '🌱', color: '#80ff8e', label: 'Watered plants', complex: false, retired: false },
   { name: 'Sunshine', icon: '☀️', color: '#ffe74d', label: 'Spent time outdoors', complex: false, retired: false }

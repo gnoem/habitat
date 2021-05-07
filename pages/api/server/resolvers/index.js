@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import * as Validator from "validatorjs";
 
 import prisma from "../../../../lib/prisma";
-import { validationError } from "./validation";
+import { habitLabelIsValid, validationError } from "./validation";
 import { habitsList, entriesList, recordsList } from "./demo";
 
 export const resolvers = {
@@ -141,6 +141,9 @@ export const resolvers = {
     },
     createHabit: async (_, args) => {
       const { name, icon, color, label, complex, retired, userId, demo } = args;
+      if (complex && !habitLabelIsValid(label)) {
+        return validationError({ label: 'invalid habit label, remember to include unit in curly braces!' });
+      }
       const habit = await prisma.habit.create({
         data: {
           name,
@@ -153,10 +156,16 @@ export const resolvers = {
           demo
         }
       });
-      return habit;
+      return {
+        __typename: 'Habit',
+        ...habit
+      }
     },
     editHabit: async (_, args) => {
       const { id, name, icon, color, label, retired, complex } = args;
+      if (complex && !habitLabelIsValid(label)) {
+        return validationError({ label: 'invalid habit label, remember to include unit in curly braces!' });
+      }
       const habit = await prisma.habit.update({
         where: { id },
         data: {
@@ -168,7 +177,10 @@ export const resolvers = {
           retired
         }
       });
-      return habit;
+      return {
+        __typename: 'Habit',
+        ...habit
+      }
     },
     deleteHabit: async (_, args) => {
       const { id } = args;
@@ -369,6 +381,17 @@ export const resolvers = {
       }
       if (obj.__typename === 'User') {
         return 'User';
+      }
+      return null;
+    }
+  },
+  HabitResult: {
+    __resolveType(obj) {
+      if (obj.__typename === 'FormErrorReport') {
+        return 'FormErrorReport';
+      }
+      if (obj.__typename === 'Habit') {
+        return 'Habit';
       }
       return null;
     }

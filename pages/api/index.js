@@ -220,24 +220,42 @@ const mutations = {
         userId: $userId,
         demo: $demo
       ) {
-        name
-        icon
-        color
-        label
-        complex
-        userId
+        ... on FormErrorReport {
+          __typename
+          errors {
+            location
+            message
+          }
+        }
+        ... on Habit {
+          id
+          name
+          icon
+          color
+          label
+          complex
+        }
       }
     }
   `,
   editHabit: `
     mutation($id: String, $name: String, $icon: String, $color: String, $label: String, $complex: Boolean, $retired: Boolean) {
       editHabit(id: $id, name: $name, icon: $icon, color: $color, label: $label, complex: $complex, retired: $retired) {
-        id
-        name
-        icon
-        color
-        label
-        complex
+        ... on FormErrorReport {
+          __typename
+          errors {
+            location
+            message
+          }
+        }
+        ... on Habit {
+          id
+          name
+          icon
+          color
+          label
+          complex
+        }
       }
     }
   `,

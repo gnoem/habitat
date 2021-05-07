@@ -8,5 +8,5 @@ export const fancyClassName = ({ styles, className }) => {
 }
 
 export const getUnitFromLabel = (label) => {
-  return label?.split('{{')[1]?.split('}}')[0]?.trim();
+  return label?.split('{')[1]?.split('}')[0]?.trim();
 }

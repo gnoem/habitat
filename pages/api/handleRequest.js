@@ -4,7 +4,7 @@ export const handleRequest = (...args) => {
   return Promise.race([
     handleFetch(...args),
     new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('Timeout')), 10000);
+      setTimeout(() => reject(new Error('Timeout')), 20000);
     })
   ]).catch(err => {
     if (err.message === 'Timeout') throw new FetchError({ message: 'The connection timed out.' });

@@ -32,6 +32,10 @@ form > div > .Input + .Input {
 .Input.stretch > div, .Input.stretch > div > input, .Input > div + span {
   width: 100%;
 }
+.Input.alertInside .Alert {
+  left: unset;
+  right: 1.25rem;
+}
 
 .Alert {
   position: absolute;

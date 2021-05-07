@@ -112,10 +112,22 @@ export const HabitForm = ({ title, user, id, name, icon, color, label, complex, 
           submit={<Submit className="compact jcc" value="save changes" cancel={false} />}>
       <Input type="text" name="name" label="Habit name:" value={formData.name} className="stretch" {...inputProps} />
       <div className={styles.displayOptions}>
-        <Input type="text" name="icon" label="Icon:" value={formData.icon} className="stretch" {...inputProps} />
+        <Input type="text" name="icon" label="Icon:" value={formData.icon} className="stretch" maxLength="1" {...inputProps} />
         <Input type="color" name="color" label="Color:" value={formData.color} {...inputProps} />
       </div>
-      <Input type="text" name="label" label="Display label:" className="stretch" value={formData.label} {...inputProps} />
+      <Input
+        type="text"
+        name="label"
+        label="Display label:"
+        className="stretch alertInside"
+        value={formData.label}
+        {...inputProps}
+        note={formData.complex ? (
+          <>
+            with complex habits, make sure to include the unit label in {'{curly brackets}'}: e.g. <b>drank {'{oz}'} of water</b>, <b>got {'{hours}'} of sleep</b>
+          </>
+        ) : ''}
+      />
       <Checkbox name="complex" className="mt10" checked={formData.complex} detailedLabel={[
         "enable complex tracking",
         "if checked, you will be able to record an amount when tracking this habit, e.g. how many hours of studying, how many oz. of water"

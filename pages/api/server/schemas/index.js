@@ -77,6 +77,8 @@ export const typeDefs = gql`
   }
 
   union UserResult = User | FormErrorReport
+  
+  union HabitResult = Habit | FormErrorReport
 
   union TokenResult = Token | FormErrorReport
 
@@ -112,7 +114,7 @@ export const typeDefs = gql`
       retired: Boolean,
       userId: String,
       demo: Boolean
-    ): Habit
+    ): HabitResult
     editHabit(
       id: String,
       name: String,
@@ -121,7 +123,7 @@ export const typeDefs = gql`
       label: String,
       complex: Boolean,
       retired: Boolean
-    ): Habit
+    ): HabitResult
     deleteHabit(id: String): Habit
     createEntry(userId: String, date: String, records: [RecordInput], demo: Boolean): Entry
     editEntry(id: String, date: String, records: [RecordInput]): Entry
