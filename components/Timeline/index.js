@@ -46,7 +46,7 @@ const Timeline = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod,
   );
 }
 
-export const NoData = ({ user,habits, calendarPeriod }) => {
+export const NoData = ({ user, calendarPeriod }) => {
   const showButton = user?.email === 'demo';
   return (
     <div className={styles.noData}>
@@ -125,7 +125,7 @@ const TimelineHeader = ({ calendarPeriod, updateCalendarPeriod, timelineView, up
 }
 
 const TimelineContent = ({ user, habits, entries, calendarPeriod, updateDashPanel, timelineView, content }) => {
-  if (!entries.length) return <NoData {...{ user, habits, calendarPeriod }} />;
+  if (!entries.length) return <NoData {...{ user, calendarPeriod }} />;
   switch (timelineView) {
     case 'list': return content;
     case 'grid': return <Calendar {...{ habits, entries, calendarPeriod, updateDashPanel }} />;

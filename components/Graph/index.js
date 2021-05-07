@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 import dayjs from "dayjs";
 import { Chart } from "chart.js/dist/chart";
@@ -29,27 +29,29 @@ const ChartCanvas = ({ type, habits, entries, calendarPeriod, updateDashPanel, i
     chartInstance.data = data;
     chartInstance.update();
   }, [entries]);
+  const handleChartClick = useCallback((e) => {
+    if (!chartInstance) return;
+    const points = chartInstance.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
+    if (!points.length) return;
+    const { index } = points[0];
+    const date = dayjs(data.labels[index])?.format(`${calendarPeriod}-DD`);
+    if (date) updateDashPanel('data', { date });
+  }, [chartInstance, calendarPeriod]);
   useEffect(() => {
-    if (chartInstance) return;
     const myCanvas = useRefName(chartRef);
-    if (!myCanvas) {
-      setChartInstance(null);
-      chartInstance.destroy();
-      return;
-    }
-    const ctx = myCanvas.getContext('2d');
-    const chart = new Chart(ctx, initialSetup);
-    setChartInstance(chart);
-    const handleChartClick = (e) => {
-      const points = chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
-      if (!points.length) return;
-      const { index } = points[0];
-      const date = dayjs(data.labels[index])?.format(`${calendarPeriod}-DD`);
-      if (date) updateDashPanel('data', { date });
+    if (!chartInstance) {
+      if (!myCanvas) {
+        setChartInstance(null);
+        chartInstance.destroy();
+        return;
+      }
+      const ctx = myCanvas.getContext('2d');
+      const chart = new Chart(ctx, initialSetup);
+      setChartInstance(chart);
     }
     myCanvas.addEventListener('click', handleChartClick);
     return () => myCanvas.removeEventListener('click', handleChartClick);
-  }, [chartRef]);
+  }, [chartRef, handleChartClick]);
   const chartHeight = () => {
     if (type === 'complex') return 250;
     if (habits.length <= 1) return 40;
