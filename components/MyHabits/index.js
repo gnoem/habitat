@@ -110,7 +110,15 @@ export const HabitForm = ({ title, user, id, name, icon, color, label, complex, 
           title={title}
           behavior={formBehavior}
           submit={<Submit className="compact jcc" value="save changes" cancel={false} />}>
-      <Input type="text" name="name" label="Habit name:" value={formData.name} className="stretch" {...inputProps} />
+      <Input
+        type="text"
+        name="name"
+        label="Habit name:"
+        value={formData.name}
+        placeholder="e.g. Hydration"
+        className="stretch"
+        {...inputProps}
+      />
       <div className={styles.displayOptions}>
         <Input type="text" name="icon" label="Icon:" value={formData.icon} className="stretch" maxLength="1" {...inputProps} />
         <Input type="color" name="color" label="Color:" value={formData.color} {...inputProps} />
@@ -119,6 +127,7 @@ export const HabitForm = ({ title, user, id, name, icon, color, label, complex, 
         type="text"
         name="label"
         label="Display label:"
+        placeholder={formData.complex ? 'e.g. Drank {oz} of water' : 'e.g. Drank water'}
         className="stretch alertInside"
         value={formData.label}
         {...inputProps}

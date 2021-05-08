@@ -51,7 +51,6 @@ const Input = ({
 }
 
 const Alert = ({ alert, name, inputRef }) => {
-  // todo add max width or whatever
   const spanRef = useRef(null);
   useEffect(() => {
     const input = useRefName(inputRef);
