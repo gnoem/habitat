@@ -11,6 +11,7 @@ import Form, { Checkbox, Input, Submit } from "../Form";
 import { HabitListItem, NewHabitListItem } from "./HabitList";
 import { HabitGridItem, NewHabitGridItem } from "./HabitGrid";
 import ViewOptions from "../ViewOptions";
+import EmojiPicker from "../EmojiPicker";
 
 export const MyHabits = ({ user, habits }) => {
   const [habitView, setHabitView] = useState(user.settings?.habits__defaultView ?? 'list');
@@ -83,7 +84,7 @@ const Habits = ({ habitView, user, habits }) => {
 export const HabitForm = ({ title, user, id, name, icon, color, label, complex, retired, formBehavior, onSuccess, resetFormAfter }) => {
   const addingNew = !id;
   const { getHabits } = useContext(DataContext);
-  const { formData, handleFormError, resetForm, inputProps, checkboxProps } = useForm({
+  const { formData, setFormData, handleFormError, resetForm, inputProps, checkboxProps } = useForm({
     userId: user.id,
     demo: user.email === 'demo',
     id: addingNew ? '' : id,
@@ -120,7 +121,15 @@ export const HabitForm = ({ title, user, id, name, icon, color, label, complex, 
         {...inputProps}
       />
       <div className={styles.displayOptions}>
-        <Input type="text" name="icon" label="Icon:" value={formData.icon} className="stretch" maxLength="1" {...inputProps} />
+        <Input
+          type="text"
+          name="icon"
+          label="Icon:"
+          value={formData.icon}
+          className="stretch" 
+          axLength="1"
+          tool={<EmojiPicker setFormData={setFormData} />}
+          {...inputProps} />
         <Input type="color" name="color" label="Color:" value={formData.color} {...inputProps} />
       </div>
       <Input

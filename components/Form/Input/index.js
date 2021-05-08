@@ -19,6 +19,7 @@ const Input = ({
     onChange, onInput, onClick,
     note,
     alert,
+    tool,
     className,
     maxLength,
     min
@@ -43,6 +44,7 @@ const Input = ({
           maxLength,
           min
         }} ref={inputRef} />
+        {tool}
         <Alert {...{ alert, name, inputRef }} />
       </div>
       {note && <span>{note}</span>}
