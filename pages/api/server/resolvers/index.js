@@ -86,7 +86,7 @@ export const resolvers = {
       }
     },
     editPassword: async (_, args) => {
-      const { id, password, confirmPassword } = args;
+      const { id, password, confirmPassword, reset = false } = args;
       Validator.register('matchesConfirmPassword', () => {
         return password === confirmPassword;
       });
@@ -98,11 +98,20 @@ export const resolvers = {
       });
       if (validation.fails()) return validationError(validation.errors.all());
       const user = await prisma.user.update({
-        where: { id },
+        where: {
+          id
+        },
         data: {
           password: bcrypt.hashSync(password, 8)
         }
       });
+      if (reset) {
+        await prisma.passwordToken.delete({
+          where: {
+            userId: id
+          }
+        });
+      }
       return {
         __typename: 'User',
         ...user
@@ -280,6 +289,48 @@ export const resolvers = {
       });
       return {
         success: true
+      }
+    },
+    createPasswordToken: async (_, args) => {
+      const { email } = args;
+      const user = await prisma.user.findUnique({
+        where: {
+          email
+        }
+      });
+      if (!user) {
+        return validationError({ email: 'user not found' });
+      }
+      const existingToken = await prisma.passwordToken.findUnique({
+        where: {
+          userId: user.id
+        }
+      });
+      if (existingToken) return {
+        __typename: 'Token',
+        ...existingToken
+      }
+      const token = await prisma.passwordToken.create({
+        data: {
+          userId: user.id
+        }
+      });
+      return {
+        __typename: 'Token',
+        ...token
+      }
+    },
+    validateToken: async (_, args) => {
+      const { tokenId, type } = args;
+      const token = await prisma[type].findUnique({
+        where: {
+          id: tokenId
+        }
+      });
+      if (!token) return validationError({ tokenId: 'code is invalid' });
+      return {
+        __typename: 'Token',
+        ...token
       }
     }
   },

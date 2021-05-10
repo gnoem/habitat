@@ -25,6 +25,11 @@ export const Entry = {
   delete: async (formData) => await handleQuery(mutations.deleteEntry, formData),
 }
 
+export const Token = {
+  validate: async ({ tokenId, type }) => await handleQuery(mutations.validateToken, { tokenId, type }),
+  createPasswordToken: async (formData) => await handleQuery(mutations.createPasswordToken, formData)
+}
+
 const queries = {
   getUser: `
     query($id: String) {
@@ -157,8 +162,8 @@ const mutations = {
     }
   `,
   editPassword: `
-    mutation($id: String, $password: String, $confirmPassword: String) {
-      editPassword(id: $id, password: $password, confirmPassword: $confirmPassword) {
+    mutation($id: String, $password: String, $confirmPassword: String, $reset: Boolean) {
+      editPassword(id: $id, password: $password, confirmPassword: $confirmPassword, reset: $reset) {
         ... on FormErrorReport {
           __typename
           errors {
@@ -312,7 +317,40 @@ const mutations = {
         success
       }
     }
-  `
+  `,
+  createPasswordToken: `
+    mutation($email: String) {
+      createPasswordToken(email: $email) {
+        ... on FormErrorReport {
+          __typename
+          errors {
+            location
+            message
+          }
+        }
+        ... on Token {
+          id
+        }
+      }
+    }
+  `,
+  validateToken: `
+    mutation($tokenId: String, $type: String) {
+      validateToken(tokenId: $tokenId, type: $type) {
+        ... on FormErrorReport {
+          __typename
+          errors {
+            location
+            message
+          }
+        }
+        ... on Token {
+          id
+          userId
+        }
+      }
+    }
+  `,
 }
 
 export { handleRequest }

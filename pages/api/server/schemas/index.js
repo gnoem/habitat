@@ -74,6 +74,7 @@ export const typeDefs = gql`
 
   type Token {
     id: String
+    userId: String
   }
 
   union UserResult = User | FormErrorReport
@@ -93,10 +94,9 @@ export const typeDefs = gql`
   }
   
   type Mutation {
-    validateSignupToken(tokenId: String): TokenResult
     createUser(email: String, password: String, token: String): UserResult
     editUser(id: String, name: String, email: String): UserResult
-    editPassword(id: String, password: String, confirmPassword: String): UserResult
+    editPassword(id: String, password: String, confirmPassword: String, reset: Boolean): UserResult
     editSettings(
       userId: String,
       dashboard__defaultView: String,
@@ -129,5 +129,8 @@ export const typeDefs = gql`
     editEntry(id: String, date: String, records: [RecordInput]): Entry
     deleteEntry(id: String): Entry
     generateDemoData(id: String, calendarPeriod: String, alsoHabits: Boolean): Success
+    validateSignupToken(tokenId: String): TokenResult
+    validateToken(tokenId: String, type: String): TokenResult
+    createPasswordToken(email: String): TokenResult
   }
 `;

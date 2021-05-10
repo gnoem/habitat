@@ -1,16 +1,18 @@
+import { useContext } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 import { handleRequest, User } from "./api";
 import { auth } from "./api/auth";
+import { ModalContext } from "../contexts";
 import { useForm } from "../hooks";
 import Form, { Input, Submit } from "../components/Form";
 import Homepage from "../components/Homepage";
 
 const Login = () => {
   const router = useRouter();
+  const { createModal } = useContext(ModalContext);
   const { formData, handleFormError, inputProps } = useForm({
-    username: '',
+    email: '',
     password: ''
   });
   const handleSubmit = () => User.login(formData);
@@ -18,11 +20,13 @@ const Login = () => {
     await handleRequest('/api/auth/login', { user });
     router.push('/dashboard');
   }
-  const forgotPasswordNote = <Link href="/">forgot your password?</Link>;
+  const createPasswordToken = () => {
+    createModal('forgotPassword');
+  }
+  const forgotPasswordNote = <button className="link" type="button" onClick={createPasswordToken}>forgot your password?</button>;
   return (
     <Homepage>
       <h2>login</h2>
-      <p>or click <Link href="/register">here</Link> to register</p>
       <Form onSubmit={handleSubmit} onSuccess={handleSuccess} handleFormError={handleFormError}
             behavior={{ showSuccess: false }}
             submit={<Submit value="continue" cancel="go back" onCancel={() => router.back()} />}>

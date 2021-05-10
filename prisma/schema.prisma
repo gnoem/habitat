@@ -73,3 +73,10 @@ model SignupToken {
   createdAt     DateTime      @default(now())
   @@map(name: "signupToken")
 }
+
+model PasswordToken {
+  id            String        @default(cuid()) @id
+  userId        String?       @unique
+  createdAt     DateTime      @default(now())
+  @@map(name: "passwordToken")
+}
