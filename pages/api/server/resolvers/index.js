@@ -4,6 +4,7 @@ import * as Validator from "validatorjs";
 import prisma from "../../../../lib/prisma";
 import { habitLabelIsValid, validationError } from "./validation";
 import { habitsList, entriesList, recordsList } from "./demo";
+import { sendPasswordResetEmail } from "./mail";
 
 export const resolvers = {
   Mutation: {
@@ -306,18 +307,25 @@ export const resolvers = {
           userId: user.id
         }
       });
-      if (existingToken) return {
-        __typename: 'Token',
-        ...existingToken
+      if (existingToken) {
+        await prisma.passwordToken.delete({
+          where: {
+            id: existingToken.id
+          }
+        });
       }
       const token = await prisma.passwordToken.create({
         data: {
           userId: user.id
         }
       });
+      await sendPasswordResetEmail({
+        to: email,
+        subject: 'your habitat account ✨',
+        resetLink: `https://habi.vercel.app/reset-password?token=${token}`
+      });
       return {
-        __typename: 'Token',
-        ...token
+        __typename: 'Token'
       }
     },
     validateToken: async (_, args) => {
