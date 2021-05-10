@@ -53,8 +53,8 @@
   height: 40%;
 }
 
-.Content.Account form + form {
-  margin-top: 2rem;
+.Content.Account form {
+  margin-bottom: 2rem;
 }
 
 .Dim {

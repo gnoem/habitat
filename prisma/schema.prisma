@@ -14,6 +14,7 @@ model User {
   password      String?
   habits        Habit[]
   entries       Entry[]
+  records       Record[]
   settings      Settings?
   demo          Boolean       @default(false)
   @@map(name: "users")
@@ -64,6 +65,8 @@ model Record {
   check         Boolean
   entry         Entry?        @relation(fields: [entryId], references: [id])
   entryId       String?
+  user          User?         @relation(fields: [userId], references: [id])
+  userId        String?
   demo          Boolean       @default(false)
   @@map(name: "records")
 }

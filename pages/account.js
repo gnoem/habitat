@@ -2,10 +2,10 @@ import { useContext } from "react";
 
 import { User } from "./api";
 import { auth } from "./api/auth";
-import { DataContext, MobileContext } from "../contexts";
+import { DataContext, MobileContext, ModalContext } from "../contexts";
 import { useForm } from "../hooks";
 import { DashboardComponent } from "../components/DashboardLayout";
-import Form, { Input, Submit } from "../components/Form";
+import Form, { Button, Input, Submit } from "../components/Form";
 
 const Account = ({ user }) => {
   const isMobile = useContext(MobileContext);
@@ -16,6 +16,7 @@ const Account = ({ user }) => {
       {demo && <p><b>note:</b> these forms have been disabled for the demo account - i'm keeping them here so you can see what's going on in this section, but nothing will happen if you try to submit them</p>}
       <AccountDetails {...{ demo, user, isMobile }} />
       <ChangePassword {...{ demo, user, isMobile }} />
+      <DeleteAccount {...{ demo, user }} />
     </DashboardComponent>
   );
 }
@@ -111,6 +112,24 @@ const ChangePassword = ({ demo, user, isMobile }) => {
         disabled={demo}
       />
     </Form>
+  );
+}
+
+const DeleteAccount = ({ demo, user }) => {
+  const { createModal } = useContext(ModalContext);
+  const confirmDeleteAccount = () => {
+    if (demo) {
+      console.log('cute');
+      createModal('niceTry');
+    }
+    createModal('deleteAccount', { user })
+  }
+  return (
+    <>
+      <h2>delete account</h2>
+      <p>permanently delete your account, along with all data, habits, and settings. this is <b>irreversible</b>! if you really want to do this, click the button below. (you will be asked to confirm)</p>
+      <Button className="compact mt05" onClick={confirmDeleteAccount} disabled={demo}>delete my account</Button>
+    </>
   );
 }
 

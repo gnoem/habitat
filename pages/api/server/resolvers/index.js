@@ -150,6 +150,39 @@ export const resolvers = {
         ...settings
       }
     },
+    deleteAccount: async (_, args) => {
+      const { id } = args;
+      const whereBelongsToUser = {
+        where: {
+          userId: id
+        }
+      }
+      const deleteUser = prisma.user.delete({
+        where: {
+          id
+        }
+      });
+      const deleteHabits = prisma.habit.deleteMany(whereBelongsToUser);
+      const deleteEntries = prisma.entry.deleteMany(whereBelongsToUser);
+      const deleteRecords = prisma.record.deleteMany(whereBelongsToUser);
+      const deleteSettings = await prisma.settings.findUnique(whereBelongsToUser)
+        ? prisma.settings.delete(whereBelongsToUser)
+        : null;
+      const deletePasswordToken = await prisma.passwordToken.findUnique(whereBelongsToUser)
+        ? prisma.passwordToken.delete(whereBelongsToUser)
+        : null;
+      await prisma.$transaction([
+        deleteHabits,
+        deleteEntries,
+        deleteRecords,
+        deleteSettings,
+        deletePasswordToken,
+        deleteUser
+      ].filter(el => el));
+      return {
+        __typename: 'User'
+      }
+    },
     createHabit: async (_, args) => {
       const { name, icon, color, label, complex, retired, userId, demo } = args;
       if (complex && !habitLabelIsValid(label)) {

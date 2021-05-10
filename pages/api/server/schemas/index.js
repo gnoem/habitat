@@ -105,6 +105,7 @@ export const typeDefs = gql`
       appearance__24hrClock: Boolean,
       appearance__showClockSeconds: Boolean
     ): Settings
+    deleteAccount(id: String): UserResult
     createHabit(
       name: String,
       icon: String,

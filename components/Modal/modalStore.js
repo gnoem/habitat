@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import { Entry, Habit, Token } from "../../pages/api";
+import { User, Entry, Habit, Token } from "../../pages/api";
 import { DataContext } from "../../contexts";
 import { useForm } from "../../hooks";
 import Form, { Submit, Button, Input } from "../Form";
@@ -14,6 +14,7 @@ export const modalStore = {
   'manageHabit': (props) => <ManageHabit {...props} />,
   'deleteHabit': (props) => <DeleteHabit {...props} />,
   'deleteEntry': (props) => <DeleteEntry {...props} />,
+  'deleteAccount': (props) => <DeleteAccount {...props} />,
 }
 
 const SomethingWentWrong = ({ error, closeModal }) => {
@@ -124,6 +125,24 @@ const DeleteEntry = ({ entry }) => {
         title="delete this entry"
         submit={<Submit value="yes, i'm sure" />}>
       <p>are you sure you want to delete this entry? this action cannot be undone.</p>
+    </ModalForm>
+  );
+}
+
+const DeleteAccount = ({ user }) => {
+  const handleSubmit = async () => User.deleteAccount({ id: user.id });
+  const handleSuccess = () => {
+    // logout
+    // show success message
+    // close & reload
+  }
+  return (
+    <ModalForm
+        onSubmit={handleSubmit}
+        onSuccess={handleSuccess}
+        title="delete account"
+        submit={<Submit value="yes, i'm sure" />}>
+      <p>are you absolutely sure you want to delete your account and all data associated with it? this action cannot be undone.</p>
     </ModalForm>
   );
 }

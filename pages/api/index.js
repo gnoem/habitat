@@ -7,6 +7,7 @@ export const User = {
   editPassword: async (formData) => await handleQuery(mutations.editPassword, formData),
   editSettings: async (formData) => await handleQuery(mutations.editSettings, formData),
   login: async (params) => await handleQuery(queries.loginUser, params),
+  deleteAccount: async (data) => await handleQuery(mutations.deleteAccount, data),
   generateDemoData: async (id) => await handleQuery(mutations.generateDemoData, id),
   validateSignupToken: async ({ tokenId }) => await handleQuery(mutations.validateSignupToken, { tokenId })
 }
@@ -164,6 +165,24 @@ const mutations = {
   editPassword: `
     mutation($id: String, $password: String, $confirmPassword: String, $reset: Boolean) {
       editPassword(id: $id, password: $password, confirmPassword: $confirmPassword, reset: $reset) {
+        ... on FormErrorReport {
+          __typename
+          errors {
+            location
+            message
+          }
+        }
+        ... on User {
+          id
+          name
+          email
+        }
+      }
+    }
+  `,
+  deleteAccount: `
+    mutation($id: String) {
+      deleteAccount(id: $id) {
         ... on FormErrorReport {
           __typename
           errors {
