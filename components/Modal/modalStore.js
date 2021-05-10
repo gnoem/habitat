@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react";
 
-import { User, Entry, Habit, Token } from "../../pages/api";
+import { User, Entry, Habit, Token, handleRequest } from "../../pages/api";
 import { DataContext } from "../../contexts";
 import { useForm } from "../../hooks";
 import Form, { Submit, Button, Input } from "../Form";
 import ModalForm, { ModalizedForm } from "./ModalForm";
+import { useRouter } from "next/router";
 
 export const modalStore = {
   'somethingWentWrong': (props) => <SomethingWentWrong {...props} />,
@@ -129,20 +130,33 @@ const DeleteEntry = ({ entry }) => {
   );
 }
 
-const DeleteAccount = ({ user }) => {
+const DeleteAccount = ({ user, closeModal }) => {
+  const router = useRouter();
+  const [success, setSuccess] = useState(false);
   const handleSubmit = async () => User.deleteAccount({ id: user.id });
-  const handleSuccess = () => {
-    // logout
-    // show success message
-    // close & reload
+  const handleSuccess = () => setSuccess(true);
+  const handleSuccessClick = () => {
+    closeModal();
+    const logout = async () => {
+      await handleRequest('/api/auth/logout');
+      router.push('/');
+    }
+    setTimeout(logout, 200);
   }
+  if (success) return (
+    <>
+      <h2>success!</h2>
+      <p>all data associated with this account has been deleted. sorry to see you go!</p>
+      <Button onClick={handleSuccessClick}>close</Button>
+    </>
+  );
   return (
-    <ModalForm
-        onSubmit={handleSubmit}
-        onSuccess={handleSuccess}
-        title="delete account"
-        submit={<Submit value="yes, i'm sure" />}>
+    <Form onSubmit={handleSubmit}
+          onSuccess={handleSuccess}
+          title="delete account"
+          behavior={{ showSuccess: false }}
+          submit={<Submit value="yes, i'm sure" onCancel={closeModal} />}>
       <p>are you absolutely sure you want to delete your account and all data associated with it? this action cannot be undone.</p>
-    </ModalForm>
+    </Form>
   );
 }
