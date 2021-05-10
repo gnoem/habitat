@@ -14,10 +14,6 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@prisma/client": "^2.21.2",
     "@sendgrid/mail": "^7.4.4",
-    "@types/jest": "^26.0.22",
-    "@types/node": "^14.14.41",
-    "@types/react": "^17.0.3",
-    "@types/react-dom": "^17.0.3",
     "apollo-server-micro": "^2.22.2",
     "bcryptjs": "^2.4.3",
     "chart.js": "^3.1.1",
@@ -32,7 +28,6 @@
     "react-chartjs-2": "^2.11.1",
     "react-dom": "17.0.1",
     "react-flip-toolkit": "^7.0.13",
-    "typescript": "^4.2.4",
     "validatorjs": "^3.22.1"
   },
   "devDependencies": {
