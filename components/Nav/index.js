@@ -6,7 +6,7 @@ import { faCog, faHome, faList, faSignOutAlt, faUser } from "@fortawesome/free-s
 
 import styles from "./nav.module.css";
 import { handleRequest } from "../../pages/api";
-import { DataContext, MobileContext } from "../../contexts";
+import { MobileContext } from "../../contexts";
 
 const Nav = () => {
   const router = useRouter();
@@ -41,7 +41,6 @@ const Nav = () => {
 }
 
 const NavButtons = React.forwardRef(({ router, showingNav, updateShowingNav }, ref) => {
-  const { setUser, setHabits, setEntries } = useContext(DataContext);
   const handleClick = (e) => {
     updateShowingNav(false);
     const path = `/${e.currentTarget.name}`;

@@ -25,10 +25,6 @@ const EmojiPicker = ({ setFormData }) => {
         setExpanded(false)
       }, 200);
     }
-    // todo - if in modal, set height of emoji picker element dynamically based on distance to bottom of container
-    // or maybe figure out its own scroll height and then subtract 16px and set it to that while keeping the modal box height fixed
-    // that seems insane though
-    // just need to create some space between the bottom of the absolutely-positioned element and the bottom of the modal container
     const closePicker = (e) => {
       if (!containerRef.current?.contains(e.target)) {
         console.log('thats whats up');
@@ -46,8 +42,12 @@ const EmojiPicker = ({ setFormData }) => {
     }));
   }
   return (
-    <div className={`${styles.EmojiPicker} ${(expanded === 'closing') ? styles.goodbye : ''}`} ref={containerRef}>
-      <button type="button" onClick={toggleExpanded}>{expanded ? 'close' : 'emoji picker'}</button>
+    <div className={`${styles.EmojiPicker} ${expanded ? styles.active : ''} ${(expanded === 'closing') ? styles.goodbye : ''}`} ref={containerRef}>
+      <button type="button" onClick={toggleExpanded}>
+        <span>
+          {expanded ? 'close' : 'emoji picker'}
+        </span>
+      </button>
       {expanded && <EmojiPickerNoSSRWrapper onEmojiClick={handleClick} disableAutoFocus />}
     </div>
   );
