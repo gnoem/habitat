@@ -5,6 +5,7 @@ import prisma from "../../../../lib/prisma";
 import { habitLabelIsValid, validationError } from "./validation";
 import { habitsList, entriesList, recordsList } from "./demo";
 import { sendPasswordResetEmail } from "./mail";
+import dayjs from "dayjs";
 
 export const resolvers = {
   Mutation: {
@@ -328,14 +329,27 @@ export const resolvers = {
         __typename: 'Token'
       }
     },
-    validateToken: async (_, args) => {
-      const { tokenId, type } = args;
-      const token = await prisma[type].findUnique({
+    validatePasswordToken: async (_, args) => {
+      const { tokenId } = args;
+      const token = await prisma.passwordToken.findUnique({
         where: {
           id: tokenId
         }
       });
-      if (!token) return validationError({ tokenId: 'code is invalid' });
+      // prisma doesn't let you add a ttl index to models so i'm doing this instead
+      const tokenIsExpired = (() => {
+        const createdAt = dayjs(token.createdAt);
+        const differenceInMinutes = dayjs().diff(createdAt, 'minute');
+        return differenceInMinutes > 120;
+      })();
+      if (tokenIsExpired) {
+        await prisma.passwordToken.delete({
+          where: {
+            id: tokenId
+          }
+        });
+      }
+      if (!token || tokenIsExpired) return validationError({ tokenId: 'code is invalid' });
       return {
         __typename: 'Token',
         ...token

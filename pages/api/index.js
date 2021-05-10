@@ -26,7 +26,7 @@ export const Entry = {
 }
 
 export const Token = {
-  validate: async ({ tokenId, type }) => await handleQuery(mutations.validateToken, { tokenId, type }),
+  validate: async ({ tokenId }) => await handleQuery(mutations.validatePasswordToken, { tokenId }),
   createPasswordToken: async (formData) => await handleQuery(mutations.createPasswordToken, formData)
 }
 
@@ -334,9 +334,9 @@ const mutations = {
       }
     }
   `,
-  validateToken: `
-    mutation($tokenId: String, $type: String) {
-      validateToken(tokenId: $tokenId, type: $type) {
+  validatePasswordToken: `
+    mutation($tokenId: String) {
+      validatePasswordToken(tokenId: $tokenId) {
         ... on FormErrorReport {
           __typename
           errors {

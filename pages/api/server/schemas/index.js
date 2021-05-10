@@ -130,7 +130,7 @@ export const typeDefs = gql`
     deleteEntry(id: String): Entry
     generateDemoData(id: String, calendarPeriod: String, alsoHabits: Boolean): Success
     validateSignupToken(tokenId: String): TokenResult
-    validateToken(tokenId: String, type: String): TokenResult
     createPasswordToken(email: String): TokenResult
+    validatePasswordToken(tokenId: String): TokenResult
   }
 `;

@@ -13,8 +13,8 @@ const ResetPassword = ({ token }) => {
   const [tokenIsValid, setTokenIsValid] = useState(null);
   const warnError = useWarnError();
   useEffect(() => {
-    Token.validate({ tokenId: token, type: 'passwordToken' }).then(({ validateToken }) => {
-      setUserId(validateToken.userId);
+    Token.validate({ tokenId: token }).then(({ validatePasswordToken }) => {
+      setUserId(validatePasswordToken.userId);
       setTokenIsValid(true);
     }).catch(err => {
       setTokenIsValid(false);
