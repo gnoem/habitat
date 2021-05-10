@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { User, Habit, Entry } from "../pages/api";
+import { useRouter } from "next/router";
+
+import { User, Habit, Entry, handleRequest } from "../pages/api";
 
 export const DataContext = React.createContext(null);
 
 export const DataContextProvider = ({ children }) => {
+  const router = useRouter();
   const [user, setUser] = useState(null);
   const [habits, setHabits] = useState(null);
   const [entries, setEntries] = useState(null);
@@ -11,6 +14,10 @@ export const DataContextProvider = ({ children }) => {
   const getUser = async (userId = user.id) => {
     if (!userId) return console.log('userId is undefined!');
     const { user } = await User.get({ id: userId });
+    if (user == null) { // if user doesn't exist
+      await handleRequest('/api/auth/logout');
+      router.push('/');
+    }
     setUser(user);
     return user;
   }

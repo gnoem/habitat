@@ -56,7 +56,7 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 - [x] password recovery!
 - [ ] prevent duplicate entries (more than one for a given date)
 - [ ] better unhandledFormError message
-- [ ] if cookie is invalid user, log out
+- [x] if cookie is invalid user, log out
 - [x] emoji picker for habit icons ([use this maybe?](https://github.com/iamcal/emoji-data))
 - [x] instructions for label template for complex habits + regex validation error if no handlebars are found in string
 - [ ] figure out switching from simple -> complex habits - should maybe prompt the user for an amount to put in for entries that record that habit as completed
