@@ -5,10 +5,8 @@ import nprogress from "nprogress";
 
 import "../styles/global.css";
 import { AppContextProvider, ModalContext } from "../contexts";
-import AppLayout from "../components/Layout";
+import { AppLayout, DashboardWrapper, HomepageLayout } from "../layouts";
 import Modal from "../components/Modal";
-import DashboardLayout from "../components/DashboardLayout";
-import HomepageLayout from "../components/HomepageLayout";
 
 Router.events.on('routeChangeStart', () => nprogress.start());
 Router.events.on('routeChangeComplete', () => nprogress.done());
@@ -28,14 +26,14 @@ const AppContent = ({ Component, pageProps }) => {
   const { modal } = useContext(ModalContext);
   const router = useRouter();
   const protectedRoutes = ['/dashboard', '/habits', '/account', '/settings'];
-  const PageLayout = (protectedRoutes.includes(router.pathname))
-    ? DashboardLayout
+  const PageWrapper = (protectedRoutes.includes(router.pathname))
+    ? DashboardWrapper
     : HomepageLayout;
   return (
-    <PageLayout>
+    <PageWrapper>
       <Modal {...modal} />
       <Component {...pageProps} />
-    </PageLayout>
+    </PageWrapper>
   );
 }
 

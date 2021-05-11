@@ -1,0 +1,35 @@
+.MySettings {
+  width: 100%;
+  max-width: 500px;
+}
+.MySettings + .MySettings {
+  margin-top: 1rem;
+}
+.MySettings h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+.MySettings h2:not(:first-of-type) {
+  margin-top: 1.5rem;
+}
+.MySettings h3 {
+  font-size: 1rem;
+  margin: 1.5rem 0 1rem;
+  text-transform: uppercase;
+}
+.MySettings > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: 0.2s;
+}
+.MySettings > div + div {
+  margin-top: 0.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 0.5rem;
+}
+
+.disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}

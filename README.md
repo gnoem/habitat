@@ -50,10 +50,17 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 
 ## notes to self
 
-### priorities
+### todo
 
 - [x] add delete account feature
 - [x] password recovery!
+- [ ] cuter 404 page
+- [ ] add option to rearrange habits!
+- [ ] fix habit graph when only tracking simple habits, something weird is happening
+- [ ] better explanation of demo data for demo visitors
+- [ ] popup when visiting homepage with ?demo=true like with pianopet portfolio link
+- [ ] add explanation of demo stuff to readme
+- [ ] let users configure "create new habit" emoji in settings (currently 🐛)
 - [ ] prevent duplicate entries (more than one for a given date)
 - [ ] better unhandledFormError message
 - [x] if cookie is invalid user, log out

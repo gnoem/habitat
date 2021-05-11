@@ -3,6 +3,7 @@ import { useFormSubmit } from "../../hooks";
 import { fancyClassName } from "../../utils";
 import Button from "./Button";
 import Checkbox from "./Checkbox";
+import Dropdown from "./Dropdown";
 import Input from "./Input";
 import Submit from "./Submit";
 import Switch from "./Switch";
@@ -21,4 +22,4 @@ const Form = ({ children, title, submit, onSubmit, onSuccess, handleFormError, b
 }
 
 export default Form;
-export { Button, Checkbox, Input, Submit, Switch }
+export { Button, Checkbox, Dropdown, Input, Submit, Switch }

@@ -1,0 +1,58 @@
+.Homepage {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  display: grid;
+  grid-template: 'main spacer' 100% / minmax(auto, 700px) calc(500px + 5rem);
+}
+.Main {
+  grid-area: main;
+  padding: 5rem;
+}
+.Homepage h1 {
+  font-weight: normal;
+  font-size: 5rem;
+  line-height: 1;
+  margin-bottom: 2rem;
+  text-transform: lowercase;
+}
+.Homepage p {
+  text-align: justify;
+}
+.Homepage nav {
+  margin: 1.5rem 0;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.Homepage nav button + button {
+  margin-top: 1rem;
+  margin-left: 3rem;
+}
+
+@media screen and (max-width: 900px) {
+  .Main {
+    padding: 4rem;
+    padding-top: 2rem;
+  }
+  .Homepage {
+    display: block;
+    overflow: visible;
+  }
+  .Homepage h1 {
+    font-size: 3rem;
+  }
+  .Homepage nav {
+    margin-top: 2rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .Main {
+    padding: 2rem;
+  }
+  .Homepage nav {
+    margin-top: 1.5rem;
+  }
+}

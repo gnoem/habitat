@@ -1,0 +1,47 @@
+.Clock {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 2rem 3rem 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 1rem;
+}
+.Clock .dd {
+  font-family: var(--header-font);
+  font-size: 5em;
+  line-height: 1;
+}
+.Clock .mm {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.Clock .Time {
+  margin-top: 1em;
+  font-family: var(--mono-font);
+  font-size: 1.2em;
+}
+
+@media screen and (max-width: 900px) {
+  .Clock {
+    position: absolute;
+    margin: 1rem 1.5rem;
+    font-size: 0.7rem;
+  }
+  .Clock .Time {
+    margin-top: 0.5em;
+    font-size: 1.5em;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .Clock {
+    margin: 0.5rem 1rem;
+    font-size: 0.5rem;
+  }
+  .Clock .Time {
+    font-size: 1.75em;
+  }
+}

@@ -389,7 +389,7 @@ export const resolvers = {
       await sendPasswordResetEmail({
         to: email,
         subject: 'your habitat account ✨',
-        resetLink: `https://habi.vercel.app/reset-password?token=${token.id}`
+        resetLink: `https://habi.vercel.app/recover?token=${token.id}`
       });
       return {
         __typename: 'Token'

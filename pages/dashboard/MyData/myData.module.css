@@ -1,0 +1,85 @@
+@keyframes jumpToDateAnimation {
+  from {
+    opacity: 0;
+    transform: translate3d(-1rem, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes dataAnimation {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 1rem, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.MyDataHeader {
+  margin-bottom: 2rem;
+}
+.MyDataNav {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+button.jumpToCurrentMonth {
+  font-size: 0.8rem;
+  line-height: 1.25rem;
+  margin-left: 0.5rem;
+  white-space: nowrap;
+  animation: jumpToDateAnimation 0.2s 1 forwards;
+}
+button.jumpToCurrentMonth::before {
+  content: '\00BB';
+  display: inline-block;
+  margin-right: 0.5em;
+}
+button.jumpToCurrentMonth::after {
+  opacity: 0;
+}
+button.jumpToCurrentMonth:hover::after {
+  opacity: 1;
+}
+
+.calendarPeriod {
+  position: relative;
+  font-family: var(--mono-font);
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 0.8;
+  text-transform: uppercase;
+  margin-top: 0.75rem;
+}
+
+.MyDataViewOptions {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+div button.currentDataView { /* including div for specificity */
+  opacity: 1;
+}
+
+.MyDataContent > * {
+  animation: dataAnimation 0.2s 1 forwards;
+}
+
+.noData {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  animation: dataAnimation 0.2s 1 forwards;
+}
+.noData > span {
+  opacity: 0.4;
+}
+
+@media screen and (max-width: 900px) {
+  .calendarPeriod {
+    font-size: 1.2rem;
+  }
+}
