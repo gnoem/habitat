@@ -13,7 +13,7 @@ const ids = habitDefs.map((_, index) => {
 });
 
 // for each entry that will be in entriesArray (28-31 depending on calendar period), create a record for each habit in habitDefs
-export const recordsList = (calendarPeriod) => {
+export const recordsList = (demoTokenId, calendarPeriod) => {
   return new Array(dayjs(calendarPeriod).daysInMonth()).fill('').map(() => {
     return habitDefs.map((habit, index) => {
       const randomAmount = () => {
@@ -25,7 +25,7 @@ export const recordsList = (calendarPeriod) => {
       }
       const randomBool = () => Math.random() < 0.5; // 50% probability of getting true 
       return {
-        habitId: ids[index],
+        habitId: `${ids[index]}-${demoTokenId}`,
         amount: habit.complex ? randomAmount() : null,
         check: habit.complex ? true : randomBool()
       }
@@ -34,22 +34,22 @@ export const recordsList = (calendarPeriod) => {
 }
 
 // entries for the whole current month
-export const entriesList = (userId, calendarPeriod) => recordsList(calendarPeriod).map((_, index) => {
+export const entriesList = (userId, demoTokenId, calendarPeriod) => recordsList(calendarPeriod).map((_, index) => {
   const dateForThisEntry = `${calendarPeriod}-${index + 1}`;
   return {
     date: dayjs(dateForThisEntry).format('YYYY-MM-DD'),
     userId,
-    demo: true
+    demoTokenId
   }
 });
 
-export const habitsList = (userId) => habitDefs.map((habit, index) => {
+export const habitsList = (userId, demoTokenId) => habitDefs.map((habit, index) => {
   const sanitizedHabit = {...habit};
   delete sanitizedHabit.range; // range is only there for data generation, will cause server error if we try to write it to db
   return {
-    id: ids[index],
+    id: `${ids[index]}-${demoTokenId}`,
     ...sanitizedHabit,
     userId,
-    demo: true
+    demoTokenId
   }
 });

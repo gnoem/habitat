@@ -16,7 +16,6 @@ model User {
   entries       Entry[]
   records       Record[]
   settings      Settings?
-  demo          Boolean       @default(false)
   @@map(name: "users")
 }
 
@@ -43,7 +42,8 @@ model Habit {
   records       Record[]
   user          User?         @relation(fields: [userId], references: [id])
   userId        String?
-  demo          Boolean       @default(false)
+  demoToken     DemoToken?    @relation(fields: [demoTokenId], references: [id])
+  demoTokenId   String?
   @@map(name: "habits")
 }
 
@@ -53,7 +53,8 @@ model Entry {
   records       Record[]
   user          User          @relation(fields: [userId], references: [id])
   userId        String
-  demo          Boolean       @default(false)
+  demoToken     DemoToken?    @relation(fields: [demoTokenId], references: [id])
+  demoTokenId   String?
   @@map(name: "entries")
 }
 
@@ -67,7 +68,8 @@ model Record {
   entryId       String?
   user          User?         @relation(fields: [userId], references: [id])
   userId        String?
-  demo          Boolean       @default(false)
+  demoToken     DemoToken?    @relation(fields: [demoTokenId], references: [id])
+  demoTokenId   String?
   @@map(name: "records")
 }
 
@@ -82,4 +84,13 @@ model PasswordToken {
   userId        String?       @unique
   createdAt     DateTime      @default(now())
   @@map(name: "passwordToken")
+}
+
+model DemoToken {
+  id            String        @default(cuid()) @id
+  habits        Habit[]
+  entries       Entry[]
+  records       Record[]
+  createdAt     DateTime      @default(now())
+  @@map(name: "demoToken")
 }

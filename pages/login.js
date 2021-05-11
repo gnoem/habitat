@@ -17,7 +17,10 @@ const Login = () => {
   });
   const handleSubmit = () => User.login(formData);
   const handleSuccess = async ({ login: user }) => {
-    await handleRequest('/api/auth/login', { user });
+    const { id, demoTokenId } = user;
+    await handleRequest('/api/auth/login', {
+      user: { id, demoTokenId }
+    });
     router.push('/dashboard');
   }
   const createPasswordToken = () => {

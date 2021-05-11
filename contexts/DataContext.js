@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import { User, Habit, Entry, handleRequest } from "../pages/api";
@@ -10,6 +10,7 @@ export const DataContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [habits, setHabits] = useState(null);
   const [entries, setEntries] = useState(null);
+  const [demoTokenId, setDemoTokenId] = useState(null);
   const [demoGenOption, setDemoGenOption] = useState(true);
   const getUser = async (userId = user.id) => {
     if (!userId) return console.log('userId is undefined!');
@@ -18,12 +19,16 @@ export const DataContextProvider = ({ children }) => {
       await handleRequest('/api/auth/logout');
       router.push('/');
     }
+    if (user.email === 'demo') {
+      const { demoTokenId: tokenId } = await handleRequest('/api/auth/getSession');
+      setDemoTokenId(tokenId);
+    }
     setUser(user);
     return user;
   }
   const getHabits = async () => {
     if (!user) return console.log('User not stored');
-    const { habits } = await Habit.get({ userId: user.id });
+    const { habits } = await Habit.get({ userId: user.id, demoTokenId });
     if (user.email === 'demo') {
       // check if user has created any of their own habits, in which case they can't use feature to auto generate data
       // only demo habits will have ids of the form demo-0, demo-1, demo-2, etc, all others will be a string of letters & numbers
@@ -36,7 +41,7 @@ export const DataContextProvider = ({ children }) => {
   }
   const getEntries = async () => {
     if (!user) return console.log('User not stored');
-    const { entries } = await Entry.get({ userId: user.id });
+    const { entries } = await Entry.get({ userId: user.id, demoTokenId });
     setEntries(entries);
     return entries;
   }
@@ -44,6 +49,7 @@ export const DataContextProvider = ({ children }) => {
     user, setUser, getUser,
     habits, setHabits, getHabits,
     entries, setEntries, getEntries,
+    demoTokenId, setDemoTokenId,
     demoGenOption
   }
   return (

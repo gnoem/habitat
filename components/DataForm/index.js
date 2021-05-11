@@ -34,7 +34,7 @@ const useExistingData = ({ entries, currentDate }) => {
 }
 
 const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
-  const { user, entries, getEntries } = useContext(DataContext);
+  const { user, demoTokenId, entries, getEntries } = useContext(DataContext);
   const isMobile = useContext(MobileContext);
   const { currentDate, setCurrentDate } = useCurrentDate(dashPanelOptions?.date, dashPanelOptions);
   const existingData = useExistingData({ entries, currentDate });
@@ -43,7 +43,7 @@ const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
     id: existingData?.id,
     date: existingData?.date ?? currentDate,
     records: existingData?.records ?? [],
-    demo: user.email === 'demo'
+    demoTokenId
   });
   useEffect(() => {
     resetForm();

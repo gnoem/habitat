@@ -18,9 +18,14 @@
 }
 .PageLoading .Loading {
   height: 2rem;
+  max-height: 100%;
 }
 .PageLoading circle {
   stroke: #000;
+}
+
+.PageLoading.h125r {
+  height: 1.25rem;
 }
 
 .PageLoading.h80p {

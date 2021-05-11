@@ -9,6 +9,7 @@ export const User = {
   login: async (params) => await handleQuery(queries.loginUser, params),
   deleteAccount: async (data) => await handleQuery(mutations.deleteAccount, data),
   generateDemoData: async (id) => await handleQuery(mutations.generateDemoData, id),
+  clearDemoData: async ({ demoTokenId }) => await handleQuery(mutations.clearDemoData, { demoTokenId }),
   validateSignupToken: async ({ tokenId }) => await handleQuery(mutations.validateSignupToken, { tokenId })
 }
 
@@ -49,8 +50,8 @@ const queries = {
     }
   `,
   getHabits: `
-    query($userId: String) {
-      habits(userId: $userId) {
+    query($userId: String, $demoTokenId: String) {
+      habits(userId: $userId, demoTokenId: $demoTokenId) {
         id
         name
         icon
@@ -62,8 +63,8 @@ const queries = {
     }
   `,
   getEntries: `
-    query($userId: String) {
-      entries(userId: $userId) {
+    query($userId: String, $demoTokenId: String) {
+      entries(userId: $userId, demoTokenId: $demoTokenId) {
         id
         date
         records {
@@ -96,6 +97,7 @@ const queries = {
             appearance__24hrClock
             appearance__showClockSeconds
           }
+          demoTokenId
         }
       }
     }
@@ -232,7 +234,7 @@ const mutations = {
       $complex: Boolean,
       $retired: Boolean,
       $userId: String,
-      $demo: Boolean
+      $demoTokenId: String
     ) {
       createHabit(
         name: $name,
@@ -242,7 +244,7 @@ const mutations = {
         complex: $complex,
         retired: $retired,
         userId: $userId,
-        demo: $demo
+        demoTokenId: $demoTokenId
       ) {
         ... on FormErrorReport {
           __typename
@@ -297,8 +299,8 @@ const mutations = {
     }
   `,
   createEntry: `
-    mutation($userId: String, $date: String, $records: [RecordInput], $demo: Boolean) {
-      createEntry(userId: $userId, date: $date, records: $records, demo: $demo) {
+    mutation($userId: String, $date: String, $records: [RecordInput], $demoTokenId: String) {
+      createEntry(userId: $userId, date: $date, records: $records, demoTokenId: $demoTokenId) {
         id
         date
         records {
@@ -331,8 +333,15 @@ const mutations = {
     }
   `,
   generateDemoData: `
-    mutation($id: String, $calendarPeriod: String, $alsoHabits: Boolean) {
-      generateDemoData(id: $id, calendarPeriod: $calendarPeriod, alsoHabits: $alsoHabits) {
+    mutation($id: String, $demoTokenId: String, $calendarPeriod: String, $alsoHabits: Boolean) {
+      generateDemoData(id: $id, demoTokenId: $demoTokenId, calendarPeriod: $calendarPeriod, alsoHabits: $alsoHabits) {
+        success
+      }
+    }
+  `,
+  clearDemoData: `
+    mutation($demoTokenId: String) {
+      clearDemoData(demoTokenId: $demoTokenId) {
         success
       }
     }

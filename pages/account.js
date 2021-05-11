@@ -9,7 +9,7 @@ import Form, { Button, Input, Submit } from "../components/Form";
 
 const Account = ({ user }) => {
   const isMobile = useContext(MobileContext);
-  const demo = user.email === 'demo';
+  const demo = user.demoTokenId;
   return (
     <DashboardComponent userId={user.id} className="Account">
       <h1>my account</h1>
@@ -121,6 +121,7 @@ const DeleteAccount = ({ demo, user }) => {
     if (demo) {
       console.log('cute');
       createModal('niceTry');
+      return;
     }
     createModal('deleteAccount', { user })
   }

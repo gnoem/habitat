@@ -9,6 +9,7 @@ export const typeDefs = gql`
     habits: [Habit]
     entries: [Entry]
     settings: Settings
+    demoTokenId: String
   }
 
   type Settings {
@@ -88,8 +89,8 @@ export const typeDefs = gql`
     login(email: String, password: String): UserResult
     user(id: String): User
     settings(userId: String): Settings
-    habits(userId: String): [Habit]
-    entries(userId: String): [Entry]
+    habits(userId: String, demoTokenId: String): [Habit]
+    entries(userId: String, demoTokenId: String): [Entry]
     records(entryId: String): [Record]
   }
   
@@ -114,7 +115,7 @@ export const typeDefs = gql`
       complex: Boolean,
       retired: Boolean,
       userId: String,
-      demo: Boolean
+      demoTokenId: String
     ): HabitResult
     editHabit(
       id: String,
@@ -126,10 +127,11 @@ export const typeDefs = gql`
       retired: Boolean
     ): HabitResult
     deleteHabit(id: String): Habit
-    createEntry(userId: String, date: String, records: [RecordInput], demo: Boolean): Entry
+    createEntry(userId: String, date: String, records: [RecordInput], demoTokenId: String): Entry
     editEntry(id: String, date: String, records: [RecordInput]): Entry
     deleteEntry(id: String): Entry
-    generateDemoData(id: String, calendarPeriod: String, alsoHabits: Boolean): Success
+    generateDemoData(id: String, demoTokenId: String, calendarPeriod: String, alsoHabits: Boolean): Success
+    clearDemoData(demoTokenId: String): Success
     validateSignupToken(tokenId: String): TokenResult
     createPasswordToken(email: String): TokenResult
     validatePasswordToken(tokenId: String): TokenResult

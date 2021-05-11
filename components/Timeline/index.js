@@ -15,6 +15,8 @@ import ArrowNav from "../ArrowNav";
 import TooltipElement from "../Tooltip";
 import ViewOptions from "../ViewOptions";
 import { Submit } from "../Form";
+import { useWarnError } from "../../hooks";
+import { PageLoading } from "../Loading";
 
 const Timeline = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod, updateDashPanel }) => {
   const [timelineView, setTimelineView] = useState(user.settings?.dashboard__defaultView ?? 'list');
@@ -28,6 +30,8 @@ const Timeline = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod,
   return (
     <div className={styles.Timeline}>
       <TimelineHeader {...{
+        habits,
+        entries,
         calendarPeriod,
         updateCalendarPeriod,
         timelineView,
@@ -47,7 +51,7 @@ const Timeline = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod,
 }
 
 export const NoData = ({ user, calendarPeriod }) => {
-  const showButton = user?.email === 'demo';
+  const showButton = user.demoTokenId;
   return (
     <div className={styles.noData}>
       <span>you haven't added any data for this period</span>
@@ -56,13 +60,36 @@ export const NoData = ({ user, calendarPeriod }) => {
   );
 }
 
+const ClearData = ({ demoTokenId }) => {
+  const [clicked, setClicked] = useState(false);
+  const { setHabits, setEntries } = useContext(DataContext);
+  const warnError = useWarnError();
+  const handleClick = async () => {
+    if (clicked) return null;
+    setClicked(true);
+    return User.clearDemoData({ demoTokenId }).then(() => {
+      setHabits(null);
+      setEntries(null);
+    }).catch(err => {
+      warnError('somethingWentWrong', err);
+    });
+  }
+  if (clicked) return <PageLoading className="h125r jcfs mt10" />;
+  return (
+    <button type="button" className="mt10 link" onClick={handleClick}>
+      &raquo; click to clear data / start fresh
+    </button>
+  );
+}
+
 const ButtonToGenerateTestData = ({ user, calendarPeriod }) => {
-  const { demoGenOption, habits, getHabits, getEntries } = useContext(DataContext);
+  const { demoTokenId, demoGenOption, habits, getHabits, getEntries } = useContext(DataContext);
   const [successPending, setSuccessPending] = useState(false);
   const handleClick = () => {
     setSuccessPending(true);
     return User.generateDemoData({
-      id: user.id, 
+      id: user.id,
+      demoTokenId,
       calendarPeriod,
       alsoHabits: !habits?.length
     }).then(() => {
@@ -82,7 +109,8 @@ const ButtonToGenerateTestData = ({ user, calendarPeriod }) => {
   );
 }
 
-const TimelineHeader = ({ calendarPeriod, updateCalendarPeriod, timelineView, updateTimelineView }) => {
+const TimelineHeader = ({ habits, entries, calendarPeriod, updateCalendarPeriod, timelineView, updateTimelineView }) => {
+  const { demoTokenId } = useContext(DataContext);
   const currentPeriod = dayjs().format('YYYY-MM');
   const nav = (direction) => () => {
     const newPeriod = direction === 'next'
@@ -120,6 +148,7 @@ const TimelineHeader = ({ calendarPeriod, updateCalendarPeriod, timelineView, up
           </button>
         </ViewOptions>
       </div>
+      {(demoTokenId && !!habits.length && !!entries.length) && <ClearData {...{ demoTokenId }} />}
     </div>
   );
 }

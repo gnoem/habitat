@@ -12,7 +12,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
-    "@prisma/client": "^2.21.2",
+    "@prisma/client": "^2.22.1",
     "@sendgrid/mail": "^7.4.4",
     "apollo-server-micro": "^2.22.2",
     "bcryptjs": "^2.4.3",
@@ -31,6 +31,6 @@
     "validatorjs": "^3.22.1"
   },
   "devDependencies": {
-    "prisma": "^2.21.2"
+    "prisma": "^2.22.1"
   }
 }

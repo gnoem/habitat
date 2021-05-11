@@ -83,10 +83,10 @@ const Habits = ({ habitView, user, habits }) => {
 
 export const HabitForm = ({ title, user, id, name, icon, color, label, complex, retired, formBehavior, onSuccess, resetFormAfter }) => {
   const addingNew = !id;
-  const { getHabits } = useContext(DataContext);
+  const { demoTokenId, getHabits } = useContext(DataContext);
   const { formData, setFormData, handleFormError, resetForm, inputProps, checkboxProps } = useForm({
     userId: user.id,
-    demo: user.email === 'demo',
+    demoTokenId,
     id: addingNew ? '' : id,
     retired: addingNew ? false : retired,
     name: addingNew ? '' : name,

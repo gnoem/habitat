@@ -184,7 +184,7 @@ export const resolvers = {
       }
     },
     createHabit: async (_, args) => {
-      const { name, icon, color, label, complex, retired, userId, demo } = args;
+      const { name, icon, color, label, complex, retired, userId, demoTokenId } = args;
       if (complex && !habitLabelIsValid(label)) {
         return validationError({ label: 'invalid habit label, remember to include unit in curly braces!' });
       }
@@ -197,7 +197,7 @@ export const resolvers = {
           complex,
           retired,
           userId,
-          demo
+          demoTokenId
         }
       });
       return {
@@ -245,31 +245,46 @@ export const resolvers = {
       return transaction[2];
     },
     createEntry: async (_, args) => {
-      const { userId, date, records, demo } = args;
-      // todo filter records - only include those with check = true
-      // no use clogging up the db
-      // also for editEntry
+      const { userId, date, records, demoTokenId } = args;
+      const editedRecords = records.map(record => {
+        // filtering out records with check = false
+        // no use clogging up the db
+        if (!record.check) return null;
+        const recordToReturn = {...record};
+        // add demo token id (only for demo accounts, otherwise null)
+        recordToReturn.demoTokenId = demoTokenId;
+        return recordToReturn;
+      }).filter(el => el);
       const entry = await prisma.entry.create({
         data: {
           userId,
           date,
           records: {
-            create: records
+            create: editedRecords
           },
-          demo
+          demoTokenId
         }
       });
       return entry;
     },
     editEntry: async (_, args) => {
-      const { id, date, records } = args;
+      const { id, date, records, demoTokenId } = args;
+      const updatedRecords = records.map(record => {
+        // filtering out records with check = false
+        // no use clogging up the db
+        if (!record.check) return null;
+        const recordToReturn = {...record};
+        // add demo token id (only for demo accounts, otherwise null)
+        recordToReturn.demoTokenId = demoTokenId;
+        return recordToReturn;
+      }).filter(el => el);
       const entry = await prisma.entry.update({
         where: { id },
         data: {
           date,
           records: {
             deleteMany: {},
-            create: records
+            create: updatedRecords
           }
         }
       });
@@ -287,21 +302,21 @@ export const resolvers = {
       return deletedEntry;
     },
     generateDemoData: async (_, args) => {
-      const { id, calendarPeriod, alsoHabits } = args;
+      const { id, demoTokenId, calendarPeriod, alsoHabits } = args;
       // create demo habits and entries
       if (alsoHabits) {
         await prisma.habit.createMany({
-          data: habitsList(id)
+          data: habitsList(id, demoTokenId)
         });
       }
       await prisma.entry.createMany({
-        data: entriesList(id, calendarPeriod)
+        data: entriesList(id, demoTokenId, calendarPeriod)
       });
       const entries = await prisma.entry.findMany({
         where: {
           AND: [
             {
-              demo: true
+              demoTokenId
             },
             {
               date: {
@@ -311,16 +326,34 @@ export const resolvers = {
           ]
         }
       });
-      // for each entry, loop through recordsArray and add entry id, then prisma.record.createMany
+      // for each entry, loop through recordsArray and add entry id, user id, and demoTokenId, then prisma.record.createMany
       const records = entries.map((entry, index) => {
-        return recordsList(calendarPeriod)[index].map(record => {
+        return recordsList(demoTokenId, calendarPeriod)[index].map(record => {
           const recordWithEntryId = {...record};
           recordWithEntryId.entryId = entry.id;
+          recordWithEntryId.userId = id;
+          recordWithEntryId.demoTokenId = demoTokenId;
           return recordWithEntryId;
         });
       }).flat();
       await prisma.record.createMany({
         data: records
+      });
+      return {
+        success: true
+      }
+    },
+    clearDemoData: async (_, args) => {
+      const { demoTokenId } = args;
+      await prisma.demoToken.update({
+        where: {
+          id: demoTokenId
+        },
+        data: {
+          habits: { deleteMany: {} },
+          entries: { deleteMany: {} },
+          records: { deleteMany: {} }
+        }
       });
       return {
         success: true
@@ -411,19 +444,43 @@ export const resolvers = {
       const passwordIsValid = bcrypt.compareSync(password, user.password);
       if (!passwordIsValid) return validationError({ password: 'invalid password' });
       if (email === 'demo') {
-        const whereDemo = {
-          where: { demo: true }
-        }
-        // reset demo records, entries, and habits
-        await prisma.record.deleteMany({
-          where: {
-            entry: {
-              demo: true
+        // clear past demo stuff
+        const allDemoTokens = await prisma.demoToken.findMany();
+        const deleteExpiredTokens = allDemoTokens.map(demoToken => {
+          const tokenIsExpired = (() => {
+            const createdAt = dayjs(demoToken.createdAt);
+            const differenceInMinutes = dayjs().diff(createdAt, 'minute');
+            return differenceInMinutes > 360; // 6 hours
+          })();
+          const deleteData = prisma.demoToken.update({
+            where: {
+              id: demoToken.id
+            },
+            data: {
+              habits: { deleteMany: {} },
+              entries: { deleteMany: {} },
+              records: { deleteMany: {} }
             }
-          }
+          });
+          const deleteToken = prisma.demoToken.delete({
+            where: {
+              id: demoToken.id
+            }
+          });
+          return (tokenIsExpired) ? [deleteData, deleteToken] : null;
+        }).filter(el => el).flat();
+        await prisma.$transaction(deleteExpiredTokens);
+
+        // create demoToken and add that to the session cookie 
+        const createdToken = await prisma.demoToken.create({
+          data: {}
         });
-        await prisma.entry.deleteMany(whereDemo);
-        await prisma.habit.deleteMany(whereDemo);
+        console.dir(createdToken);
+        return {
+          __typename: 'User',
+          ...user,
+          demoTokenId: createdToken.id
+        }
       }
       return {
         __typename: 'User',
@@ -438,18 +495,18 @@ export const resolvers = {
       return user;
     },
     habits: async (_, args) => {
-      const { userId } = args;
+      const { userId, demoTokenId } = args;
       const habits = await prisma.habit.findMany({
         orderBy: { id: 'asc' }, // order of creation i guess
-        where: { userId }
+        where: { userId, demoTokenId }
       });
       return habits;
     },
     entries: async (_, args) => {
-      const { userId } = args;
+      const { userId, demoTokenId } = args;
       const entries = await prisma.entry.findMany({
         orderBy: { date: 'desc' },
-        where: { userId }
+        where: { userId, demoTokenId }
       });
       return entries;
     },
