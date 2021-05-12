@@ -5,8 +5,8 @@ import { Chart } from "chart.js/dist/chart";
 
 import styles from "./graph.module.css";
 import graphConfig from "./graphConfig";
-import { MobileContext } from "../../../contexts";
 import { useRefName } from "../../../hooks";
+import { MobileContext } from "../../../contexts";
 
 const Graph = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
   return (
@@ -18,17 +18,18 @@ const Graph = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
 }
 
 const ChartCanvas = ({ type, habits, entries, calendarPeriod, updateDashPanel, includeDateMarkers }) => {
-  const isMobile = useContext(MobileContext);
   const [chartInstance, setChartInstance] = useState(null);
+  const isMobile = useContext(MobileContext);
   const chartRef = useRef(null);
-  const { data, initialSetup } = useMemo(() => {
+  const { data, config } = useMemo(() => {
     return graphConfig(habits, entries, calendarPeriod, type, isMobile, includeDateMarkers);
-  }, [entries]);
+  }, [entries, isMobile]);
   useEffect(() => {
     if (!chartInstance) return;
     chartInstance.data = data;
+    chartInstance.options = config.options;
     chartInstance.update();
-  }, [entries]);
+  }, [data, config]);
   const handleChartClick = useCallback((e) => {
     if (!chartInstance) return;
     const points = chartInstance.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true);
@@ -46,16 +47,17 @@ const ChartCanvas = ({ type, habits, entries, calendarPeriod, updateDashPanel, i
         return;
       }
       const ctx = myCanvas.getContext('2d');
-      const chart = new Chart(ctx, initialSetup);
+      const chart = new Chart(ctx, config);
       setChartInstance(chart);
     }
     myCanvas.addEventListener('click', handleChartClick);
     return () => myCanvas.removeEventListener('click', handleChartClick);
-  }, [chartRef, handleChartClick]);
+  }, [chartRef, handleChartClick, config]);
   const chartHeight = () => {
     if (type === 'complex') return 250;
     if (habits.length <= 1) return 40;
-    return habits.length * 20;
+    const num = includeDateMarkers ? 30 : 20;
+    return habits.length * num;
   }
   return (
     <div>

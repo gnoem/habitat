@@ -14,7 +14,7 @@ export const MobileContextProvider = ({ children }) => {
     }
     window.addEventListener('resize', checkWidth);
     return () => window.removeEventListener('resize', checkWidth);
-  }, []);
+  }, [isMobile]);
   return (
     <MobileContext.Provider value={isMobile}>
       {children}

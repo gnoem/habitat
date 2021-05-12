@@ -41,7 +41,7 @@ const graphConfig = (habits, entries, calendarPeriod, type, isMobile, includeDat
       ? habits.map(habit => habit.icon)
       : habits.map(habit => habit.name);
   return {
-    initialSetup: chartSetup(labels, yAxisLabels, datasets, type, isMobile, includeDateMarkers),
+    config: chartSetup(labels, yAxisLabels, datasets, type, isMobile, includeDateMarkers),
     data: {
       labels,
       yAxisLabels,
@@ -65,10 +65,11 @@ export const chartSetup = (labels, yAxisLabels, datasets, type, isMobile, includ
           font: {
             family: 'Inconsolata, monospace'
           },
-          display: (type === 'complex') || includeDateMarkers
+          display: (type === 'complex') || includeDateMarkers,
+          padding: 5
         },
         grid: {
-          drawTicks: type === 'complex'
+          drawTicks: (type === 'complex') || (isMobile && type === 'simple' && includeDateMarkers)
         }
       },
       y: {
@@ -77,7 +78,7 @@ export const chartSetup = (labels, yAxisLabels, datasets, type, isMobile, includ
         ticks: {
           font: {
             family: 'Inconsolata, monospace',
-            size: (isMobile && type === 'simple') ? 14 : 10
+            size: (isMobile && type === 'simple') ? 12 : 10
           },
           color: '#000'
         },
