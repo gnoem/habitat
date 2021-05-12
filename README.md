@@ -54,16 +54,17 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 
 - [x] add delete account feature
 - [x] password recovery!
-- [ ] cuter 404 page
+- [x] cuter 404 page
 - [ ] add option to rearrange habits!
 - [ ] fix habit graph when only tracking simple habits, something weird is happening
 - [ ] better explanation of demo data for demo visitors
-- [ ] demo settings should follow the same pattern as habits, entries, and records
+- [x] demo settings should follow the same pattern as habits, entries, and records
 - [ ] popup when visiting homepage with ?demo=true like with pianopet portfolio link
 - [ ] add explanation of demo stuff to readme
 - [ ] let users configure "create new habit" emoji in settings (currently 🐛)
 - [ ] prevent duplicate entries (more than one for a given date)
 - [ ] better unhandledFormError message
+- [ ] probably isMobile would be better as a custom hook
 - [x] if cookie is invalid user, log out
 - [x] emoji picker for habit icons ([use this maybe?](https://github.com/iamcal/emoji-data))
 - [x] instructions for label template for complex habits + regex validation error if no handlebars are found in string

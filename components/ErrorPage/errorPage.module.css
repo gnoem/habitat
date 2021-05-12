@@ -1,0 +1,12 @@
+.ErrorPage {
+  display: flex;
+  align-items: center;
+}
+.ErrorPage h2 {
+  padding-right: 1.5rem;
+  margin-right: 1.5rem;
+  border-right: 1px solid rgba(0, 0, 0, 0.5);
+}
+.ErrorPage p {
+  font-family: var(--mono-font);
+}
