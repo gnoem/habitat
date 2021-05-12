@@ -6,7 +6,7 @@ const Settings = ({ user }) => {
   return (
     <DashboardLayout userId={user.id}>
       <h1>settings</h1>
-      <MySettings {...{ user }} />
+      <MySettings />
     </DashboardLayout>
   );
 }

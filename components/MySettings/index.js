@@ -6,8 +6,8 @@ import { DataContext } from "../../contexts";
 import { useForm } from "../../hooks";
 import Form, { Dropdown, Submit, Switch } from "../Form";
 
-const MySettings = ({ user }) => {
-  const { getUser } = useContext(DataContext);
+const MySettings = () => {
+  const { user, getUser } = useContext(DataContext);
   const { formData, checkboxProps, dropdownProps } = useForm({
     userId: user.id,
     dashboard__defaultView: user.settings?.dashboard__defaultView ?? 'list',

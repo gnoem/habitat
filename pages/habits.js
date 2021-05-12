@@ -9,13 +9,13 @@ import { MyHabits } from "../components/MyHabits";
 const Habits = ({ user }) => {
   return (
     <DashboardLayout userId={user.id}>
-      <HabitsContent {...{ user }} />
+      <HabitsContent />
     </DashboardLayout>
   );
 }
 
-const HabitsContent = ({ user }) => {
-  const { habits } = useContext(DataContext);
+const HabitsContent = () => {
+  const { user, habits } = useContext(DataContext);
   return (
     <>
       <h1>my habits</h1>

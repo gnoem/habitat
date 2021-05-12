@@ -14,17 +14,18 @@ const Dashboard = ({ user }) => {
   const [dashPanel, setDashPanel] = useState(null);
   const updateDashPanel = (view, options) => setDashPanel({ view, options });
   return (
-    <DashboardLayout userId={user.id}
-          dim={isMobile && dashPanel?.view}
-          dimOnClick={() => setDashPanel(null)}
-          sidebar={<DashPanel {...{ dashPanel, updateDashPanel }} />}>
-      <DashboardContent {...{ user, dashPanel, updateDashPanel }} />
+    <DashboardLayout
+      userId={user.id}
+      dim={isMobile && dashPanel?.view}
+      dimOnClick={() => setDashPanel(null)}
+      sidebar={<DashPanel {...{ dashPanel, updateDashPanel }} />}>
+        <DashboardContent {...{ dashPanel, updateDashPanel }} />
     </DashboardLayout>
   );
 }
 
-const DashboardContent = ({ user, dashPanel, updateDashPanel }) => {
-  const { habits, entries } = useContext(DataContext);
+const DashboardContent = ({ dashPanel, updateDashPanel }) => {
+  const { user, habits, entries } = useContext(DataContext);
   const [calendarPeriod, setCalendarPeriod] = useState(dayjs().format('YYYY-MM'));
   const entriesToDisplay = useMemo(() => {
     if (!entries) return [];

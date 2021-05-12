@@ -12,7 +12,7 @@ const Home = () => {
         <Button href="/login">Login</Button>
         <Button href="/register">Register</Button>
       </nav>
-      <p>&raquo; read more about this project on <a href="https://github.com/gnoem/habitat" target="_blank">github <FontAwesomeIcon icon={faGithub} /></a></p>
+      <p>&raquo; <i>read more about this project on <a href="https://github.com/gnoem/habitat" target="_blank">github <FontAwesomeIcon icon={faGithub} /></a></i></p>
       <Footer>copyright 2021 naomi g.w. • all rights reserved</Footer>
     </>
   );

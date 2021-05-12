@@ -6,7 +6,7 @@ const Account = ({ user }) => {
   return (
     <DashboardLayout userId={user.id} className="Account">
       <h1>my account</h1>
-      <MyAccount {...{ user }} />
+      <MyAccount />
     </DashboardLayout>
   );
 }
