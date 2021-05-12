@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 
 import { User, Habit, Entry, handleRequest } from "../pages/api";
@@ -14,14 +14,12 @@ export const DataContextProvider = ({ children }) => {
   const [demoGenOption, setDemoGenOption] = useState(true);
   const getUser = async (userId = user.id) => {
     if (!userId) return console.log('userId is undefined!');
-    const { user } = await User.get({ id: userId });
+    const { demoTokenId: tokenId } = await handleRequest('/api/auth/getSession');
+    setDemoTokenId(tokenId);
+    const { user } = await User.get({ id: userId, demoTokenId: tokenId });
     if (user == null) { // if user doesn't exist
       await handleRequest('/api/auth/logout');
       router.push('/');
-    }
-    if (user.email === 'demo') {
-      const { demoTokenId: tokenId } = await handleRequest('/api/auth/getSession');
-      setDemoTokenId(tokenId);
     }
     setUser(user);
     return user;

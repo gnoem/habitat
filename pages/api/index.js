@@ -34,8 +34,8 @@ export const Token = {
 
 const queries = {
   getUser: `
-    query($id: String) {
-      user(id: $id) {
+    query($id: String, $demoTokenId: String) {
+      user(id: $id, demoTokenId: $demoTokenId) {
         id
         name
         email
@@ -203,6 +203,7 @@ const mutations = {
   editSettings: `
     mutation(
       $userId: String,
+      $demoTokenId: String,
       $dashboard__defaultView: String,
       $habits__defaultView: String,
       $appearance__showClock: Boolean,
@@ -211,6 +212,7 @@ const mutations = {
     ) {
       editSettings(
         userId: $userId,
+        demoTokenId: $demoTokenId,
         dashboard__defaultView: $dashboard__defaultView,
         habits__defaultView: $habits__defaultView,
         appearance__showClock: $appearance__showClock,

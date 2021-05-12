@@ -87,8 +87,8 @@ export const typeDefs = gql`
   type Query {
     users: [User]
     login(email: String, password: String): UserResult
-    user(id: String): User
-    settings(userId: String): Settings
+    user(id: String, demoTokenId: String): User
+    settings(userId: String, demoTokenId: String): Settings
     habits(userId: String, demoTokenId: String): [Habit]
     entries(userId: String, demoTokenId: String): [Entry]
     records(entryId: String): [Record]
@@ -100,6 +100,7 @@ export const typeDefs = gql`
     editPassword(id: String, password: String, confirmPassword: String, reset: Boolean): UserResult
     editSettings(
       userId: String,
+      demoTokenId: String,
       dashboard__defaultView: String,
       habits__defaultView: String,
       appearance__showClock: Boolean,

@@ -21,13 +21,15 @@ model User {
 
 model Settings {
   id                               String           @default(cuid()) @id
-  dashboard__defaultView           String?
-  habits__defaultView              String?
-  appearance__showClock            Boolean?
-  appearance__24hrClock            Boolean?
-  appearance__showClockSeconds     Boolean?
+  dashboard__defaultView           String?          @default("list")
+  habits__defaultView              String?          @default("list")
+  appearance__showClock            Boolean?         @default(true)
+  appearance__24hrClock            Boolean?         @default(false)
+  appearance__showClockSeconds     Boolean?         @default(true)
   user                             User?            @relation(fields: [userId], references: [id])
   userId                           String?          @unique
+  demoToken                        DemoToken?       @relation(fields: [demoTokenId], references: [id])
+  demoTokenId                      String?          @unique
   @@map(name: "settings")
 }
 
@@ -91,6 +93,7 @@ model DemoToken {
   habits        Habit[]
   entries       Entry[]
   records       Record[]
+  settings      Settings?
   createdAt     DateTime      @default(now())
   @@map(name: "demoToken")
 }

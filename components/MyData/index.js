@@ -41,11 +41,11 @@ const MyData = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod, u
 }
 
 const NoData = ({ user, calendarPeriod }) => {
-  const showButton = user.demoTokenId;
+  const { demoTokenId } = useContext(DataContext);
   return (
     <div className={styles.noData}>
       <span>you haven't added any data for this period</span>
-      {showButton && <GenerateDemoData {...{ user, calendarPeriod }} />}
+      {demoTokenId && <GenerateDemoData {...{ user, calendarPeriod }} />}
     </div>
   );
 }

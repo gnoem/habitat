@@ -122,6 +122,7 @@ export const resolvers = {
     editSettings: async (_, args) => {
       const {
         userId,
+        demoTokenId,
         dashboard__defaultView,
         habits__defaultView,
         appearance__showClock,
@@ -129,19 +130,22 @@ export const resolvers = {
         appearance__showClockSeconds
       } = args;
       const settingsObj = {
+        demoTokenId,
         dashboard__defaultView,
         habits__defaultView,
         appearance__showClock,
         appearance__24hrClock,
         appearance__showClockSeconds
       }
+      const where = demoTokenId
+        ? { demoTokenId }
+        : { userId };
       const settings = await prisma.settings.upsert({
-        where: {
-          userId
-        },
+        where,
         update: settingsObj,
         create: {
           userId,
+          demoTokenId,
           ...settingsObj
         }
       });
@@ -450,7 +454,8 @@ export const resolvers = {
           const tokenIsExpired = (() => {
             const createdAt = dayjs(demoToken.createdAt);
             const differenceInMinutes = dayjs().diff(createdAt, 'minute');
-            return differenceInMinutes > 360; // 6 hours
+            const minutes = (process.env.NODE_ENV === 'development') ? 10 : 360; // 6 hours
+            return differenceInMinutes > minutes; //= 360; // 6 hours
           })();
           const deleteData = prisma.demoToken.update({
             where: {
@@ -462,12 +467,17 @@ export const resolvers = {
               records: { deleteMany: {} }
             }
           });
+          const deleteSettings = prisma.settings.delete({
+            where: {
+              demoTokenId: demoToken.id
+            }
+          });
           const deleteToken = prisma.demoToken.delete({
             where: {
               id: demoToken.id
             }
           });
-          return (tokenIsExpired) ? [deleteData, deleteToken] : null;
+          return (tokenIsExpired) ? [deleteData, deleteSettings, deleteToken] : null;
         }).filter(el => el).flat();
         await prisma.$transaction(deleteExpiredTokens);
 
@@ -475,7 +485,12 @@ export const resolvers = {
         const createdToken = await prisma.demoToken.create({
           data: {}
         });
-        console.dir(createdToken);
+        await prisma.settings.create({
+          data: {
+            demoTokenId: createdToken.id
+          }
+        }); // only because you can't prisma.settings.delete something (above) that doesn't exist
+        // this step is only necessary for demo account though
         return {
           __typename: 'User',
           ...user,
@@ -488,11 +503,16 @@ export const resolvers = {
       }
     },
     user: async (_, args) => {
-      const { id } = args;
+      const { id, demoTokenId } = args;
       const user = await prisma.user.findUnique({
-        where: { id }
+        where: {
+          id
+        }
       });
-      return user;
+      return {
+        ...user,
+        demoTokenId
+      }
     },
     habits: async (_, args) => {
       const { userId, demoTokenId } = args;
@@ -519,16 +539,29 @@ export const resolvers = {
       return records;
     },
     settings: async (_, args) => {
-      const { userId } = args;
-      const settings = await prisma.settings?.findUnique({
-        where: { userId }
+      const { userId, demoTokenId } = args;
+      if (!demoTokenId) {
+        const settings = await prisma.settings.findUnique({
+          where: {
+            userId
+          }
+        });
+        return settings;
+      }
+      const demoSettings = await prisma.settings.findUnique({
+        where: {
+          demoTokenId
+        }
       });
-      return settings;
+      return demoSettings;
     }
   },
   User: {
     settings: (parent) => {
-      return resolvers.Query.settings(null, { userId: parent.id })
+      return resolvers.Query.settings(null, {
+        userId: parent.id,
+        demoTokenId: parent.demoTokenId
+      });
     }
   },
   Entry: {

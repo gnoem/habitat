@@ -7,14 +7,15 @@ import { useForm } from "../../hooks";
 import Form, { Dropdown, Submit, Switch } from "../Form";
 
 const MySettings = () => {
-  const { user, getUser } = useContext(DataContext);
+  const { user, getUser, demoTokenId } = useContext(DataContext);
   const { formData, checkboxProps, dropdownProps } = useForm({
     userId: user.id,
     dashboard__defaultView: user.settings?.dashboard__defaultView ?? 'list',
     habits__defaultView: user.settings?.habits__defaultView ?? 'list',
     appearance__showClock: user.settings?.appearance__showClock ?? true,
     appearance__24hrClock: user.settings?.appearance__24hrClock ?? false,
-    appearance__showClockSeconds: user.settings?.appearance__showClockSeconds ?? true
+    appearance__showClockSeconds: user.settings?.appearance__showClockSeconds ?? true,
+    demoTokenId
   });
   const handleSubmit = async () => User.editSettings(formData);
   const handleSuccess = () => getUser();
