@@ -407,19 +407,20 @@ export const resolvers = {
         }
       });
       // prisma doesn't let you add a ttl index to models so i'm doing this instead
-      const tokenIsExpired = (() => {
+      const tokenIsExpiredOrInvalid = (() => {
+        if (!token) return true;
         const createdAt = dayjs(token.createdAt);
         const differenceInMinutes = dayjs().diff(createdAt, 'minute');
         return differenceInMinutes > 120;
       })();
-      if (tokenIsExpired) {
+      if (token && tokenIsExpiredOrInvalid) {
         await prisma.passwordToken.delete({
           where: {
             id: tokenId
           }
         });
       }
-      if (!token || tokenIsExpired) return validationError({ tokenId: 'code is invalid' });
+      if (tokenIsExpiredOrInvalid) return validationError({ tokenId: 'code is invalid' });
       return {
         __typename: 'Token',
         ...token

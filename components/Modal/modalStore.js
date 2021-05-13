@@ -8,6 +8,7 @@ import ModalForm, { ModalizedForm } from "./ModalForm";
 import { useRouter } from "next/router";
 
 export const modalStore = {
+  'demoMessage': (props) => <DemoMessage {...props} />,
   'somethingWentWrong': (props) => <SomethingWentWrong {...props} />,
   'unhandledFormError': (props) => <UnhandledFormError {...props} />,
   'niceTry': (props) => <NiceTry {...props} />,
@@ -16,6 +17,16 @@ export const modalStore = {
   'deleteHabit': (props) => <DeleteHabit {...props} />,
   'deleteEntry': (props) => <DeleteEntry {...props} />,
   'deleteAccount': (props) => <DeleteAccount {...props} />,
+}
+
+const DemoMessage = ({ closeModal }) => {
+  return (
+    <>
+      <h2>hi there!</h2>
+      <p>welcome to habitat! i've set up a special account for people interesting in demoing the app. sign in with the username <b>demo</b> & password <b>habitat</b> and you'll have the option to generate temporary test data to play around with, which will be cleared on logout or automatically after 6 hours.</p>
+      <Button onClick={closeModal} className="mt05">got it</Button>
+    </>
+  );
 }
 
 const SomethingWentWrong = ({ error, closeModal }) => {

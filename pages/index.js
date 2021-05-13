@@ -1,10 +1,20 @@
+import { useContext, useEffect } from "react";
+
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { ModalContext } from "../contexts";
+import { getQueryParams } from "../utils";
 import Footer from "../components/Footer";
 import { Button } from "../components/Form";
 
-const Home = () => {
+const Home = ({ query }) => {
+  const { createModal } = useContext(ModalContext);
+  useEffect(() => {
+    const { demo } = query;
+    if (demo == null) return;
+    createModal('demoMessage');
+  }, []);
   return (
     <>
       <p>habitat is a web app designed & created by <a href="https://ngw.dev/" target="_blank">naomi g.w.</a> as a project for her portfolio and also as a personal tool to organize her life!</p>
@@ -17,5 +27,7 @@ const Home = () => {
     </>
   );
 }
+
+Home.getInitialProps = getQueryParams;
 
 export default Home;

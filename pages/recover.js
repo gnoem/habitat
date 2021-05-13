@@ -4,14 +4,17 @@ import { useRouter } from "next/router";
 import { User, Token, handleRequest } from "./api";
 import { ModalContext, MobileContext } from "../contexts";
 import { useForm, useWarnError } from "../hooks";
+import { getQueryParams } from "../utils";
 import { PageLoading } from "../components/Loading";
 import Form, { Input, Submit } from "../components/Form";
 
-const ResetPassword = ({ token }) => {
+const ResetPassword = ({ query }) => {
   const [userId, setUserId] = useState(null);
   const [tokenIsValid, setTokenIsValid] = useState(null);
   const warnError = useWarnError();
   useEffect(() => {
+    const { token } = query;
+    if (!token) return setTokenIsValid(false);
     Token.validate({ tokenId: token }).then(({ validatePasswordToken }) => {
       setUserId(validatePasswordToken.userId);
       setTokenIsValid(true);
@@ -41,7 +44,7 @@ const InvalidToken = () => {
   }
   return (
     <>
-      sorry, this password reset link is broken or expired! to request a new one, click <button className="link" type="button" onClick={handleClick}>here</button>
+      sorry, this password reset link is invalid or expired! to request a new one, click <button className="link" type="button" onClick={handleClick}>here</button>
     </>
   );
 }
@@ -97,11 +100,7 @@ const ValidToken = ({ userId }) => {
   );
 }
 
-ResetPassword.getInitialProps = async ({ query }) => {
-  const { token } = query;
-  return {
-    token
-  }
-}
+ResetPassword.getInitialProps = getQueryParams;
+
 
 export default ResetPassword;
