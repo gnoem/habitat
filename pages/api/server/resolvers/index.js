@@ -250,6 +250,16 @@ export const resolvers = {
     },
     createEntry: async (_, args) => {
       const { userId, date, records, demoTokenId } = args;
+      const identifier = demoTokenId ? { demoTokenId } : { userId };
+      const existingEntry = await prisma.entry.findUnique({
+        where: {
+          AND: [
+            identifier,
+            { date }
+          ]
+        }
+      });
+      if (existingEntry) return validationError({ date: 'an entry already exists for this date!' });
       const editedRecords = records.map(record => {
         // filtering out records with check = false
         // no use clogging up the db
@@ -269,10 +279,26 @@ export const resolvers = {
           demoTokenId
         }
       });
-      return entry;
+      return {
+        __typename: 'Entry',
+        ...entry
+      }
     },
     editEntry: async (_, args) => {
       const { id, date, records, demoTokenId } = args;
+      const existingEntry = await prisma.entry.findFirst({
+        where: {
+          AND: [
+            {
+              id: {
+                not: id
+              }
+            },
+            { date }
+          ]
+        }
+      });
+      if (existingEntry) return validationError({ date: 'an entry already exists for this date!' });
       const updatedRecords = records.map(record => {
         // filtering out records with check = false
         // no use clogging up the db
@@ -292,7 +318,10 @@ export const resolvers = {
           }
         }
       });
-      return entry;
+      return {
+        __typename: 'Entry',
+        ...entry
+      }
     },
     deleteEntry: async (_, args) => {
       const { id } = args;
@@ -456,7 +485,7 @@ export const resolvers = {
           const tokenIsExpired = (() => {
             const createdAt = dayjs(demoToken.createdAt);
             const differenceInMinutes = dayjs().diff(createdAt, 'minute');
-            const minutes = (process.env.NODE_ENV === 'development') ? 10 : 360; // 6 hours
+            const minutes = 360; // 6 hours
             return differenceInMinutes > minutes; //= 360; // 6 hours
           })();
           const deleteData = prisma.demoToken.update({
@@ -590,6 +619,17 @@ export const resolvers = {
       }
       if (obj.__typename === 'Habit') {
         return 'Habit';
+      }
+      return null;
+    }
+  },
+  EntryResult: {
+    __resolveType(obj) {
+      if (obj.__typename === 'FormErrorReport') {
+        return 'FormErrorReport';
+      }
+      if (obj.__typename === 'Entry') {
+        return 'Entry';
       }
       return null;
     }

@@ -303,12 +303,21 @@ const mutations = {
   createEntry: `
     mutation($userId: String, $date: String, $records: [RecordInput], $demoTokenId: String) {
       createEntry(userId: $userId, date: $date, records: $records, demoTokenId: $demoTokenId) {
-        id
-        date
-        records {
-          habitId
-          amount
-          check
+        ... on FormErrorReport {
+          __typename
+          errors {
+            location
+            message
+          }
+        }
+        ... on Entry {
+          id
+          date
+          records {
+            habitId
+            amount
+            check
+          }
         }
       }
     }
@@ -316,12 +325,21 @@ const mutations = {
   editEntry: `
     mutation($id: String, $date: String, $records: [RecordInput]) {
       editEntry(id: $id, date: $date, records: $records) {
-        id
-        date
-        records {
-          habitId
-          amount
-          check
+        ... on FormErrorReport {
+          __typename
+          errors {
+            location
+            message
+          }
+        }
+        ... on Entry {
+          id
+          date
+          records {
+            habitId
+            amount
+            check
+          }
         }
       }
     }

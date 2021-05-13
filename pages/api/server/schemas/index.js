@@ -82,6 +82,8 @@ export const typeDefs = gql`
   
   union HabitResult = Habit | FormErrorReport
 
+  union EntryResult = Entry | FormErrorReport
+
   union TokenResult = Token | FormErrorReport
 
   type Query {
@@ -128,8 +130,8 @@ export const typeDefs = gql`
       retired: Boolean
     ): HabitResult
     deleteHabit(id: String): Habit
-    createEntry(userId: String, date: String, records: [RecordInput], demoTokenId: String): Entry
-    editEntry(id: String, date: String, records: [RecordInput]): Entry
+    createEntry(userId: String, date: String, records: [RecordInput], demoTokenId: String): EntryResult
+    editEntry(id: String, date: String, records: [RecordInput]): EntryResult
     deleteEntry(id: String): Entry
     generateDemoData(id: String, demoTokenId: String, calendarPeriod: String, alsoHabits: Boolean): Success
     clearDemoData(demoTokenId: String): Success

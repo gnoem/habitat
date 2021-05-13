@@ -56,11 +56,16 @@ const SomethingWentWrong = ({ error, closeModal }) => {
 
 const UnhandledFormError = ({ error, closeModal }) => {
   const { parseFormError } = useForm();
+  const printErrors = () => {
+    return Object.entries(parseFormError(error)).map(([key, value]) => {
+      return <li><b>{key}</b>: {value}</li>
+    });
+  }
   return (
     <div>
       <h2>oopsies</h2>
-      <p>there was some error with the data you submitted, possibly something like leaving a required form field blank or that you didn't meet a minimum/maximum character length requirement, that sort of thing. you can read the raw error report below:</p>
-      <code>{JSON.stringify(parseFormError(error))}</code>
+      <p>found errors on the following fields:</p>
+      <ul>{printErrors()}</ul>
       <div className="mt15">
         <Button onClick={closeModal}>try again</Button>
       </div>

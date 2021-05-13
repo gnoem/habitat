@@ -63,8 +63,9 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 - [x] clear demo data on logout
 - [ ] add explanation of demo stuff to readme
 - [ ] let users configure "create new habit" emoji in settings (currently 🐛)
-- [ ] prevent duplicate entries (more than one for a given date)
-- [ ] better unhandledFormError message
+- [x] prevent duplicate entries (more than one for a given date)
+- [x] better unhandledFormError message
+- [ ] instead of just blocking duplicate entries, warn and ask permission to overwrite?
 - [ ] clock date should change at midnight exactly
 - [x] if cookie is invalid user, log out
 - [x] emoji picker for habit icons ([use this maybe?](https://github.com/iamcal/emoji-data))
