@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
+import { useRouter } from "next/router";
 
 import { User, Entry, Habit, Token, handleRequest } from "../../pages/api";
 import { DataContext } from "../../contexts";
 import { useForm } from "../../hooks";
 import Form, { Submit, Button, Input } from "../Form";
 import ModalForm, { ModalizedForm } from "./ModalForm";
-import { useRouter } from "next/router";
 
 export const modalStore = {
   'demoMessage': (props) => <DemoMessage {...props} />,
@@ -20,11 +20,16 @@ export const modalStore = {
 }
 
 const DemoMessage = ({ closeModal }) => {
+  const router = useRouter();
+  const handleClick = () => {
+    router.push('/');
+    closeModal();
+  }
   return (
     <>
       <h2>hi there!</h2>
       <p>welcome to habitat! i've set up a special account for people interesting in demoing the app. sign in with the username <b>demo</b> & password <b>habitat</b> and you'll have the option to generate temporary test data to play around with, which will be cleared on logout or automatically after 6 hours.</p>
-      <Button onClick={closeModal} className="mt05">got it</Button>
+      <Button onClick={handleClick} className="mt05">got it</Button>
     </>
   );
 }

@@ -349,6 +349,7 @@ export const resolvers = {
     },
     clearDemoData: async (_, args) => {
       const { demoTokenId } = args;
+      // todo - clear settings too? probably
       await prisma.demoToken.update({
         where: {
           id: demoTokenId

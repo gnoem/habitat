@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCog, faHome, faList, faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./nav.module.css";
-import { handleRequest } from "../../pages/api";
-import { MobileContext } from "../../contexts";
+import { handleRequest, User } from "../../pages/api";
+import { DataContext, MobileContext } from "../../contexts";
 
 const Nav = () => {
   const router = useRouter();
@@ -41,6 +41,7 @@ const Nav = () => {
 }
 
 const NavButtons = React.forwardRef(({ router, showingNav, updateShowingNav }, ref) => {
+  const { demoTokenId } = useContext(DataContext);
   const handleClick = (e) => {
     updateShowingNav(false);
     const path = `/${e.currentTarget.name}`;
@@ -51,6 +52,7 @@ const NavButtons = React.forwardRef(({ router, showingNav, updateShowingNav }, r
     return '';
   }
   const handleLogout = async () => {
+    User.clearDemoData({ demoTokenId });
     await handleRequest('/api/auth/logout');
     router.push('/');
   }
