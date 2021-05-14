@@ -56,16 +56,19 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 - [x] password recovery!
 - [x] cuter 404 page
 - [ ] add option to rearrange habits!
+- [ ] dash panel idea - 'help'/tutorial section for dashboard and habit pages, togglable in settings
 - [x] fix habit graph when only tracking simple habits, something weird is happening
+- [ ] graph should adjust when page resizes but make it performant
 - [ ] better explanation of demo data for demo visitors
 - [x] demo settings should follow the same pattern as habits, entries, and records
 - [x] popup when visiting homepage with /?demo like with pianopet portfolio link
 - [x] clear demo data on logout
+- [ ] cuter "wipe demo account" message, maybe a corner button?
 - [ ] add explanation of demo stuff to readme
 - [ ] let users configure "create new habit" emoji in settings (currently 🐛)
 - [x] prevent duplicate entries (more than one for a given date)
 - [x] better unhandledFormError message
-- [ ] instead of just blocking duplicate entries, warn and ask permission to overwrite?
+- [x] instead of just blocking duplicate entries, warn and ask permission to overwrite
 - [ ] clock date should change at midnight exactly
 - [x] if cookie is invalid user, log out
 - [x] emoji picker for habit icons ([use this maybe?](https://github.com/iamcal/emoji-data))

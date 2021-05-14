@@ -36,6 +36,7 @@ const useExistingData = ({ entries, currentDate }) => {
 const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
   const { user, demoTokenId, entries, getEntries } = useContext(DataContext);
   const isMobile = useContext(MobileContext);
+  const { createModal } = useContext(ModalContext);
   const { currentDate, setCurrentDate } = useCurrentDate(dashPanelOptions?.date, dashPanelOptions);
   const existingData = useExistingData({ entries, currentDate });
   const { formData, resetForm, setFormData, inputProps } = useForm({
@@ -45,21 +46,39 @@ const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
     records: existingData?.records ?? [],
     demoTokenId
   });
+  const overwritingEntry = useMemo(() => {
+    // if you edit the date on an existing entry, but an entry already exists for the date you put in
+    // changes handleSubmit to a modal warning to overwrite the existing entry
+    return !!entries.find(entry => {
+      return (entry.date === formData.date) && (entry.id !== existingData?.id);
+    });
+  }, [entries, existingData?.id, formData.date]);
   useEffect(() => {
     resetForm();
   }, [entries, currentDate, existingData]);
   const handleSubmit = async () => {
-    // first getting rid of empty string values for 'amount' field in each record object
-    // and replacing them with null
-    // otherwise server will reject them for not being type Int
-    const formDataCopy = {...formData};
-    const updatedRecords = formDataCopy.records.map(record => {
-      if (!record.amount) record.amount = null; // covers case 0 and case ''
-      return record;
-    });
-    formDataCopy.records = updatedRecords;
-    const submit = existingData ? Entry.edit : Entry.create;
-    return submit(formDataCopy);
+    const submitFormData = () => {
+      // first getting rid of empty string values for 'amount' field in each record object
+      // and replacing them with null
+      // otherwise server will reject them for not being type Int
+      const formDataCopy = {...formData};
+      const updatedRecords = formDataCopy.records.map(record => {
+        if (!record.amount) record.amount = null; // covers case 0 and case ''
+        return record;
+      });
+      formDataCopy.records = updatedRecords;
+      const submit = existingData ? Entry.edit : Entry.create;
+      return submit(formDataCopy);
+    }
+    if (overwritingEntry) {
+      createModal('warnOverwriteEntry', {
+        date: dayjs(formData.date).format('MM/DD/YYYY'),
+        handleSubmit: submitFormData,
+        handleSuccess
+      });
+      return Promise.reject('handled');
+    }
+    submitFormData();
   }
   const handleSuccess = (result) => {
     const { editEntry, createEntry } = result;
@@ -75,7 +94,8 @@ const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
   if (!habits.length) return <NoHabits />;
   return (
     <div className={styles.DataForm}>
-      <Form onSubmit={handleSubmit} onSuccess={handleSuccess}
+      <Form onSubmit={handleSubmit}
+            onSuccess={handleSuccess}
             behavior={{ checkmarkStick: false }}
             submit={<Submit value="save changes" cancel={false} className="compact jcc" />}>
         <DataFormDateInput {...{
@@ -94,6 +114,7 @@ const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
           currentDate
         }} />
       </Form>
+      <b>will this overwrite data? {overwritingEntry.toString()}</b>
       {existingData && <DeleteEntry {...{ existingData }} />}
     </div>
   );

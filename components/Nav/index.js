@@ -52,7 +52,7 @@ const NavButtons = React.forwardRef(({ router, showingNav, updateShowingNav }, r
     return '';
   }
   const handleLogout = async () => {
-    User.clearDemoData({ demoTokenId });
+    if (demoTokenId) User.clearDemoData({ demoTokenId });
     await handleRequest('/api/auth/logout');
     router.push('/');
   }

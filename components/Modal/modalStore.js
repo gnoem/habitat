@@ -13,6 +13,7 @@ export const modalStore = {
   'unhandledFormError': (props) => <UnhandledFormError {...props} />,
   'niceTry': (props) => <NiceTry {...props} />,
   'forgotPassword': (props) => <ForgotPassword {...props} />,
+  'warnOverwriteEntry': (props) => <WarnOverwriteEntry {...props} />,
   'manageHabit': (props) => <ManageHabit {...props} />,
   'deleteHabit': (props) => <DeleteHabit {...props} />,
   'deleteEntry': (props) => <DeleteEntry {...props} />,
@@ -107,6 +108,18 @@ const ForgotPassword = ({ closeModal }) => {
           title="reset your password">
       <Input type="text" name="email" label="enter your email address:" className="stretch alertInside" {...inputProps} />
     </Form>
+  );
+}
+
+const WarnOverwriteEntry = ({ date, handleSubmit, handleSuccess }) => {
+  return (
+    <ModalForm
+      onSubmit={handleSubmit}
+      onSuccess={handleSuccess}
+      title="overwrite previous entry?"
+      submit={<Submit value="continue" />}>
+        <p>an entry for <b>{date}</b> already exists. if you continue, it will be overwritten.</p>
+    </ModalForm>
   );
 }
 

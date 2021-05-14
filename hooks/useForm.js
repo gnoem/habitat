@@ -141,6 +141,7 @@ export const useFormSubmit = ({ onSubmit, onSuccess, handleFormError, behavior }
   const handleError = (err) => {
     setSuccessPending(false);
     setClickedOnceAlready(false);
+    if (err === 'handled') return;
     const { __typename, errors } = err;
     if (__typename === 'FormErrorReport') {
       if (handleFormError) handleFormError(errors);

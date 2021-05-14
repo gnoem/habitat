@@ -298,7 +298,13 @@ export const resolvers = {
           ]
         }
       });
-      if (existingEntry) return validationError({ date: 'an entry already exists for this date!' });
+      if (existingEntry) {
+        await prisma.entry.delete({
+          where: {
+            id: existingEntry.id
+          }
+        });
+      }
       const updatedRecords = records.map(record => {
         // filtering out records with check = false
         // no use clogging up the db
