@@ -271,8 +271,13 @@ export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDraggin
         const rearrangedArray = [...habitItemOrder];
         const targetIndex = habitItemOrder.indexOf(activeHotspot);
         const currentIndex = habitItemOrder.indexOf(id);
-        rearrangedArray.splice(targetIndex, 0, id);
-        rearrangedArray.splice(currentIndex, 1);
+        if (targetIndex > currentIndex) {
+          rearrangedArray.splice(targetIndex, 0, id);
+          rearrangedArray.splice(currentIndex, 1);
+        } else {
+          rearrangedArray.splice(currentIndex, 1);
+          rearrangedArray.splice(targetIndex, 0, id);
+        }
         updateHabitItemOrder(rearrangedArray);
         updateDatabase(rearrangedArray);
       }

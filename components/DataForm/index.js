@@ -280,8 +280,7 @@ const DataFormField = ({ wholeFormData, setWholeFormData, currentDate, id, icon,
       const index = records.findIndex(item => item.habitId === habitId);
       if (index === -1) {
         arrayToReturn.push(newRecord);
-      }
-      else {
+      } else {
         arrayToReturn[index] = newRecord;
       }
       setWholeFormData(prevData => ({
