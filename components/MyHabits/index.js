@@ -248,7 +248,14 @@ export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDraggin
     habitItems[activeHotspot].setAttribute('data-hotspot', 'true');
     const dropItem = () => {
       const updateDatabase = async (array) => {
-        // todo only submit after comparing current habitItemOrder to updated array
+        const arrayChanged = () => {
+          if (habitItemOrder.length !== array.length) return true;
+          for (let i = 0; i < habitItemOrder.length; i++) {
+            if (habitItemOrder[i] !== array[i]) return true;
+            if (i === habitItemOrder.length - 1) return false;
+          }
+        }
+        if (!arrayChanged()) return;
         return Habit.rearrange({ array }).then(() => {
           getHabits();
         }).catch(err => {
