@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";
@@ -8,10 +8,10 @@ import { ModalContext } from "../../contexts";
 import { useRefName } from "../../hooks";
 import { HabitForm, HabitIcon } from ".";
 
-export const HabitListItem = ({ addingNew, user, id, name, icon, color, label, complex, retired }) => {
+export const HabitListItem = React.forwardRef(({ addingNew, user, id, name, icon, color, label, complex, retired }, ref) => {
   const [expanded, setExpanded] = useState(false);
   return (
-    <div className={`${styles.HabitListItem} ${expanded ? styles.expanded : ''}`}>
+    <div className={`${styles.HabitListItem} ${expanded ? styles.expanded : ''}`} ref={ref}>
       <HabitListItemHeader {...{
         name,
         icon,
@@ -33,7 +33,7 @@ export const HabitListItem = ({ addingNew, user, id, name, icon, color, label, c
       }} />
     </div>
   );
-}
+});
 
 const HabitListItemHeader = ({ name, icon, retired, toggleExpanded }) => {
   return (

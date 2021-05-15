@@ -10,7 +10,7 @@ div button.currentHabitView { /* including div for specificity */
   opacity: 1;
 }
 
-.retired {
+.retired, .dragging {
   opacity: 0.5;
   transition: 0.2s;
 }
@@ -125,7 +125,6 @@ div button.currentHabitView { /* including div for specificity */
   margin: 0 1.5rem 1.5rem 0;
   padding: 1rem;
   background: #fff;
-  /* box-shadow: 0.2rem 0.2rem 1rem rgba(0, 0, 0, 0.05); */
 }
 .HabitGridColorIndicator {
   position: absolute;
@@ -204,6 +203,31 @@ div button.currentHabitView { /* including div for specificity */
   height: calc(100% + 0.5rem);
   background: #fff;
   transform: skew(-12deg) translate3d(0, -50%, 0);
+}
+.grip {
+  position: absolute;
+  top: 1rem;
+  right: 0.75rem;
+  display: inline-flex;
+  align-items: flex-end;
+  opacity: 0.5;
+  cursor: grab;
+  transition: 0.2s;
+}
+.grip:hover {
+  opacity: 0.8;
+}
+.grip:active {
+  cursor: grabbing;
+}
+.HabitGridItem[data-hotspot=true]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: calc(100% + 0.5rem);
+  width: 0.5rem;
+  height: 100%;
+  background: pink;
 }
 
 .displayOptions {

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faListUl, faTh } from "@fortawesome/free-solid-svg-icons";
@@ -54,12 +54,27 @@ const MyHabitsNav = ({ habitView, updateHabitView }) => {
 }
 
 const Habits = ({ habitView, user, habits }) => {
+  const [habitItemOrder, setHabitItemOrder] = useState(habits.map(habit => habit.id));
   const [Habit, NewHabit] = habitView === 'list'
     ? [HabitListItem, NewHabitListItem]
     : [HabitGridItem, NewHabitGridItem];
+  const habitItemsRef = useRef({});
   const activeHabits = habits.map(habit => {
     if (habit.retired) return null;
-    return <Habit key={`habit-habitId(${habit.id})`} user={user} {...habit} />;
+    return (
+      <Habit
+        key={`habit-habitId(${habit.id})`}
+        ref={(el) => habitItemsRef.current[habit.id] = el}
+        {...{
+          user,
+          index: habitItemOrder.indexOf(habit.id),
+          habitItems: habitItemsRef.current,
+          habitItemOrder,
+          updateHabitItemOrder: setHabitItemOrder,
+          ...habit
+        }}
+      />
+    );
   });
   const retiredHabits = habits.map(habit => {
     if (!habit.retired) return null;

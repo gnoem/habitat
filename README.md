@@ -56,6 +56,7 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 - [x] password recovery!
 - [x] cuter 404 page
 - [ ] add option to rearrange habits!
+- [ ] figure out situation with dash panel calendar, are you doing that or not
 - [ ] dash panel idea - 'help'/tutorial section for dashboard and habit pages, togglable in settings
 - [x] fix habit graph when only tracking simple habits, something weird is happening
 - [ ] graph should adjust when page resizes but make it performant
