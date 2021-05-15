@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faListUl, faTh } from "@fortawesome/free-solid-svg-icons";
@@ -55,10 +55,13 @@ const MyHabitsNav = ({ habitView, updateHabitView }) => {
 
 const Habits = ({ habitView, user, habits }) => {
   const [habitItemOrder, setHabitItemOrder] = useState(habits.map(habit => habit.id));
-  const [Habit, NewHabit] = habitView === 'list'
+  const [Habit, NewHabit] = (habitView === 'list')
     ? [HabitListItem, NewHabitListItem]
     : [HabitGridItem, NewHabitGridItem];
   const habitItemsRef = useRef({});
+  useEffect(() => {
+    setHabitItemOrder(habits.map(habit => habit.id));
+  }, [habits]);
   const activeHabits = habits.map(habit => {
     if (habit.retired) return null;
     return (
@@ -82,12 +85,12 @@ const Habits = ({ habitView, user, habits }) => {
   }).filter(el => el);
   return (
     <div className={styles.HabitsContainer}>
-      <div className={habitView === 'list' ? styles.HabitList : styles.HabitGrid}>
+      <div className={(habitView === 'list') ? styles.HabitList : styles.HabitGrid}>
         {activeHabits}
         <NewHabit {...{ habits, user }} />
       </div>
       {retiredHabits.length > 0 && (
-        <div className={habitView === 'grid' ? styles.HabitGrid : ''}>
+        <div className={(habitView === 'grid') ? styles.HabitGrid : ''}>
           <h2>retired habits</h2>
           {retiredHabits}
         </div>

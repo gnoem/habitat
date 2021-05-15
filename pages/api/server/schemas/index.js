@@ -130,6 +130,7 @@ export const typeDefs = gql`
       retired: Boolean
     ): HabitResult
     deleteHabit(id: String): Habit
+    rearrangeHabits(array: [String]): Success
     createEntry(userId: String, date: String, records: [RecordInput], demoTokenId: String): EntryResult
     editEntry(id: String, date: String, records: [RecordInput]): EntryResult
     deleteEntry(id: String): Entry

@@ -17,7 +17,8 @@ export const Habit = {
   get: async (params) => await handleQuery(queries.getHabits, params),
   create: async (formData) => await handleQuery(mutations.createHabit, formData),
   edit: async (formData) => await handleQuery(mutations.editHabit, formData),
-  delete: async (formData) => await handleQuery(mutations.deleteHabit, formData)
+  delete: async (formData) => await handleQuery(mutations.deleteHabit, formData),
+  rearrange: async (data) => await handleQuery(mutations.rearrangeHabits, data)
 }
 
 export const Entry = {
@@ -297,6 +298,13 @@ const mutations = {
         label
         complex
         retired
+      }
+    }
+  `,
+  rearrangeHabits: `
+    mutation($array: [String]) {
+      rearrangeHabits(array: $array) {
+        success
       }
     }
   `,

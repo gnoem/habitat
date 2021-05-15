@@ -248,6 +248,23 @@ export const resolvers = {
       const transaction = await prisma.$transaction([deleteRecords, deleteEntries, deleteHabit]);
       return transaction[2];
     },
+    rearrangeHabits: async (_, args) => {
+      const { array } = args;
+      const updateHabits = array.map((habitId, index) => {
+        return prisma.habit.update({
+          where: {
+            id: habitId
+          },
+          data: {
+            order: index
+          }
+        });
+      });
+      await prisma.$transaction(updateHabits);
+      return {
+        success: true
+      }
+    },
     createEntry: async (_, args) => {
       const { userId, date, records, demoTokenId } = args;
       const identifier = demoTokenId ? { demoTokenId } : { userId };
@@ -554,7 +571,7 @@ export const resolvers = {
     habits: async (_, args) => {
       const { userId, demoTokenId } = args;
       const habits = await prisma.habit.findMany({
-        orderBy: { id: 'asc' }, // order of creation i guess
+        orderBy: { order: 'asc' }, // order of creation i guess
         where: { userId, demoTokenId }
       });
       return habits;

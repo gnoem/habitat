@@ -4,9 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGripLines, faPen, faPlus, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./myHabits.module.css";
-import { ModalContext } from "../../contexts";
+import { DataContext, ModalContext } from "../../contexts";
 import { getUnitFromLabel } from "../../utils";
 import { HabitForm, HabitIcon } from ".";
+import { Habit } from "../../pages/api";
+import { useWarnError } from "../../hooks";
 
 export const HabitGridItem = React.forwardRef(({
     habits, habitItems, habitItemOrder, updateHabitItemOrder,
@@ -92,6 +94,8 @@ const HabitGridItemBody = ({ label, complex, manageHabit, deleteHabit }) => {
 }
 
 const Grip = ({ id, habitItems, dragging, updateDragging, habitItemOrder, updateHabitItemOrder }) => {
+  const warnError = useWarnError();
+  const { getHabits } = useContext(DataContext);
   const [mouseIsDown, setMouseIsDown] = useState(false);
   const [activeHotspot, setActiveHotspot] = useState(null);
   useEffect(() => {
@@ -145,29 +149,33 @@ const Grip = ({ id, habitItems, dragging, updateDragging, habitItemOrder, update
     return () => window.removeEventListener('mousemove', checkIfInHotspot);
   }, [dragging]);
   useEffect(() => {
-    if (activeHotspot) {
-      habitItems[activeHotspot].setAttribute('data-hotspot', 'true');
-    }
-    else {
+    if (!activeHotspot) {
       const previous = document.querySelector('[data-hotspot=true]');
       if (previous) previous.setAttribute('data-hotspot', 'false');
+      return;
     }
+    habitItems[activeHotspot].setAttribute('data-hotspot', 'true');
     const dropItem = () => {
-      if (!activeHotspot) return;
-      // reorder each item in habitItemOrder i guess
+      const updateDatabase = async (array) => {
+        return Habit.rearrange({ array }).then(() => {
+          getHabits();
+        }).catch(err => {
+          warnError('somethingWentWrong', err);
+        });
+      }
       const rearrangeOrder = () => {
         const rearrangedArray = [...habitItemOrder];
-        // get index of active hotspot and index of current item
         const targetIndex = habitItemOrder.indexOf(activeHotspot);
         const currentIndex = habitItemOrder.indexOf(id);
         rearrangedArray.splice(currentIndex, 1);
         rearrangedArray.splice(targetIndex, 0, id);
         updateHabitItemOrder(rearrangedArray);
+        updateDatabase(rearrangedArray);
       }
-      rearrangeOrder();
+      if (activeHotspot) rearrangeOrder();
     }
     window.addEventListener('mouseup', dropItem);
-    () => window.removeEventListener('mouseup', dropItem);
+    return () => window.removeEventListener('mouseup', dropItem);
   }, [activeHotspot]);
   return (
     <div
