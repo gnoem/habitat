@@ -197,7 +197,7 @@ export const HabitIcon = ({ children }) => {
 
 export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDragging, habitItemOrder, updateHabitItemOrder }) => {
   const warnError = useWarnError();
-  const { getHabits } = useContext(DataContext);
+  const { getHabits, getEntries } = useContext(DataContext);
   const [mouseIsDown, setMouseIsDown] = useState(false);
   const [activeHotspot, setActiveHotspot] = useState(null);
   useEffect(() => {
@@ -263,6 +263,7 @@ export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDraggin
         if (!arrayChanged()) return;
         return Habit.rearrange({ array }).then(() => {
           getHabits();
+          getEntries();
         }).catch(err => {
           warnError('somethingWentWrong', err);
         });
