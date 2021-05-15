@@ -10,7 +10,7 @@ div button.currentHabitView { /* including div for specificity */
   opacity: 1;
 }
 
-.retired, .dragging {
+.retired, .dragging > * {
   opacity: 0.5;
   transition: 0.2s;
 }
@@ -28,8 +28,9 @@ div button.currentHabitView { /* including div for specificity */
   flex-direction: column;
   width: 300px;
 }
-.HabitListItem + .HabitListItem {
-  margin-top: 1.4rem;
+.HabitListItem:not(:last-of-type) {
+  position: relative;
+  margin-bottom: 1.4rem;
 }
 .HabitListItemHeader {
   position: relative;
@@ -106,6 +107,23 @@ div button.currentHabitView { /* including div for specificity */
   border: 0;
   background: #f7f7f7;
   font-size: 0.9rem;
+}
+.HabitListItem .grip {
+  top: 0;
+  right: 0;
+  height: 2rem;
+  align-items: center;
+  opacity: 0.3;
+}
+.HabitListItem[data-hotspot=true]::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 0.875rem);
+  left: 0;
+  margin-bottom: -1px;
+  width: 100%;
+  height: 2px;
+  background: #000;
 }
 
 .HabitGrid {
@@ -204,13 +222,26 @@ div button.currentHabitView { /* including div for specificity */
   background: #fff;
   transform: skew(-12deg) translate3d(0, -50%, 0);
 }
-.grip {
-  position: absolute;
+.HabitGridItem .grip {
   top: 1rem;
   right: 0.75rem;
-  display: inline-flex;
   align-items: flex-end;
   opacity: 0.5;
+}
+.HabitGridItem[data-hotspot=true]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: calc(100% + 0.75rem); /* half of 1.5rem padding right */
+  margin-right: -1px;
+  width: 2px;
+  height: 100%;
+  background: #000;
+}
+
+.grip {
+  position: absolute;
+  display: inline-flex;
   cursor: grab;
   transition: 0.2s;
 }
@@ -219,15 +250,6 @@ div button.currentHabitView { /* including div for specificity */
 }
 .grip:active {
   cursor: grabbing;
-}
-.HabitGridItem[data-hotspot=true]::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: calc(100% + 0.5rem);
-  width: 0.5rem;
-  height: 100%;
-  background: pink;
 }
 
 .displayOptions {

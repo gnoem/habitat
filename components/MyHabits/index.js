@@ -1,12 +1,12 @@
 import { useContext, useEffect, useRef, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faListUl, faTh } from "@fortawesome/free-solid-svg-icons";
+import { faGripLines, faListUl, faTh } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./myHabits.module.css";
 import { Habit } from "../../pages/api";
 import { DataContext } from "../../contexts";
-import { useForm } from "../../hooks";
+import { useForm, useWarnError } from "../../hooks";
 import Form, { Checkbox, Input, Submit } from "../Form";
 import { HabitListItem, NewHabitListItem } from "./HabitList";
 import { HabitGridItem, NewHabitGridItem } from "./HabitGrid";
@@ -64,6 +64,11 @@ const Habits = ({ habitView, user, habits }) => {
   }, [habits]);
   const activeHabits = habits.map(habit => {
     if (habit.retired) return null;
+    const habitItemsStuff = {
+      habitItems: habitItemsRef.current,
+      habitItemOrder,
+      updateHabitItemOrder: setHabitItemOrder,
+    }
     return (
       <Habit
         key={`habit-habitId(${habit.id})`}
@@ -71,17 +76,21 @@ const Habits = ({ habitView, user, habits }) => {
         {...{
           user,
           index: habitItemOrder.indexOf(habit.id),
-          habitItems: habitItemsRef.current,
-          habitItemOrder,
-          updateHabitItemOrder: setHabitItemOrder,
-          ...habit
+          habit,
+          habitItemsStuff
         }}
       />
     );
   });
   const retiredHabits = habits.map(habit => {
     if (!habit.retired) return null;
-    return <Habit key={`habit-habitId(${habit.id})`} user={user} {...habit} retired />;
+    return (
+      <Habit
+        key={`habit-habitId(${habit.id})`}
+        {...{ user, habit }}
+        retired
+      />
+    );
   }).filter(el => el);
   return (
     <div className={styles.HabitsContainer}>
@@ -182,6 +191,89 @@ export const HabitIcon = ({ children }) => {
   return (
     <div className={styles.HabitIcon}>
       {children}
+    </div>
+  );
+}
+
+export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDragging, habitItemOrder, updateHabitItemOrder }) => {
+  const warnError = useWarnError();
+  const { getHabits } = useContext(DataContext);
+  const [mouseIsDown, setMouseIsDown] = useState(false);
+  const [activeHotspot, setActiveHotspot] = useState(null);
+  useEffect(() => {
+    if (!mouseIsDown) return;
+    const handleMouseMove = (e) => {
+      e.preventDefault();
+      updateDragging(true);
+    }
+    const handleMouseUp = (e) => {
+      e.preventDefault();
+      updateDragging(false);
+      setMouseIsDown(false);
+      setActiveHotspot(null);
+    }
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
+    }
+  }, [mouseIsDown]);
+  useEffect(() => {
+    if (!dragging) return;
+    const hotspots = Object.entries(habitItems).map(generateHotspots);
+    const checkIfInHotspot = (e) => {
+      e.preventDefault();
+      const conditions = (e) => {
+        return hotspots.map(({ top, left, width, height }) => {
+          const { clientX, clientY } = e;
+          return (clientY > top) && (clientY < top + height) && (clientX > left) && (clientX < left + width);
+        });
+      }
+      const activeHotspotIndex = conditions(e).findIndex(isTrue => isTrue);
+      if (activeHotspotIndex !== -1) {
+        setActiveHotspot(hotspots[activeHotspotIndex].id);
+      }
+      else setActiveHotspot(null);
+    }
+    window.addEventListener('mousemove', checkIfInHotspot);
+    return () => window.removeEventListener('mousemove', checkIfInHotspot);
+  }, [dragging]);
+  useEffect(() => {
+    if (!activeHotspot) {
+      const previous = document.querySelector('[data-hotspot=true]');
+      if (previous) previous.setAttribute('data-hotspot', 'false');
+      return;
+    }
+    habitItems[activeHotspot].setAttribute('data-hotspot', 'true');
+    const dropItem = () => {
+      const updateDatabase = async (array) => {
+        // todo only submit after comparing current habitItemOrder to updated array
+        return Habit.rearrange({ array }).then(() => {
+          getHabits();
+        }).catch(err => {
+          warnError('somethingWentWrong', err);
+        });
+      }
+      const rearrangeOrder = () => {
+        const rearrangedArray = [...habitItemOrder];
+        const targetIndex = habitItemOrder.indexOf(activeHotspot);
+        const currentIndex = habitItemOrder.indexOf(id);
+        rearrangedArray.splice(currentIndex, 1);
+        rearrangedArray.splice(targetIndex, 0, id);
+        updateHabitItemOrder(rearrangedArray);
+        updateDatabase(rearrangedArray);
+      }
+      if (activeHotspot) rearrangeOrder();
+    }
+    window.addEventListener('mouseup', dropItem);
+    return () => window.removeEventListener('mouseup', dropItem);
+  }, [activeHotspot]);
+  return (
+    <div
+      className={styles.grip}
+      onMouseDown={() => setMouseIsDown(true)}>
+        <FontAwesomeIcon icon={faGripLines} />
     </div>
   );
 }

@@ -25,7 +25,6 @@ export const DataContextProvider = ({ children }) => {
     return user;
   }
   const getHabits = async () => {
-    console.log('getting habits');
     if (!user) return console.log('User not stored');
     const { habits } = await Habit.get({ userId: user.id, demoTokenId });
     if (user.email === 'demo') {

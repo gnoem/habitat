@@ -6,34 +6,70 @@ import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons";
 import styles from "./myHabits.module.css";
 import { ModalContext } from "../../contexts";
 import { useRefName } from "../../hooks";
-import { HabitForm, HabitIcon } from ".";
+import { Grip, HabitForm, HabitIcon } from ".";
 
-export const HabitListItem = React.forwardRef(({ addingNew, user, id, name, icon, color, label, complex, retired }, ref) => {
+export const HabitListItem = React.forwardRef(({ addingNew, user, index, habit, habitItemsStuff }, ref) => {
+  const { id, name, icon, color, label, complex, retired } = habit ?? {};
+  const { habitItems, habitItemOrder, updateHabitItemOrder } = habitItemsStuff ?? {};
   const [expanded, setExpanded] = useState(false);
+  const [dragging, setDragging] = useState(false);
+  const orderIndex = { order: index };
   return (
-    <div className={`${styles.HabitListItem} ${expanded ? styles.expanded : ''}`} ref={ref}>
-      <HabitListItemHeader {...{
-        name,
-        icon,
-        retired,
-        toggleExpanded: () => setExpanded(state => !state)
-      }} />
-      <HabitListItemBody {...{
-        addingNew,
-        user,
-        id,
-        name,
-        icon,
-        color,
-        label,
-        complex,
-        retired,
-        expanded,
-        updateExpanded: setExpanded
-      }} />
+    <div
+      className={`${styles.HabitListItem} ${expanded ? styles.expanded : ''} ${dragging ? styles.dragging : ''}`}
+      style={addingNew ? { order: '999' } : orderIndex}
+      ref={ref}>
+        <HabitListItemHeader {...{
+          name,
+          icon,
+          retired,
+          toggleExpanded: () => setExpanded(state => !state)
+        }} />
+        <MakeDraggable {...{
+          id,
+          habitItems,
+          dragging,
+          updateDragging: setDragging,
+          habitItemOrder,
+          updateHabitItemOrder
+        }} />
+        <HabitListItemBody {...{
+          addingNew,
+          user,
+          id,
+          name,
+          icon,
+          color,
+          label,
+          complex,
+          retired,
+          expanded,
+          updateExpanded: setExpanded
+        }} />
     </div>
   );
 });
+
+const MakeDraggable = (props) => {
+  const generateHotspots = ([key, value]) => {
+    const hotspotDetails = (element) => {
+      let { top, left, right } = element.getBoundingClientRect();
+      const width = right - left;
+      const height = 24;
+      top = top - height;
+      return {
+        id: key, top, left, width, height
+      }
+    }
+    return hotspotDetails(value);
+  }
+  return (
+    <Grip {...{
+      generateHotspots,
+      ...props
+    }} />
+  );
+}
 
 const HabitListItemHeader = ({ name, icon, retired, toggleExpanded }) => {
   return (
@@ -82,8 +118,10 @@ export const NewHabitListItem = ({ habits, user }) => {
     <HabitListItem {...{
       addingNew: true,
       user,
-      name: habits.length ? 'Add new' : 'Create your first habit',
-      icon: '🐛'
+      habit: {
+        name: habits.length ? 'Add new' : 'Create your first habit',
+        icon: '🐛'
+      }
     }} />
   );
 }
