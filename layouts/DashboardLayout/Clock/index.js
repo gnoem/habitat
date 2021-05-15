@@ -3,21 +3,6 @@ import dayjs from "dayjs";
 import styles from "./clock.module.css";
 
 const Clock = ({ user }) => {
-  const { appearance__showClock, appearance__24hrClock, appearance__showClockSeconds } = user?.settings ?? {
-    appearance__showClock: true,
-    appearance__24hrClock: false,
-    appearance__showClockSeconds: true
-  }
-  return (
-    <div className={styles.Clock}>
-      <span className={styles.dd}>{dayjs().format('DD')}</span>
-      <span className={styles.mm}>{dayjs().format('MMMM')}</span>
-      {appearance__showClock && <Time {...{ appearance__24hrClock, appearance__showClockSeconds }} />}
-    </div>
-  );
-}
-
-const Time = ({ appearance__24hrClock, appearance__showClockSeconds }) => {
   const [time, setTime] = useState(new Date());
   useEffect(() => {
     const counter = setInterval(() => {
@@ -25,6 +10,27 @@ const Time = ({ appearance__24hrClock, appearance__showClockSeconds }) => {
     }, 1 * 1000);
     return () => clearInterval(counter);
   }, []);
+  const { appearance__showClock, appearance__24hrClock, appearance__showClockSeconds } = user?.settings ?? {
+    appearance__showClock: true,
+    appearance__24hrClock: false,
+    appearance__showClockSeconds: true
+  }
+  return (
+    <div className={styles.Clock}>
+      <span className={styles.dd}>{dayjs(time).format('DD')}</span>
+      <span className={styles.mm}>{dayjs(time).format('MMMM')}</span>
+      {appearance__showClock && (
+        <Time {...{
+          time,
+          appearance__24hrClock,
+          appearance__showClockSeconds
+        }} />
+      )}
+    </div>
+  );
+}
+
+const Time = ({ time, appearance__24hrClock, appearance__showClockSeconds }) => {
   let [hours, minutes, seconds] = [time.getHours(), time.getMinutes(), time.getSeconds()];
   const ampm = appearance__24hrClock ? null : (hours >= 12) ? 'pm' : 'am';
   hours = appearance__24hrClock ? hours : hours % 12;

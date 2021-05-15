@@ -9,6 +9,7 @@ import ModalForm, { ModalizedForm } from "./ModalForm";
 
 export const modalStore = {
   'demoMessage': (props) => <DemoMessage {...props} />,
+  'generateDemoData': (props) => <GenerateDemoData {...props} />,
   'somethingWentWrong': (props) => <SomethingWentWrong {...props} />,
   'unhandledFormError': (props) => <UnhandledFormError {...props} />,
   'niceTry': (props) => <NiceTry {...props} />,
@@ -29,8 +30,28 @@ const DemoMessage = ({ closeModal }) => {
   return (
     <>
       <h2>hi there!</h2>
-      <p>welcome to habitat! i've set up a special account for people interesting in demoing the app. sign in with the username <b>demo</b> & password <b>habitat</b> and you'll have the option to generate temporary test data to play around with, which will be cleared on logout or automatically after 6 hours.</p>
+      <p>welcome to habitat! i've set up a special account for people interesting in demoing the app. sign in with the username <b>demo</b> & password <b>habitat</b> and you'll have the option to generate sample data to play around with, which will be cleared on logout or automatically after 2 hours.</p>
       <Button onClick={handleClick} className="mt05">got it</Button>
+    </>
+  );
+}
+
+const GenerateDemoData = ({ generateData, closeModal }) => {
+  const [successPending, setSuccessPending] = useState(false);
+  const handleClick = () => {
+    setSuccessPending(true);
+    generateData().then(closeModal);
+  }
+  return (
+    <>
+      <h2>what's this?</h2>
+      <p>for your convenience, this will generate a set of sample habits and a month's worth of randomized habit data for you to play around with. to wipe this account and start fresh, log out and then log back in with the same credentials (username <b>demo</b> & password <b>habitat</b>). have fun!</p>
+      <Submit
+        value="generate sample data"
+        onClick={handleClick}
+        className="mt15"
+        successPending={successPending}
+      />
     </>
   );
 }

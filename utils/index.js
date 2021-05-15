@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const fancyClassName = ({ styles, className }) => {
   if (!className) return '';
   if (!styles) return className;
@@ -12,3 +14,9 @@ export const getUnitFromLabel = (label) => {
 }
 
 export const getQueryParams = async ({ query }) => ({ query });
+
+export const differenceInMinutes = (earlierDate, laterDate = new Date()) => {
+  const createdAt = dayjs(earlierDate);
+  const differenceInMinutes = dayjs(laterDate).diff(createdAt, 'minute');
+  return differenceInMinutes;
+}

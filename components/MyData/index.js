@@ -5,24 +5,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartLine, faListOl, faTh } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./myData.module.css";
-import { User } from "../../pages/api";
-import { DataContext } from "../../contexts";
-import { useWarnError } from "../../hooks";
+import { DataContext, ModalContext } from "../../contexts";
 import Timeline from "./Timeline";
 import Calendar from "./Calendar";
 import Graph from "./Graph";
 import ArrowNav from "../ArrowNav";
 import ViewOptions from "../ViewOptions";
-import { Submit } from "../Form";
-import { PageLoading } from "../Loading";
+import { Button, Submit } from "../Form";
+import { User } from "../../pages/api";
 
 const MyData = ({ user, habits, entries, calendarPeriod, updateCalendarPeriod, updateDashPanel }) => {
   const [dataView, setDataView] = useState(user.settings?.dashboard__defaultView ?? 'list');
   return (
     <div className={styles.MyData}>
       <MyDataHeader {...{
-        habits,
-        entries,
         calendarPeriod,
         updateCalendarPeriod,
         dataView,
@@ -50,8 +46,7 @@ const NoData = ({ user, calendarPeriod }) => {
   );
 }
 
-const MyDataHeader = ({ habits, entries, calendarPeriod, updateCalendarPeriod, dataView, updateDataView }) => {
-  const { demoTokenId } = useContext(DataContext);
+const MyDataHeader = ({ calendarPeriod, updateCalendarPeriod, dataView, updateDataView }) => {
   const currentPeriod = dayjs().format('YYYY-MM');
   const nav = (direction) => () => {
     const newPeriod = direction === 'next'
@@ -94,7 +89,6 @@ const MyDataHeader = ({ habits, entries, calendarPeriod, updateCalendarPeriod, d
           </button>
         </ViewOptions>
       </div>
-      {(demoTokenId && !!habits.length && !!entries.length) && <ClearDemoData {...{ demoTokenId }} />}
     </div>
   );
 }
@@ -111,52 +105,38 @@ const MyDataContent = ({ user, habits, entries, calendarPeriod, updateDashPanel,
   )
 }
 
-const ClearDemoData = ({ demoTokenId }) => {
-  const [clicked, setClicked] = useState(false);
-  const { setHabits, setEntries } = useContext(DataContext);
-  const warnError = useWarnError();
-  const handleClick = async () => {
-    if (clicked) return null;
-    setClicked(true);
-    return User.clearDemoData({ demoTokenId }).then(() => {
-      setHabits(null);
-      setEntries(null);
-    }).catch(err => {
-      warnError('somethingWentWrong', err);
-    });
-  }
-  if (clicked) return <PageLoading className="h125r jcfs mt10" />;
-  return (
-    <button type="button" className="mt10 link" onClick={handleClick}>
-      &raquo; click to clear data / start fresh
-    </button>
-  );
-}
-
 const GenerateDemoData = ({ user, calendarPeriod }) => {
   const { demoTokenId, demoGenOption, habits, getHabits, getEntries } = useContext(DataContext);
+  const { createModal } = useContext(ModalContext);
   const [successPending, setSuccessPending] = useState(false);
-  const handleClick = () => {
+  const generateData = () => {
     setSuccessPending(true);
     return User.generateDemoData({
       id: user.id,
       demoTokenId,
       calendarPeriod,
       alsoHabits: !habits?.length
-    }).then(() => {
-      getHabits();
-      getEntries();
-    });
+    }).then(getHabits).then(getEntries);
+  }
+  const explainDemoData = () => {
+    createModal('generateDemoData', { generateData })
   }
   if (!demoGenOption) return null;
-  return (
+  if (habits.length) return (
     <Submit
-      value="click to generate test data"
-      onClick={handleClick}
+      value="generate sample data"
+      onClick={generateData}
       className="mt15"
       successPending={successPending}
       cancel={false}
     />
+  );
+  return (
+    <center>
+      <Button onClick={explainDemoData} className="mt15">
+        generate sample data
+      </Button>
+    </center>
   );
 }
 

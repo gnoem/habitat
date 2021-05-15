@@ -17,7 +17,7 @@ const Home = ({ query }) => {
   }, []);
   return (
     <>
-      <p>habitat is a web app designed & created by <a href="https://ngw.dev/" target="_blank">naomi g.w.</a> as a project for her portfolio and also as a personal tool to organize her life!</p>
+      <p>habitat is a digital habit tracker designed & created by <a href="https://ngw.dev/" target="_blank">naomi g.w.</a> as a project for her portfolio, and also as a personal tool to track & organize her life.</p>
       <nav>
         <Button href="/login">Login</Button>
         <Button href="/register">Register</Button>

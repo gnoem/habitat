@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 
 import { User, Habit, Entry, handleRequest } from "../pages/api";
+import { differenceInMinutes } from "../utils";
 
 export const DataContext = React.createContext(null);
 
@@ -14,12 +15,14 @@ export const DataContextProvider = ({ children }) => {
   const [demoGenOption, setDemoGenOption] = useState(true);
   const getUser = async (userId = user.id) => {
     if (!userId) return console.log('userId is undefined!');
-    const { demoTokenId: tokenId } = await handleRequest('/api/auth/getSession');
+    const { demoTokenId: tokenId, createdAt } = await handleRequest('/api/auth/getSession');
     setDemoTokenId(tokenId);
     const { user } = await User.get({ id: userId, demoTokenId: tokenId });
-    if (user == null) { // if user doesn't exist
+    if ((user == null) || (tokenId && differenceInMinutes(createdAt) > 120)) { // if user does not exist OR if user is demo user and session is older than 2hrs
+      if (tokenId) User.clearDemoData({ demoTokenId: tokenId });
       await handleRequest('/api/auth/logout');
       router.push('/');
+      return;
     }
     setUser(user);
     return user;

@@ -9,7 +9,9 @@ Built with:
 - [Chart.js](https://www.chartjs.org/)
 - [next-iron-session](https://github.com/vvo/next-iron-session) for authorization
 
-Habitat is live at https://habi.vercel.app/! Registration is currently closed as I don't want to inadvertently become responsible for a bunch of strangers' habit data, but you can use the username **demo** and password **habitat** to log in with a special account I set up for people interested in demoing the app.
+## how to use
+
+Habitat is live at [https://habi.vercel.app/](https://habi.vercel.app/?demo)! Registration is currently closed as I don't want to inadvertently become responsible for a bunch of strangers' habit data, but you can use the username **demo** and password **habitat** to log in with a special account I set up for people interested in demoing the app.
 
 If you like Habitat and you actually want to use it, feel free to [contact me](mailto:contact@ngw.dev).
 
@@ -26,6 +28,7 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
   * Display habits either as a list or on a grid
   * Configure habit display information: name, label, icon, and color
   * Configure habit type: complex/scalar ("I practiced music for this many hours today") vs. simple ("I practiced music today"/"I didn't practice music today"), active vs. inactive/retired (retired habits will no longer show up when creating/editing records, but existing data for those habits will be preserved)
+- Allow users logged on to the [demo account](#how-to-use) to generate a set of sample habits and at least a month's worth of randomized habit data to play around with. I have this set up so that any data (sample or otherwise) created by a demo user is bound to a unique string or `demoTokenId` stored in that user's browser session, so that multiple users can be logged on to the same demo account simultaneously without interfering with anyone else's experience of the app.
 - Allow users to set preferences for how the app should behave
   * Set a default view type for habit data (timeline, calendar, or line graph) and for habits (list or grid)
   * Toggle view options for the clock in the top right corner of the app: display or hide clock, 12- or 24-hour clock, show or hide clock seconds
@@ -45,6 +48,7 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 
 - Auth-related API logic is located inside the [/pages/api/auth](/pages/api/auth) directory:
   - [index.js](/pages/api/auth/index.js): Checks if there is user data stored in session. The data returned from this function, fetched at request time via `getServerSideProps`, is used on all protected pages to redirect to the login page if no valid session is found.
+  - [getSession.js](/pages/api/auth/getSession.js): Gets the session data. The only time this is used is when retrieving the `demoTokenId` unique to each demo account session (this is explained in more detail above, under [general functionality](#general-functionality)).
   - [login.js](/pages/api/auth/login.js): Uses `next-iron-session` to create a signed and encrypted cookie to store session data
   - [logout.js](/pages/api/auth/logout.js): Destroys the session
 
@@ -55,23 +59,23 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 - [x] add delete account feature
 - [x] password recovery!
 - [x] cuter 404 page
-- [ ] add option to rearrange habits!
+- [x] add option to rearrange habits!
 - [ ] figure out situation with dash panel calendar, are you doing that or not
 - [ ] dash panel idea - 'help'/tutorial section for dashboard and habit pages, togglable in settings
 - [x] fix habit graph when only tracking simple habits, something weird is happening
 - [ ] graph should adjust when page resizes but make it performant
-- [ ] better explanation of demo data for demo visitors
+- [x] better explanation of demo data for demo visitors
 - [x] demo settings should follow the same pattern as habits, entries, and records
 - [x] popup when visiting homepage with /?demo like with pianopet portfolio link
 - [x] clear demo data on logout
-- [ ] like 1 hour cookie for demo sessions
-- [ ] cuter "wipe demo account" message, maybe a corner button?
-- [ ] add explanation of demo stuff to readme
+- [x] like 1 hour cookie for demo sessions but since that looks surprisingly difficult to implement using next iron session, if demo && cookie is older than 1hour (or whatever), then log out
+- [x] cuter "wipe demo account" message, maybe a corner button?
+- [x] add explanation of demo stuff to readme
 - [ ] let users configure "create new habit" emoji in settings (currently 🐛)
 - [x] prevent duplicate entries (more than one for a given date)
 - [x] better unhandledFormError message
 - [x] instead of just blocking duplicate entries, warn and ask permission to overwrite
-- [ ] clock date should change at midnight exactly
+- [x] clock date should change at midnight exactly
 - [x] if cookie is invalid user, log out
 - [x] emoji picker for habit icons ([use this maybe?](https://github.com/iamcal/emoji-data))
 - [x] instructions for label template for complex habits + regex validation error if no handlebars are found in string

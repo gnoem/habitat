@@ -6,6 +6,7 @@ import { habitLabelIsValid, validationError } from "./validation";
 import { habitsList, entriesList, recordsList } from "./demo";
 import { sendPasswordResetEmail } from "./mail";
 import dayjs from "dayjs";
+import { differenceInMinutes } from "../../../../utils";
 
 export const resolvers = {
   Mutation: {
@@ -401,7 +402,6 @@ export const resolvers = {
     },
     clearDemoData: async (_, args) => {
       const { demoTokenId } = args;
-      // todo - clear settings too? probably
       await prisma.demoToken.update({
         where: {
           id: demoTokenId
@@ -410,6 +410,11 @@ export const resolvers = {
           habits: { deleteMany: {} },
           entries: { deleteMany: {} },
           records: { deleteMany: {} }
+        }
+      });
+      await prisma.settings.delete({
+        where: {
+          demoTokenId
         }
       });
       return {
@@ -462,9 +467,7 @@ export const resolvers = {
       // prisma doesn't let you add a ttl index to models so i'm doing this instead
       const tokenIsExpiredOrInvalid = (() => {
         if (!token) return true;
-        const createdAt = dayjs(token.createdAt);
-        const differenceInMinutes = dayjs().diff(createdAt, 'minute');
-        return differenceInMinutes > 120;
+        return differenceInMinutes(token.createdAt) > 120;
       })();
       if (token && tokenIsExpiredOrInvalid) {
         await prisma.passwordToken.delete({
@@ -505,12 +508,7 @@ export const resolvers = {
         // clear past demo stuff
         const allDemoTokens = await prisma.demoToken.findMany();
         const deleteExpiredTokens = allDemoTokens.map(demoToken => {
-          const tokenIsExpired = (() => {
-            const createdAt = dayjs(demoToken.createdAt);
-            const differenceInMinutes = dayjs().diff(createdAt, 'minute');
-            const minutes = 360; // 6 hours
-            return differenceInMinutes > minutes; //= 360; // 6 hours
-          })();
+          const tokenIsExpired = differenceInMinutes(demoToken.createdAt) > 120; // 2 hours
           const deleteData = prisma.demoToken.update({
             where: {
               id: demoToken.id
