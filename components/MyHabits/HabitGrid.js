@@ -19,13 +19,7 @@ export const HabitGridItem = React.forwardRef(({ user, index, habits, addingNew,
       habitFormProps: {
         title: addingNew ? 'create a new habit' : 'edit this habit',
         user,
-        id,
-        name,
-        icon,
-        color,
-        label,
-        complex,
-        retired
+        ...habit
       }
     });
   }

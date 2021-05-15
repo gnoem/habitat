@@ -113,7 +113,6 @@ div button.currentHabitView { /* including div for specificity */
   right: 0;
   height: 2rem;
   align-items: center;
-  opacity: 0.3;
 }
 .HabitListItem[data-hotspot=true]::before {
   content: '';
@@ -224,9 +223,8 @@ div button.currentHabitView { /* including div for specificity */
 }
 .HabitGridItem .grip {
   top: 1rem;
-  right: 0.75rem;
+  right: 0.5rem;
   align-items: flex-end;
-  opacity: 0.5;
 }
 .HabitGridItem[data-hotspot=true]::before {
   content: '';
@@ -243,10 +241,11 @@ div button.currentHabitView { /* including div for specificity */
   position: absolute;
   display: inline-flex;
   cursor: grab;
+  opacity: 0.2;
   transition: 0.2s;
 }
 .grip:hover {
-  opacity: 0.8;
+  opacity: 0.5;
 }
 .grip:active {
   cursor: grabbing;

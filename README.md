@@ -64,6 +64,7 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 - [x] demo settings should follow the same pattern as habits, entries, and records
 - [x] popup when visiting homepage with /?demo like with pianopet portfolio link
 - [x] clear demo data on logout
+- [ ] like 1 hour cookie for demo sessions
 - [ ] cuter "wipe demo account" message, maybe a corner button?
 - [ ] add explanation of demo stuff to readme
 - [ ] let users configure "create new habit" emoji in settings (currently 🐛)

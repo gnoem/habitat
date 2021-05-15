@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGripLines, faListUl, faTh } from "@fortawesome/free-solid-svg-icons";
+import { faGripLines, faGripVertical, faListUl, faTh } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./myHabits.module.css";
 import { Habit } from "../../pages/api";
@@ -221,6 +221,7 @@ export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDraggin
   }, [mouseIsDown]);
   useEffect(() => {
     if (!dragging) return;
+    // todo add hotspot for moving something to the very end, AFTER the last element
     const hotspots = Object.entries(habitItems).map(generateHotspots);
     const checkIfInHotspot = (e) => {
       e.preventDefault();
@@ -270,8 +271,11 @@ export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDraggin
         const rearrangedArray = [...habitItemOrder];
         const targetIndex = habitItemOrder.indexOf(activeHotspot);
         const currentIndex = habitItemOrder.indexOf(id);
-        rearrangedArray.splice(currentIndex, 1);
+        // todo figure out issue!
+        // this is not working properly if targetIndex > currentIndex, like moving the first element to the 3rd position
+        // or moving anything to the second to last position
         rearrangedArray.splice(targetIndex, 0, id);
+        rearrangedArray.splice(currentIndex, 1);
         updateHabitItemOrder(rearrangedArray);
         updateDatabase(rearrangedArray);
       }
@@ -284,7 +288,7 @@ export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDraggin
     <div
       className={styles.grip}
       onMouseDown={() => setMouseIsDown(true)}>
-        <FontAwesomeIcon icon={faGripLines} />
+        <FontAwesomeIcon icon={faGripVertical} />
     </div>
   );
 }
