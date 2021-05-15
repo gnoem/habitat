@@ -25,14 +25,14 @@ export const HabitListItem = React.forwardRef(({ addingNew, user, index, habit, 
           retired,
           toggleExpanded: () => setExpanded(state => !state)
         }} />
-        <MakeDraggable {...{
+        {(!addingNew && !retired) && (<MakeDraggable {...{
           id,
           habitItems,
           dragging,
           updateDragging: setDragging,
           habitItemOrder,
           updateHabitItemOrder
-        }} />
+        }} />)}
         <HabitListItemBody {...{
           addingNew,
           user,

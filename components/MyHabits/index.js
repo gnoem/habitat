@@ -237,7 +237,11 @@ export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDraggin
       else setActiveHotspot(null);
     }
     window.addEventListener('mousemove', checkIfInHotspot);
-    return () => window.removeEventListener('mousemove', checkIfInHotspot);
+    document.body.classList.add('dragging');
+    return () => {
+      window.removeEventListener('mousemove', checkIfInHotspot);
+      document.body.classList.remove('dragging');
+    }
   }, [dragging]);
   useEffect(() => {
     if (!activeHotspot) {

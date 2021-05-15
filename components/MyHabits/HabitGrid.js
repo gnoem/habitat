@@ -1,14 +1,12 @@
 import React, { useContext, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGripLines, faPen, faPlus, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faPlus, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./myHabits.module.css";
-import { DataContext, ModalContext } from "../../contexts";
+import { ModalContext } from "../../contexts";
 import { getUnitFromLabel } from "../../utils";
 import { Grip, HabitForm, HabitIcon } from ".";
-import { Habit } from "../../pages/api";
-import { useWarnError } from "../../hooks";
 
 export const HabitGridItem = React.forwardRef(({ user, index, habits, addingNew, habit, habitItemsStuff }, ref) => {
   const { id, name, icon, color, label, complex, retired } = habit ?? {};
@@ -52,14 +50,14 @@ export const HabitGridItem = React.forwardRef(({ user, index, habits, addingNew,
         <span className={styles.HabitGridColorIndicator} style={{ background: color }}></span>
         <HabitGridItemHeader {...{ name, icon }} />
         <HabitGridItemBody {...{ user, id, name, icon, color, label, complex, manageHabit, deleteHabit }} />
-        <MakeDraggable {...{
+        {!retired && (<MakeDraggable {...{
           id,
           habitItems,
           dragging,
           updateDragging: setDragging,
           habitItemOrder,
           updateHabitItemOrder
-        }} />
+        }} />)}
     </div>
   );
 });
