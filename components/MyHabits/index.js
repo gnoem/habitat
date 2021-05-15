@@ -271,9 +271,6 @@ export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDraggin
         const rearrangedArray = [...habitItemOrder];
         const targetIndex = habitItemOrder.indexOf(activeHotspot);
         const currentIndex = habitItemOrder.indexOf(id);
-        // todo figure out issue!
-        // this is not working properly if targetIndex > currentIndex, like moving the first element to the 3rd position
-        // or moving anything to the second to last position
         rearrangedArray.splice(targetIndex, 0, id);
         rearrangedArray.splice(currentIndex, 1);
         updateHabitItemOrder(rearrangedArray);

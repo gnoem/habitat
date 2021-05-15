@@ -114,7 +114,6 @@ const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
           currentDate
         }} />
       </Form>
-      <b>will this overwrite data? {overwritingEntry.toString()}</b>
       {existingData && <DeleteEntry {...{ existingData }} />}
     </div>
   );

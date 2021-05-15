@@ -587,7 +587,11 @@ export const resolvers = {
     records: async (_, args) => {
       const { entryId } = args;
       const records = await prisma.record.findMany({
-        orderBy: { habitId: 'asc' },
+        orderBy: {
+          habit: {
+            order: 'asc'
+          }
+        },
         where: { entryId }
       });
       return records;
