@@ -3,9 +3,8 @@ import * as Validator from "validatorjs";
 
 import prisma from "../../../../lib/prisma";
 import { habitLabelIsValid, validationError } from "./validation";
-import { habitsList, entriesList, recordsList } from "./demo";
+import { habitsList, entriesList, recordsList, clearSampleData } from "./demo";
 import { sendPasswordResetEmail } from "./mail";
-import dayjs from "dayjs";
 import { differenceInMinutes } from "../../../../utils";
 
 export const resolvers = {
@@ -402,21 +401,7 @@ export const resolvers = {
     },
     clearDemoData: async (_, args) => {
       const { demoTokenId } = args;
-      await prisma.demoToken.update({
-        where: {
-          id: demoTokenId
-        },
-        data: {
-          habits: { deleteMany: {} },
-          entries: { deleteMany: {} },
-          records: { deleteMany: {} }
-        }
-      });
-      await prisma.settings.delete({
-        where: {
-          demoTokenId
-        }
-      });
+      await clearSampleData(demoTokenId, prisma);
       return {
         success: true
       }
@@ -505,44 +490,17 @@ export const resolvers = {
       const passwordIsValid = bcrypt.compareSync(password, user.password);
       if (!passwordIsValid) return validationError({ password: 'invalid password' });
       if (email === 'demo') {
-        // clear past demo stuff
+        // clear expired demo tokens + all data associated with those tokens
         const allDemoTokens = await prisma.demoToken.findMany();
         const deleteExpiredTokens = allDemoTokens.map(demoToken => {
           const tokenIsExpired = differenceInMinutes(demoToken.createdAt) > 120; // 2 hours
-          const deleteData = prisma.demoToken.update({
-            where: {
-              id: demoToken.id
-            },
-            data: {
-              habits: { deleteMany: {} },
-              entries: { deleteMany: {} },
-              records: { deleteMany: {} }
-            }
-          });
-          const deleteSettings = prisma.settings.delete({
-            where: {
-              demoTokenId: demoToken.id
-            }
-          });
-          const deleteToken = prisma.demoToken.delete({
-            where: {
-              id: demoToken.id
-            }
-          });
-          return (tokenIsExpired) ? [deleteData, deleteSettings, deleteToken] : null;
+          return tokenIsExpired ? clearSampleData(demoToken.id) : null;
         }).filter(el => el).flat();
         await prisma.$transaction(deleteExpiredTokens);
-
-        // create demoToken and add that to the session cookie 
+        // create demoToken for this logged in user (demoTokenId will be added to the session cookie)
         const createdToken = await prisma.demoToken.create({
           data: {}
         });
-        await prisma.settings.create({
-          data: {
-            demoTokenId: createdToken.id
-          }
-        }); // only because you can't prisma.settings.delete something (above) that doesn't exist
-        // this step is only necessary for demo account though
         return {
           __typename: 'User',
           ...user,
