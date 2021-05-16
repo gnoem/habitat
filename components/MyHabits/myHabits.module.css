@@ -243,6 +243,7 @@ div button.currentHabitView { /* including div for specificity */
   cursor: grab;
   opacity: 0.2;
   transition: 0.2s;
+  touch-action: none;
 }
 .grip:hover {
   opacity: 0.5;
@@ -284,8 +285,8 @@ div button.currentHabitView { /* including div for specificity */
   .HabitList {
     max-width: 100%;
   }
-  .HabitListItem + .HabitListItem {
-    margin-top: 1rem;
+  .HabitListItem {
+    margin-bottom: 1rem;
   }
   .HabitListItemHeader h3 {
     font-size: 1rem;

@@ -204,7 +204,7 @@ export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDraggin
     if (!mouseIsDown) return;
     const handleMouseMove = (e) => {
       e.preventDefault();
-      updateDragging(true);
+      if (!dragging) updateDragging(true);
     }
     const handleMouseUp = (e) => {
       e.preventDefault();
@@ -213,10 +213,14 @@ export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDraggin
       setActiveHotspot(null);
     }
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('touchend', handleMouseUp);
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('touchend', handleMouseUp);
     }
   }, [mouseIsDown]);
   useEffect(() => {
@@ -227,7 +231,7 @@ export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDraggin
       e.preventDefault();
       const conditions = (e) => {
         return hotspots.map(({ top, left, width, height }) => {
-          const { clientX, clientY } = e;
+          const { clientX, clientY } = (e.type === 'touchmove') ? e.touches[0] : e;
           return (clientY > top) && (clientY < top + height) && (clientX > left) && (clientX < left + width);
         });
       }
@@ -238,9 +242,11 @@ export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDraggin
       else setActiveHotspot(null);
     }
     window.addEventListener('mousemove', checkIfInHotspot);
+    window.addEventListener('touchmove', checkIfInHotspot);
     document.body.classList.add('dragging');
     return () => {
       window.removeEventListener('mousemove', checkIfInHotspot);
+      window.removeEventListener('touchmove', checkIfInHotspot);
       document.body.classList.remove('dragging');
     }
   }, [dragging]);
@@ -285,12 +291,17 @@ export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDraggin
       if (activeHotspot) rearrangeOrder();
     }
     window.addEventListener('mouseup', dropItem);
-    return () => window.removeEventListener('mouseup', dropItem);
+    window.addEventListener('touchend', dropItem);
+    return () => {
+      window.removeEventListener('mouseup', dropItem);
+      window.removeEventListener('touchend', dropItem);
+    }
   }, [activeHotspot]);
   return (
     <div
       className={styles.grip}
-      onMouseDown={() => setMouseIsDown(true)}>
+      onMouseDown={() => setMouseIsDown(true)}
+      onTouchStart={() => setMouseIsDown(true)}>
         <FontAwesomeIcon icon={faGripVertical} />
     </div>
   );
