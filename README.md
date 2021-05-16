@@ -61,7 +61,7 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 - [x] cuter 404 page
 - [x] add option to rearrange habits!
 - [x] rearrange habits needs to work on mobile
-- [ ] when rearranging habits create a little clone to drag around or at least the habit icon + name, especially needed on mobile
+- [x] when rearranging habits create a little clone to drag around or at least the habit icon + name, especially needed on mobile
 - [ ] add screenshots to readme
 - [ ] figure out situation with dash panel calendar, are you doing that or not
 - [ ] dash panel idea - 'help'/tutorial section for dashboard and habit pages, togglable in settings

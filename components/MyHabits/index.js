@@ -195,13 +195,17 @@ export const HabitIcon = ({ children }) => {
   );
 }
 
-export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDragging, habitItemOrder, updateHabitItemOrder }) => {
+export const Grip = ({ id, habitItems, hotspots, dragging, updateDragging, habitItemOrder, updateHabitItemOrder }) => {
   const warnError = useWarnError();
-  const { getHabits, getEntries } = useContext(DataContext);
+  const { habits, getHabits, getEntries } = useContext(DataContext);
   const [mouseIsDown, setMouseIsDown] = useState(false);
   const [activeHotspot, setActiveHotspot] = useState(null);
   useEffect(() => {
-    if (!mouseIsDown) return;
+    if (!mouseIsDown) {
+      const clone = document.querySelector(`.${id}-clone`);
+      clone?.remove();
+      return;
+    }
     const handleMouseMove = (e) => {
       e.preventDefault();
       if (!dragging) updateDragging(true);
@@ -226,37 +230,57 @@ export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDraggin
   useEffect(() => {
     if (!dragging) return;
     // todo add hotspot for moving something to the very end, AFTER the last element
-    const hotspots = Object.entries(habitItems).map(generateHotspots);
-    const checkIfInHotspot = (e) => {
+    const handleMouseMove = (e) => {
       e.preventDefault();
-      const conditions = (e) => {
-        return hotspots.map(({ top, left, width, height }) => {
-          const { clientX, clientY } = (e.type === 'touchmove') ? e.touches[0] : e;
+      const { clientX, clientY } = (e.type === 'touchmove') ? e.touches[0] : e;
+      const createClone = () => {
+        const clone = document.createElement('div');
+        clone.className = `${id}-clone`;
+        const habit = habits.find(habit => habit.id === id);
+        clone.innerHTML = `${habit.icon} ${habit.name}`;
+        translateClone(clone);
+        document.body.appendChild(clone);
+      }
+      const translateClone = (clone) => {
+        const offset = (e.type === 'touchmove') ? 80 : 50;
+        clone.style.transform = `translate3d(${clientX - offset}px, ${clientY - offset}px, 0)`;
+      }
+      const checkIfInHotspot = () => {
+        const conditions = hotspots.map(({ top, left, width, height }) => {
           return (clientY > top) && (clientY < top + height) && (clientX > left) && (clientX < left + width);
         });
+        const activeHotspotIndex = conditions.findIndex(isTrue => isTrue);
+        if (activeHotspotIndex !== -1) {
+          setActiveHotspot(hotspots[activeHotspotIndex].id);
+        }
+        else setActiveHotspot(null);
       }
-      const activeHotspotIndex = conditions(e).findIndex(isTrue => isTrue);
-      if (activeHotspotIndex !== -1) {
-        setActiveHotspot(hotspots[activeHotspotIndex].id);
-      }
-      else setActiveHotspot(null);
+      checkIfInHotspot();
+      const existingClone = document.querySelector(`.${id}-clone`);
+      if (!existingClone) createClone();
+      else translateClone(existingClone);
     }
-    window.addEventListener('mousemove', checkIfInHotspot);
-    window.addEventListener('touchmove', checkIfInHotspot);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchmove', handleMouseMove);
     document.body.classList.add('dragging');
     return () => {
-      window.removeEventListener('mousemove', checkIfInHotspot);
-      window.removeEventListener('touchmove', checkIfInHotspot);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchmove', handleMouseMove);
       document.body.classList.remove('dragging');
     }
   }, [dragging]);
   useEffect(() => {
-    if (!activeHotspot) {
-      const previous = document.querySelector('[data-hotspot=true]');
-      if (previous) previous.setAttribute('data-hotspot', 'false');
-      return;
+    if (activeHotspot === 'last_item') {
+      const lastHabitItemId = habitItemOrder[habitItemOrder.length - 1];
+      const lastElement = habitItems[lastHabitItemId];
+      lastElement.setAttribute('data-hotspot', 'after');
+    } else if (activeHotspot) {
+      habitItems[activeHotspot].setAttribute('data-hotspot', 'true');
+    } else { // if (!activeHotspot)
+      const previous = document.querySelectorAll('[data-hotspot]');
+      previous.forEach(element => element.setAttribute('data-hotspot', 'false'));
+      return; // DO NOT REMOVE THIS LINE!!
     }
-    habitItems[activeHotspot].setAttribute('data-hotspot', 'true');
     const dropItem = () => {
       const updateDatabase = async (array) => {
         const arrayChanged = () => {
@@ -276,7 +300,9 @@ export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDraggin
       }
       const rearrangeOrder = () => {
         const rearrangedArray = [...habitItemOrder];
-        const targetIndex = habitItemOrder.indexOf(activeHotspot);
+        const targetIndex = (activeHotspot === 'last_item')
+          ? habitItemOrder.length + 1
+          : habitItemOrder.indexOf(activeHotspot);
         const currentIndex = habitItemOrder.indexOf(id);
         if (targetIndex > currentIndex) {
           rearrangedArray.splice(targetIndex, 0, id);
@@ -296,7 +322,7 @@ export const Grip = ({ id, habitItems, generateHotspots, dragging, updateDraggin
       window.removeEventListener('mouseup', dropItem);
       window.removeEventListener('touchend', dropItem);
     }
-  }, [activeHotspot]);
+  }, [activeHotspot, habitItemOrder]);
   return (
     <div
       className={styles.grip}

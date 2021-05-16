@@ -51,21 +51,32 @@ export const HabitListItem = React.forwardRef(({ addingNew, user, index, habit, 
 });
 
 const MakeDraggable = (props) => {
-  const generateHotspots = ([key, value]) => {
-    const hotspotDetails = (element) => {
-      let { top, left, right } = element.getBoundingClientRect();
-      const width = right - left;
-      const height = 24;
-      top = top - height;
-      return {
-        id: key, top, left, width, height
-      }
+  const { habitItems, habitItemOrder } = props;
+  const hotspotsRef = useRef([]);
+  useEffect(() => {
+    const lastHabitItemId = habitItemOrder[habitItemOrder.length - 1]; // lastElement depends on habitItemOrder!!!!!!
+    const lastElement = habitItems[lastHabitItemId];
+    const objectToMap = {
+      ...habitItems,
+      last_item: lastElement // to add the hotspot after the last item
     }
-    return hotspotDetails(value);
-  }
+    const generateHotspots = ([id, element]) => {
+      const hotspotDetails = () => {
+        let { top, bottom, left, right } = element.getBoundingClientRect();
+        const width = right - left;
+        const height = 24;
+        top = (id === 'last_item') ? bottom : top - height;
+        return {
+          id: id, top, left, width, height
+        }
+      }
+      return hotspotDetails();
+    }
+    hotspotsRef.current = Object.entries(objectToMap).map(generateHotspots);
+  }, [habitItems, habitItemOrder]);
   return (
     <Grip {...{
-      generateHotspots,
+      hotspots: hotspotsRef.current,
       ...props
     }} />
   );

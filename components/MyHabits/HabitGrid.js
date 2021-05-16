@@ -86,18 +86,19 @@ const MakeDraggable = (props) => {
   const generateHotspots = ([key, value]) => {
     const hotspotDetails = (element) => {
       let { top, left, bottom } = element.getBoundingClientRect();
-      const width = 24;
+      const width = 100;
       const height = bottom - top;
-      left = left - width;
+      left = left - (width * 0.5);
       return {
         id: key, top, left, width, height
       }
     }
     return hotspotDetails(value);
   }
+  const hotspots = Object.entries(props.habitItems).map(generateHotspots);
   return (
     <Grip {...{
-      generateHotspots,
+      hotspots,
       ...props
     }} />
   );

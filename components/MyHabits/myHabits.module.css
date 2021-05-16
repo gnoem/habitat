@@ -114,7 +114,7 @@ div button.currentHabitView { /* including div for specificity */
   height: 2rem;
   align-items: center;
 }
-.HabitListItem[data-hotspot=true]::before {
+.HabitListItem[data-hotspot=true]::before, .HabitListItem[data-hotspot=after]::before {
   content: '';
   position: absolute;
   bottom: calc(100% + 0.875rem);
@@ -123,6 +123,10 @@ div button.currentHabitView { /* including div for specificity */
   width: 100%;
   height: 2px;
   background: #000;
+}
+.HabitListItem[data-hotspot=after]::before {
+  bottom: unset;
+  top: calc(100% + 0.5rem);
 }
 
 .HabitGrid {
@@ -230,7 +234,7 @@ div button.currentHabitView { /* including div for specificity */
   content: '';
   position: absolute;
   top: 0;
-  right: calc(100% + 0.75rem); /* half of 1.5rem padding right */
+  right: calc(100% + 0.75rem); /* half of 1.5rem margin between grid items */
   margin-right: -1px;
   width: 2px;
   height: 100%;
@@ -298,6 +302,9 @@ div button.currentHabitView { /* including div for specificity */
   }
   .HabitGridItem {
     margin: 0 1rem 1rem 0;
+  }
+  .HabitGridItem[data-hotspot=true]::before {
+    right: calc(100% + 0.5rem); /* half of 1rem margin between grid items */
   }
   .HabitGridItemHeader .HabitIcon {
     margin-top: -1.5rem;

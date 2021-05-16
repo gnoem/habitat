@@ -493,8 +493,9 @@ export const resolvers = {
         // clear expired demo tokens + all data associated with those tokens
         const allDemoTokens = await prisma.demoToken.findMany();
         const deleteExpiredTokens = allDemoTokens.map(demoToken => {
-          const tokenIsExpired = differenceInMinutes(demoToken.createdAt) > 120; // 2 hours
-          return tokenIsExpired ? clearSampleData(demoToken.id) : null;
+          const tokenIsExpired = differenceInMinutes(demoToken.createdAt) >= 120; // 2 hours
+          // todo investigate weird thing happening, why do I sometimes get an error on login that says all prisma transactions have to be prisma promises or whatever 
+          return tokenIsExpired ? clearSampleData(demoToken.id, prisma) : null;
         }).filter(el => el).flat();
         await prisma.$transaction(deleteExpiredTokens);
         // create demoToken for this logged in user (demoTokenId will be added to the session cookie)

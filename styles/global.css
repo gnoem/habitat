@@ -309,6 +309,29 @@ details.errorReport .errorDetails code {
   display: block;
 }
 
+/* habit clone for rearranging habits */
+*[class$=-clone] {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  line-height: 2.5;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+*[class$=-clone]::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  transform: skew(-12deg);
+  box-shadow: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
 @media screen and (max-width: 900px) {
   #nprogress .spinner {
     bottom: 1rem;
