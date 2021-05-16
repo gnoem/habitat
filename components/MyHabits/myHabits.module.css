@@ -230,7 +230,7 @@ div button.currentHabitView { /* including div for specificity */
   right: 0.5rem;
   align-items: flex-end;
 }
-.HabitGridItem[data-hotspot=true]::before {
+.HabitGridItem[data-hotspot=true]::before, .HabitGridItem[data-hotspot=after]::before {
   content: '';
   position: absolute;
   top: 0;
@@ -239,6 +239,11 @@ div button.currentHabitView { /* including div for specificity */
   width: 2px;
   height: 100%;
   background: #000;
+}
+.HabitGridItem[data-hotspot=after]::before {
+  right: unset;
+  left: calc(100% + 0.75rem);
+  margin-left: -1px;
 }
 
 .grip {

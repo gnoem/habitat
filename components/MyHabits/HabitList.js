@@ -67,7 +67,7 @@ const MakeDraggable = (props) => {
         const height = 24;
         top = (id === 'last_item') ? bottom : top - height;
         return {
-          id: id, top, left, width, height
+          id, top, left, width, height
         }
       }
       return hotspotDetails();

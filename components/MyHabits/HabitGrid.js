@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faPlus, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
@@ -83,35 +83,36 @@ const HabitGridItemBody = ({ label, complex, manageHabit, deleteHabit }) => {
 }
 
 const MakeDraggable = (props) => {
-  const generateHotspots = ([key, value]) => {
-    const hotspotDetails = (element) => {
-      let { top, left, bottom } = element.getBoundingClientRect();
-      const width = 100;
-      const height = bottom - top;
-      left = left - (width * 0.5);
-      return {
-        id: key, top, left, width, height
-      }
+  const { habitItems, habitItemOrder } = props;
+  const hotspotsRef = useRef([]);
+  useEffect(() => {
+    const lastHabitItemId = habitItemOrder[habitItemOrder.length - 1]; // lastElement depends on habitItemOrder!!!!!!
+    const lastElement = habitItems[lastHabitItemId];
+    const objectToMap = {
+      ...habitItems,
+      last_item: lastElement // to add the hotspot after the last item
     }
-    return hotspotDetails(value);
-  }
-  const hotspots = Object.entries(props.habitItems).map(generateHotspots);
+    const generateHotspots = ([id, element]) => {
+      const hotspotDetails = (element) => {
+        let { top, left, right, bottom } = element.getBoundingClientRect();
+        const width = 100;
+        const height = bottom - top;
+        left = (id === 'last_item') ? right - (width * 0.5) : left - (width * 0.5);
+        return {
+          id, top, left, width, height
+        }
+      }
+      return hotspotDetails(element);
+    }
+    hotspotsRef.current = Object.entries(objectToMap).map(generateHotspots);
+  }, [habitItems, habitItemOrder])
   return (
     <Grip {...{
-      hotspots,
+      hotspots: hotspotsRef.current,
       ...props
     }} />
   );
 }
-
-// drag and drop to rearrange:
-/* 
-on click drag icon :: detect ranges (in px) that will constitute draggable areas
-where if you drag the mouse to that area, a little pink bar or whatever will show up and then if you release, that sets the flex order and also triggers whatever function will actually save the new order
-
-on click: for each grid item, set one draggable area to the left, with width = the gap between items and height = the same height as the row
-
-*/
 
 export const NewHabitGridItem = ({ user, habits }) => {
   return (
