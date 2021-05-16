@@ -66,7 +66,7 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 - [ ] figure out situation with dash panel calendar, are you doing that or not
 - [ ] dash panel idea - 'help'/tutorial section for dashboard and habit pages, togglable in settings
 - [x] fix habit graph when only tracking simple habits, something weird is happening
-- [ ] graph should adjust when page resizes but make it performant
+- [x] graph should adjust when page resizes but make it performant
 - [x] better explanation of demo data for demo visitors
 - [x] demo settings should follow the same pattern as habits, entries, and records
 - [x] popup when visiting homepage with /?demo like with pianopet portfolio link

@@ -9,6 +9,21 @@ import { useRefName } from "../../../hooks";
 import { MobileContext } from "../../../contexts";
 
 const Graph = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
+  const [resizing, setResizing] = useState(false);
+  useEffect(() => {
+    let timeout;
+    const doThing = () => {
+      if (!resizing) setResizing(true);
+      clearTimeout(timeout);
+      timeout = setTimeout(() => setResizing(false), 500);
+    }
+    window.addEventListener('resize', doThing);
+    return () => {
+      window.removeEventListener('resize', doThing);
+      clearTimeout(timeout);
+    }
+  }, [resizing]);
+  if (resizing) return null;
   return (
     <div className={styles.Graph}>
       <SimpleHabits {...{ habits, entries, calendarPeriod, updateDashPanel }} />
