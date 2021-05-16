@@ -154,7 +154,7 @@ export const HabitForm = ({ title, user, id, name, icon, color, label, complex, 
           label="Icon:"
           value={formData.icon}
           className="stretch" 
-          axLength="1"
+          maxLength="1"
           tool={<EmojiPicker setFormData={setFormData} />}
           {...inputProps} />
         <Input type="color" name="color" label="Color:" value={formData.color} {...inputProps} />

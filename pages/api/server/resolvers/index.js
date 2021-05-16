@@ -497,7 +497,9 @@ export const resolvers = {
           // todo investigate weird thing happening, why do I sometimes get an error on login that says all prisma transactions have to be prisma promises or whatever 
           return tokenIsExpired ? clearSampleData(demoToken.id, prisma) : null;
         }).filter(el => el).flat();
+        console.log('got here 1')
         await prisma.$transaction(deleteExpiredTokens);
+        console.log('got here 2');
         // create demoToken for this logged in user (demoTokenId will be added to the session cookie)
         const createdToken = await prisma.demoToken.create({
           data: {}

@@ -1,42 +1,24 @@
-import dayjs from "dayjs";
-
 import styles from "./calendar.module.css";
 import { getUnitFromLabel } from "../../../utils";
 import TooltipElement from "../../Tooltip";
+import { useCalendar } from "../../../hooks";
 
 const Calendar = ({ habits, entries, calendarPeriod, updateDashPanel }) => {
-  const daysInMonth = new Array(dayjs(calendarPeriod).daysInMonth()).fill('').map((_, index) => {
-    return dayjs(`${calendarPeriod}-${index + 1}`).format('YYYY-MM-DD');
-  });
-  const totalDaysInMonth = (() => {
-    const monthStartsOnDay = dayjs(daysInMonth[0]).day();
-    const lastDayIndex = daysInMonth.length - 1;
-    const monthEndsOnDay = dayjs(daysInMonth[lastDayIndex]).day();
-    let pre = (monthStartsOnDay !== 0) ? new Array(monthStartsOnDay).fill('') : [];
-    let post = (monthEndsOnDay !== 6) ? new Array(6 - monthEndsOnDay).fill('') : [];
-    return [
-      ...pre,
-      ...daysInMonth,
-      ...post
-    ];
-  })();
+  const { weekdays, totalDaysInMonth } = useCalendar(calendarPeriod);
   return (
     <div className={styles.Calendar}>
-      <CalendarWeekLabels />
+      <CalendarWeekLabels {...{ weekdays }} />
       <CalendarDays {...{ habits, entries, totalDaysInMonth, updateDashPanel }} />
     </div>
   );
 }
 
-const CalendarWeekLabels = () => {
-  return new Array(7).fill('').map((_, index) => {
-    const weekName = dayjs().day(index).format('ddd');
-    return (
-      <div key={`calendarWeekLabels-${weekName}`} className={styles.calendarWeekLabel}>
-        {weekName}
-      </div>
-    );
-  });
+const CalendarWeekLabels = ({ weekdays }) => {
+  return weekdays('ddd').map(weekName => (
+    <div key={`calendarWeekLabels-${weekName}`} className={styles.calendarWeekLabel}>
+      {weekName}
+    </div>
+  ));
 }
 
 const CalendarDays = ({ habits, entries, totalDaysInMonth, updateDashPanel }) => {

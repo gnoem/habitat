@@ -1,0 +1,58 @@
+.MiniCalendarWrapper {
+  width: 100%;
+  padding: 1rem 0 0;
+}
+.MiniCalendar {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+.WeekLabels {
+  font-family: var(--mono-font);
+  text-transform: lowercase;
+  border-bottom: 2px solid #000;
+  margin-bottom: 0.25rem;
+}
+.MiniCalendar > div {
+  text-align: center;
+}
+.Header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-family: var(--mono-font);
+  font-size: 1.2rem;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+.CalendarDay:not(.filler) {
+  font-size: 0.75rem;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+.CalendarDay > span {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+.CalendarDay > span::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  background: #fff;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+  transition: 0.2s;
+}
+.CalendarDay:hover > span {
+  transform: scale(1.2);
+}
+.CalendarDay:hover > span::before {
+ box-shadow: 0.125rem 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
+}

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -6,8 +6,9 @@ import { faCalendarAlt, faPlus } from "@fortawesome/free-solid-svg-icons";
 import styles from "./dashPanel.module.css";
 import DataForm from "../DataForm";
 import { DataContext } from "../../contexts";
+import MiniCalendar from "../MiniCalendar";
 
-const DashPanel = ({ dashPanel, updateDashPanel }) => {
+const DashPanel = ({ dashPanel, updateDashPanel, calendarPeriod, updateCalendarPeriod }) => {
   const { habits } = useContext(DataContext);
   const { view: panelName, options: dashPanelOptions } = dashPanel ?? {};
   const handleNavClick = (newPanelName) => {
@@ -36,29 +37,23 @@ const DashPanel = ({ dashPanel, updateDashPanel }) => {
       </nav>
       <PanelContent {...{
         view: panelName,
-        dashPanelOptions,
         habits,
-        updateDashPanel
+        dashPanelOptions,
+        updateDashPanel,
+        calendarPeriod,
+        updateCalendarPeriod
       }} />
     </div>
   );
 }
 
-const PanelContent = ({ view, habits, dashPanelOptions, updateDashPanel }) => {
+const PanelContent = ({ view, habits, dashPanelOptions, updateDashPanel, calendarPeriod, updateCalendarPeriod }) => {
   return (
     <div className={`${styles.PanelContent} ${view ? styles.active : ''}`}>
       {(view === 'data') && <DataForm {...{ habits, dashPanelOptions, updateDashPanel }} />}
-      {(view === 'calendar') && <PanelCalendar />}
+      {(view === 'calendar') && <MiniCalendar {...{ calendarPeriod, updateCalendarPeriod, updateDashPanel }} />}
     </div>
   );
-}
-
-const PanelCalendar = () => {
-  return (
-    <div className={styles.PanelCalendar}>
-      Jump to date...
-    </div>
-  )
 }
 
 export default DashPanel;
