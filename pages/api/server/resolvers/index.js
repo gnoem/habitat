@@ -125,6 +125,7 @@ export const resolvers = {
         demoTokenId,
         dashboard__defaultView,
         habits__defaultView,
+        habits__newHabitIcon,
         appearance__showClock,
         appearance__24hrClock,
         appearance__showClockSeconds
@@ -133,6 +134,7 @@ export const resolvers = {
         demoTokenId,
         dashboard__defaultView,
         habits__defaultView,
+        habits__newHabitIcon,
         appearance__showClock,
         appearance__24hrClock,
         appearance__showClockSeconds

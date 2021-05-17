@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGripLines, faGripVertical, faListUl, faTh } from "@fortawesome/free-solid-svg-icons";
+import { faGripVertical, faListUl, faTh } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./myHabits.module.css";
 import { Habit } from "../../pages/api";
@@ -11,7 +11,7 @@ import Form, { Checkbox, Input, Submit } from "../Form";
 import { HabitListItem, NewHabitListItem } from "./HabitList";
 import { HabitGridItem, NewHabitGridItem } from "./HabitGrid";
 import ViewOptions from "../ViewOptions";
-import EmojiPicker from "./EmojiPicker";
+import EmojiPicker from "../EmojiPicker";
 
 export const MyHabits = ({ user, habits }) => {
   const [habitView, setHabitView] = useState(user.settings?.habits__defaultView ?? 'list');
@@ -155,7 +155,7 @@ export const HabitForm = ({ title, user, id, name, icon, color, label, complex, 
           value={formData.icon}
           className="stretch" 
           maxLength="1"
-          tool={<EmojiPicker setFormData={setFormData} />}
+          tool={<EmojiPicker setFormData={setFormData} formFieldName="icon" />}
           {...inputProps} />
         <Input type="color" name="color" label="Color:" value={formData.color} {...inputProps} />
       </div>

@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
+import { fancyClassName } from "../../utils";
 
 import styles from "./emojiPicker.module.css";
 
@@ -11,7 +12,7 @@ const EmojiPickerNoSSRWrapper = dynamic(
   }
 );
 
-const EmojiPicker = ({ setFormData }) => {
+const EmojiPicker = ({ className, formFieldName, setFormData }) => {
   const [expanded, setExpanded] = useState(false);
   const containerRef = useRef(null);
   const toggleExpanded = () => {
@@ -27,7 +28,6 @@ const EmojiPicker = ({ setFormData }) => {
     }
     const closePicker = (e) => {
       if (!containerRef.current?.contains(e.target)) {
-        console.log('thats whats up');
         setExpanded('closing');
       }
     }
@@ -38,11 +38,11 @@ const EmojiPicker = ({ setFormData }) => {
     setExpanded('closing');
     setFormData(prevData => ({
       ...prevData,
-      icon: obj.emoji
+      [formFieldName]: obj.emoji
     }));
   }
   return (
-    <div className={`${styles.EmojiPicker} ${expanded ? styles.active : ''} ${(expanded === 'closing') ? styles.goodbye : ''}`} ref={containerRef}>
+    <div className={`${styles.EmojiPicker} ${fancyClassName({ styles, className })} ${expanded ? styles.active : ''} ${(expanded === 'closing') ? styles.goodbye : ''}`} ref={containerRef}>
       <button type="button" onClick={toggleExpanded}>
         <span>
           {expanded ? 'close' : 'emoji picker'}

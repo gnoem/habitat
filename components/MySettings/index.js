@@ -1,17 +1,19 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 import styles from "./mySettings.module.css";
 import { User } from "../../pages/api";
 import { DataContext } from "../../contexts";
 import { useForm } from "../../hooks";
-import Form, { Dropdown, Submit, Switch } from "../Form";
+import Form, { Dropdown, Input, Submit, Switch } from "../Form";
+import EmojiPicker from "../EmojiPicker";
 
 const MySettings = () => {
   const { user, getUser, demoTokenId } = useContext(DataContext);
-  const { formData, checkboxProps, dropdownProps } = useForm({
+  const { formData, setFormData, inputProps, checkboxProps, dropdownProps } = useForm({
     userId: user.id,
     dashboard__defaultView: user.settings?.dashboard__defaultView ?? 'list',
     habits__defaultView: user.settings?.habits__defaultView ?? 'list',
+    habits__newHabitIcon: user.settings?.habits__newHabitIcon ?? '🐛',
     appearance__showClock: user.settings?.appearance__showClock ?? true,
     appearance__24hrClock: user.settings?.appearance__24hrClock ?? false,
     appearance__showClockSeconds: user.settings?.appearance__showClockSeconds ?? true,
@@ -25,12 +27,12 @@ const MySettings = () => {
       onSuccess={handleSuccess}
       behavior={{ checkmarkStick: false }}
       submit={<Submit value="save changes" cancel={false} className="mt25" />}>
-        <DashboardSettings {...{ formData, dropdownProps, checkboxProps }} />
+        <DashboardSettings {...{ formData, setFormData, inputProps, dropdownProps, checkboxProps }} />
     </Form>
   );
 }
 
-const DashboardSettings = ({ formData, dropdownProps, checkboxProps }) => {
+const DashboardSettings = ({ formData, setFormData, inputProps, dropdownProps, checkboxProps }) => {
   const dashboardViewListItems = [
     { value: 'list', display: 'list' },
     { value: 'grid', display: 'grid' },
@@ -62,6 +64,18 @@ const DashboardSettings = ({ formData, dropdownProps, checkboxProps }) => {
           defaultValue={habitViewDefaultValue}
           listItems={habitViewListItems}
           {...dropdownProps}
+        />
+      </div>
+      <div>
+        <span>"create new habit" emoji</span>
+        <Input
+          type="text"
+          name="habits__newHabitIcon"
+          className={styles.newHabitIconInput}
+          value={formData.habits__newHabitIcon}
+          maxLength="1"
+          tool={<EmojiPicker setFormData={setFormData} formFieldName="habits__newHabitIcon" className="newHabitIcon" />}
+          {...inputProps}
         />
       </div>
       <h2>appearance</h2>

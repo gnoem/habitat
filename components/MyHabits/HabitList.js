@@ -131,7 +131,7 @@ export const NewHabitListItem = ({ habits, user }) => {
       user,
       habit: {
         name: habits.length ? 'Add new' : 'Create your first habit',
-        icon: '🐛'
+        icon: user.settings?.habits__newHabitIcon ?? '🐛'
       }
     }} />
   );

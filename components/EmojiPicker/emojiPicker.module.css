@@ -32,14 +32,18 @@
 }
 .EmojiPicker > aside, .loading {
   top: calc(100% + 0.5rem);
-  right: unset;
-  left: 0;
   max-width: calc(100% + 3rem);
+  min-width: 280px;
   animation: scaleIn 0.2s 1 forwards;
   max-height: 200px;
 }
+.EmojiPicker > aside {
+  right: unset;
+  left: 0;
+}
 .loading {
   position: absolute;
+  right: 0;
   font-size: 0.75rem;
   background: #fff;
   border: 1px solid #efefef;
@@ -81,6 +85,26 @@
   width: 1.5rem;
   height: 1.5rem;
   margin: 2px;
+}
+
+.EmojiPicker.newHabitIcon > button {
+  opacity: 0;
+  width: 2rem;
+  white-space: normal;
+}
+.EmojiPicker.newHabitIcon > button > span {
+  width: 100%;
+}
+.EmojiPicker.newHabitIcon > aside {
+  left: unset;
+  right: 0;
+  margin: 0;
+}
+.EmojiPicker.newHabitIcon.active > button {
+  width: 100%;
+}
+.EmojiPicker.newHabitIcon.active {
+  width: auto;
 }
 
 @keyframes scaleIn {

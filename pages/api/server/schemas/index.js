@@ -16,6 +16,7 @@ export const typeDefs = gql`
     userId: String,
     dashboard__defaultView: String,
     habits__defaultView: String,
+    habits__newHabitIcon: String,
     appearance__showClock: Boolean,
     appearance__24hrClock: Boolean,
     appearance__showClockSeconds: Boolean
@@ -105,6 +106,7 @@ export const typeDefs = gql`
       demoTokenId: String,
       dashboard__defaultView: String,
       habits__defaultView: String,
+      habits__newHabitIcon: String,
       appearance__showClock: Boolean,
       appearance__24hrClock: Boolean,
       appearance__showClockSeconds: Boolean

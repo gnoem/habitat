@@ -43,6 +43,7 @@ const queries = {
         settings {
           dashboard__defaultView
           habits__defaultView
+          habits__newHabitIcon
           appearance__showClock
           appearance__24hrClock
           appearance__showClockSeconds
@@ -94,6 +95,7 @@ const queries = {
           settings {
             dashboard__defaultView
             habits__defaultView
+            habits__newHabitIcon
             appearance__showClock
             appearance__24hrClock
             appearance__showClockSeconds
@@ -139,6 +141,7 @@ const mutations = {
           settings {
             dashboard__defaultView
             habits__defaultView
+            habits__newHabitIcon
             appearance__showClock
             appearance__24hrClock
             appearance__showClockSeconds
@@ -207,6 +210,7 @@ const mutations = {
       $demoTokenId: String,
       $dashboard__defaultView: String,
       $habits__defaultView: String,
+      $habits__newHabitIcon: String,
       $appearance__showClock: Boolean,
       $appearance__24hrClock: Boolean,
       $appearance__showClockSeconds: Boolean
@@ -216,12 +220,14 @@ const mutations = {
         demoTokenId: $demoTokenId,
         dashboard__defaultView: $dashboard__defaultView,
         habits__defaultView: $habits__defaultView,
+        habits__newHabitIcon: $habits__newHabitIcon,
         appearance__showClock: $appearance__showClock,
         appearance__24hrClock: $appearance__24hrClock,
         appearance__showClockSeconds: $appearance__showClockSeconds
       ) {
         dashboard__defaultView
         habits__defaultView
+        habits__newHabitIcon
         appearance__showClock
         appearance__24hrClock
         appearance__showClockSeconds

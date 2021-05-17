@@ -24,6 +24,7 @@ model Settings {
   id                               String           @default(cuid()) @id
   dashboard__defaultView           String?          @default("list")
   habits__defaultView              String?          @default("list")
+  habits__newHabitIcon             String?          @default("🐛")
   appearance__showClock            Boolean?         @default(true)
   appearance__24hrClock            Boolean?         @default(false)
   appearance__showClockSeconds     Boolean?         @default(true)

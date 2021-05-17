@@ -29,6 +29,16 @@
   padding-top: 0.5rem;
 }
 
+.newHabitIconInput input {
+  width: 2rem;
+  font-size: 2rem;
+  line-height: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+}
+
 .disabled {
   opacity: 0.3;
   pointer-events: none;

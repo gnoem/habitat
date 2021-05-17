@@ -74,7 +74,7 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 - [x] like 1 hour cookie for demo sessions but since that looks surprisingly difficult to implement using next iron session, if demo && cookie is older than 1hour (or whatever), then log out
 - [x] cuter "wipe demo account" message, maybe a corner button?
 - [x] add explanation of demo stuff to readme
-- [ ] let users configure "create new habit" emoji in settings (currently 🐛)
+- [x] let users configure "create new habit" emoji in settings (currently 🐛)
 - [x] prevent duplicate entries (more than one for a given date)
 - [x] better unhandledFormError message
 - [x] instead of just blocking duplicate entries, warn and ask permission to overwrite
