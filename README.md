@@ -2,16 +2,14 @@
 
 A simple browser app for tracking habits! ✨
 
-<img src="https://i.imgur.com/tkZGkq0.png" alt="habitat home screen" style="display: inline-block; width: calc(50% - 10px); margin-right: 10px;" />
-<img src="https://i.imgur.com/7HVKy2c.png" alt="habitat dashboard" style="display: inline-block; width: calc(50% - 10px);" />
-
-
 Built with:
 - [Next.js](https://nextjs.org/)
 - GraphQL using [Apollo Server](https://github.com/apollographql/apollo-server)
 - [Prisma](http://prisma.io/) ORM for Postgres
 - [Chart.js](https://www.chartjs.org/)
 - [next-iron-session](https://github.com/vvo/next-iron-session) for authorization
+
+<img src="https://i.imgur.com/7HVKy2c.png" alt="habitat dashboard" />
 
 ## how to use
 
