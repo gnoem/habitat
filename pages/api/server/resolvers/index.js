@@ -120,7 +120,6 @@ export const resolvers = {
       }
     },
     editSettings: async (_, args) => {
-      // not working for demo account apparntly... todo fix
       const {
         userId,
         demoTokenId,
@@ -140,15 +139,14 @@ export const resolvers = {
         appearance__24hrClock,
         appearance__showClockSeconds
       }
-      const where = demoTokenId
+      const idField = demoTokenId
         ? { demoTokenId }
         : { userId };
       const settings = await prisma.settings.upsert({
-        where,
+        where: idField,
         update: settingsObj,
         create: {
-          userId,
-          demoTokenId,
+          ...idField,
           ...settingsObj
         }
       });
