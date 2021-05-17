@@ -61,6 +61,14 @@ const Habits = ({ habitView, user, habits }) => {
   const habitItemsRef = useRef({});
   useEffect(() => {
     setHabitItemOrder(habits.map(habit => habit.id));
+    // filter out null elements from habitItemsRef object after deleting habits
+    const removeDeletedElements = (habitItems) => {
+      const deletedElementIds = Object.keys(habitItems).filter(id => habitItems[id] == null);
+      deletedElementIds.forEach(id => {
+        delete habitItems[id];
+      });
+    }
+    removeDeletedElements(habitItemsRef.current);
   }, [habits]);
   const activeHabits = habits.map(habit => {
     if (habit.retired) return null;

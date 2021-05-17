@@ -62,6 +62,7 @@ const MakeDraggable = (props) => {
     }
     const generateHotspots = ([id, element]) => {
       const hotspotDetails = () => {
+        if (!element) return null;
         let { top, bottom, left, right } = element.getBoundingClientRect();
         const width = right - left;
         const height = 24;
@@ -72,7 +73,7 @@ const MakeDraggable = (props) => {
       }
       return hotspotDetails();
     }
-    hotspotsRef.current = Object.entries(objectToMap).map(generateHotspots);
+    hotspotsRef.current = Object.entries(objectToMap).map(generateHotspots).filter(el => el);
   }, [habitItems, habitItemOrder]);
   return (
     <Grip {...{
