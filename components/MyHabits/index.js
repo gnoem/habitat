@@ -107,7 +107,7 @@ const Habits = ({ habitView, user, habits }) => {
         <NewHabit {...{ habits, user }} />
       </div>
       {retiredHabits.length > 0 && (
-        <div className={(habitView === 'grid') ? styles.HabitGrid : ''}>
+        <div className={(habitView === 'grid') ? styles.HabitGrid : styles.HabitList}>
           <h2>retired habits</h2>
           {retiredHabits}
         </div>

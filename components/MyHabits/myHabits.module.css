@@ -19,14 +19,21 @@ div button.currentHabitView { /* including div for specificity */
 }
 
 .HabitsContainer h2 {
-  margin-top: 2rem;
-  margin-bottom: 1.5rem;
+  grid-column: 1 / -1;
 }
 
 .HabitList {
   display: inline-flex;
   flex-direction: column;
-  width: 300px;
+  width: 350px;
+  max-width: 100%;
+}
+.HabitList h2 {
+  margin-bottom: 1.5rem;
+}
+.HabitList + .HabitList {
+  display: flex;
+  margin-top: 2rem;
 }
 .HabitListItem:not(:last-of-type) {
   position: relative;
@@ -135,8 +142,9 @@ div button.currentHabitView { /* including div for specificity */
   margin: 1rem -1.5rem 0 0;
 }
 .HabitGrid h2 {
+  grid-column: 1 / -1;
   flex: 1 0 100%;
-  margin-bottom: 2rem;
+  margin: 2rem 0;
 }
 .HabitGridItem {
   flex: 1 0 0;
@@ -295,6 +303,9 @@ div button.currentHabitView { /* including div for specificity */
   .HabitList {
     max-width: 100%;
   }
+  .HabitList + .HabitList {
+    margin-top: 1.5rem;
+  }
   .HabitListItem {
     margin-bottom: 1rem;
   }
@@ -305,6 +316,9 @@ div button.currentHabitView { /* including div for specificity */
     display: grid;
     grid-template-columns: repeat(auto-fit, 33%);
     margin: 0 -1rem 0 0;
+  }
+  .HabitGrid h2 {
+    margin-bottom: 1.5rem;
   }
   .HabitGridItem {
     margin: 0 1rem 1rem 0;
