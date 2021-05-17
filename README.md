@@ -63,7 +63,7 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 - [x] rearrange habits needs to work on mobile
 - [x] when rearranging habits create a little clone to drag around or at least the habit icon + name, especially needed on mobile
 - [ ] add screenshots to readme
-- [ ] figure out situation with dash panel calendar, are you doing that or not
+- [x] figure out situation with dash panel calendar, are you doing that or not
 - [ ] dash panel idea - 'help'/tutorial section for dashboard and habit pages, togglable in settings
 - [x] fix habit graph when only tracking simple habits, something weird is happening
 - [x] graph should adjust when page resizes but make it performant
