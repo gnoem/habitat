@@ -2,6 +2,10 @@
 
 A simple browser app for tracking habits! ✨
 
+<img src="https://i.imgur.com/tkZGkq0.png" alt="habitat home screen" style="display: inline-block; width: calc(50% - 10px); margin-right: 10px;" />
+<img src="https://i.imgur.com/7HVKy2c.png" alt="habitat dashboard" style="display: inline-block; width: calc(50% - 10px);" />
+
+
 Built with:
 - [Next.js](https://nextjs.org/)
 - GraphQL using [Apollo Server](https://github.com/apollographql/apollo-server)
@@ -18,6 +22,9 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 ## overview
 
 ### general functionality
+
+<img src="https://i.imgur.com/ju4CzVM.png" style="float: right; width: 20%; margin: 0 0 20px 20px;" />
+<img src="https://i.imgur.com/6hPbfd9.png" style="float: right; width: 20%; margin: 0 0 20px 20px;" />
 
 - Authenticate users using `next-iron-session`, which creates a signed and encrypted cookie to store session data
 
@@ -62,7 +69,7 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 - [x] add option to rearrange habits!
 - [x] rearrange habits needs to work on mobile
 - [x] when rearranging habits create a little clone to drag around or at least the habit icon + name, especially needed on mobile
-- [ ] add screenshots to readme
+- [x] add screenshots to readme
 - [x] figure out situation with dash panel calendar, are you doing that or not
 - [ ] dash panel idea - 'help'/tutorial section for dashboard and habit pages, togglable in settings
 - [x] fix habit graph when only tracking simple habits, something weird is happening

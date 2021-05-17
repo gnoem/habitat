@@ -495,7 +495,7 @@ export const resolvers = {
         // clear expired demo tokens + all data associated with those tokens
         const allDemoTokens = await prisma.demoToken.findMany();
         allDemoTokens.forEach(demoToken => {
-          const tokenIsExpired = differenceInMinutes(demoToken.createdAt) >= 1; // 2 hours
+          const tokenIsExpired = differenceInMinutes(demoToken.createdAt) >= 120; // 2 hours
           return tokenIsExpired ? clearSampleData(demoToken.id, prisma) : null;
         });
         // create demoToken for this logged in user (demoTokenId will be added to the session cookie)
