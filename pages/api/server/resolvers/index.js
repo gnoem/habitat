@@ -120,6 +120,7 @@ export const resolvers = {
       }
     },
     editSettings: async (_, args) => {
+      // not working for demo account apparntly... todo fix
       const {
         userId,
         demoTokenId,

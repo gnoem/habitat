@@ -6,8 +6,8 @@ import Form, { Submit } from "../Form";
 const ModalForm = (props) => {
   const { children, onSuccess, submit } = props;
   const { closeModal } = useContext(ModalContext);
-  const handleSuccess = () => {
-    onSuccess();
+  const handleSuccess = (result) => {
+    onSuccess(result);
     closeModal();
   }
   const submitProps = {
