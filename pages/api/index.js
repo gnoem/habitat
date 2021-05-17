@@ -337,8 +337,8 @@ const mutations = {
     }
   `,
   editEntry: `
-    mutation($id: String, $date: String, $records: [RecordInput]) {
-      editEntry(id: $id, date: $date, records: $records) {
+    mutation($id: String, $date: String, $records: [RecordInput], $demoTokenId: String) {
+      editEntry(id: $id, date: $date, records: $records, demoTokenId: $demoTokenId) {
         ... on FormErrorReport {
           __typename
           errors {

@@ -270,7 +270,7 @@ export const resolvers = {
     createEntry: async (_, args) => {
       const { userId, date, records, demoTokenId } = args;
       const identifier = demoTokenId ? { demoTokenId } : { userId };
-      const existingEntry = await prisma.entry.findUnique({
+      const existingEntry = await prisma.entry.findFirst({
         where: {
           AND: [
             identifier,

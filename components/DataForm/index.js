@@ -49,7 +49,7 @@ const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
   const overwritingEntry = useMemo(() => {
     // if you edit the date on an existing entry, but an entry already exists for the date you put in
     // changes handleSubmit to a modal warning to overwrite the existing entry
-    return !!entries.find(entry => {
+    return !!entries?.find(entry => {
       return (entry.date === formData.date) && (entry.id !== existingData?.id);
     });
   }, [entries, existingData?.id, formData.date]);
@@ -78,7 +78,7 @@ const DataForm = ({ habits, dashPanelOptions, updateDashPanel }) => {
       });
       return Promise.reject('handled');
     }
-    submitFormData();
+    return submitFormData();
   }
   const handleSuccess = (result) => {
     const { editEntry, createEntry } = result;

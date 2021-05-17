@@ -134,7 +134,7 @@ export const typeDefs = gql`
     deleteHabit(id: String): Habit
     rearrangeHabits(array: [String]): Success
     createEntry(userId: String, date: String, records: [RecordInput], demoTokenId: String): EntryResult
-    editEntry(id: String, date: String, records: [RecordInput]): EntryResult
+    editEntry(id: String, date: String, records: [RecordInput], demoTokenId: String): EntryResult
     deleteEntry(id: String): Entry
     generateDemoData(id: String, demoTokenId: String, calendarPeriod: String, alsoHabits: Boolean): Success
     clearDemoData(demoTokenId: String): Success
