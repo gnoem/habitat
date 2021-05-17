@@ -23,9 +23,6 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 
 ### general functionality
 
-<img src="https://i.imgur.com/ju4CzVM.png" style="float: right; width: 20%; margin: 0 0 20px 20px;" />
-<img src="https://i.imgur.com/6hPbfd9.png" style="float: right; width: 20%; margin: 0 0 20px 20px;" />
-
 - Authenticate users using `next-iron-session`, which creates a signed and encrypted cookie to store session data
 
 - Create/read/update/delete habit data
