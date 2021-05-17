@@ -20,5 +20,5 @@ export const clearSampleData = async (demoTokenId, prisma) => {
     const deleteSettings = prisma.settings.delete({ where: { demoTokenId } });
     deleteEverything.splice(1, deleteSettings);
   }
-  return deleteEverything;
+  return await prisma.$transaction(deleteEverything);
 }
