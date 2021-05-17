@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartLine, faListOl, faTh } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./myData.module.css";
-import { DataContext, ModalContext } from "../../contexts";
+import { DataContext, MobileContext, ModalContext } from "../../contexts";
 import Timeline from "./Timeline";
 import Calendar from "./Calendar";
 import Graph from "./Graph";
@@ -47,6 +47,7 @@ const NoData = ({ user, calendarPeriod }) => {
 }
 
 const MyDataHeader = ({ calendarPeriod, updateCalendarPeriod, dataView, updateDataView }) => {
+  const isMobile = useContext(MobileContext);
   const currentPeriod = dayjs().format('YYYY-MM');
   const nav = (direction) => () => {
     const newPeriod = direction === 'next'
@@ -58,7 +59,7 @@ const MyDataHeader = ({ calendarPeriod, updateCalendarPeriod, dataView, updateDa
     <div className={styles.MyDataHeader}>
       <div className={styles.MyDataNav}>
         <ArrowNav ariaLabel="Calendar navigation" prev={nav('prev')} next={nav('next')} />
-        {(calendarPeriod !== currentPeriod) &&
+        {(calendarPeriod !== currentPeriod) && (!isMobile) &&
           <button
             type="button"
             className={`${styles.jumpToCurrentMonth} link`}
@@ -107,6 +108,7 @@ const MyDataContent = ({ user, habits, entries, calendarPeriod, updateDashPanel,
 
 const GenerateDemoData = ({ user, calendarPeriod }) => {
   const { demoTokenId, demoGenOption, habits, getHabits, getEntries } = useContext(DataContext);
+  const isMobile = useContext(MobileContext);
   const { createModal } = useContext(ModalContext);
   const [successPending, setSuccessPending] = useState(false);
   const generateData = () => {
@@ -121,19 +123,20 @@ const GenerateDemoData = ({ user, calendarPeriod }) => {
   const explainDemoData = () => {
     createModal('generateDemoData', { generateData })
   }
+  const buttonClassName = `mt15 ${isMobile ? 'compact' : ''}`;
   if (!demoGenOption) return null;
   if (habits.length) return (
     <Submit
       value="generate sample data"
       onClick={generateData}
-      className="mt15"
+      className={buttonClassName}
       successPending={successPending}
       cancel={false}
     />
   );
   return (
     <center>
-      <Button onClick={explainDemoData} className="mt15">
+      <Button onClick={explainDemoData} className={buttonClassName}>
         generate sample data
       </Button>
     </center>

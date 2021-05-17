@@ -2,17 +2,22 @@ import styles from "./miniCalendar.module.css";
 import { useCalendar } from "../../hooks";
 import dayjs from "dayjs";
 import ArrowNav from "../ArrowNav";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { MobileContext } from "../../contexts";
+import { Button } from "../Form";
 
-const MiniCalendarWrapper = ({ children, miniCalendarPeriod, updateMiniCalendarPeriod }) => {
+const MiniCalendarWrapper = ({ children, isMobile, miniCalendarPeriod, updateMiniCalendarPeriod }) => {
   const currentPeriod = dayjs().format('YYYY-MM');
+  const jumpToCurrentMonth = () => updateMiniCalendarPeriod(currentPeriod);
   return (
     <div className={styles.MiniCalendarWrapper}>
       <Header {...{ miniCalendarPeriod, updateMiniCalendarPeriod }} />
       {children}
       {(miniCalendarPeriod === currentPeriod)
         ? null
-        : <button type="button" onClick={() => updateMiniCalendarPeriod(currentPeriod)}>&raquo; jump to current month</button>}
+        : isMobile
+          ? <center><Button className="compact mt05" onClick={jumpToCurrentMonth}>&raquo; jump to current month</Button></center>
+          : <button type="button" onClick={jumpToCurrentMonth}>&raquo; jump to current month</button>}
     </div>
   );
 }
@@ -33,13 +38,14 @@ const Header = ({ miniCalendarPeriod, updateMiniCalendarPeriod }) => {
 }
 
 const MiniCalendar = ({ calendarPeriod, updateCalendarPeriod, updateDashPanel }) => {
+  const isMobile = useContext(MobileContext);
   const [miniCalendarPeriod, updateMiniCalendarPeriod] = useState(calendarPeriod);
   const { weekdays, totalDaysInMonth } = useCalendar(miniCalendarPeriod);
   return (
-    <MiniCalendarWrapper {...{ miniCalendarPeriod, updateMiniCalendarPeriod }}>
+    <MiniCalendarWrapper {...{ isMobile, miniCalendarPeriod, updateMiniCalendarPeriod }}>
       <div className={styles.MiniCalendar}>
         <WeekLabels {...{ weekdays }} />
-        <DaysInMonth {...{ totalDaysInMonth, updateCalendarPeriod, updateDashPanel }} />
+        <DaysInMonth {...{ isMobile, totalDaysInMonth, updateCalendarPeriod, updateDashPanel }} />
       </div>
     </MiniCalendarWrapper>
   );
@@ -53,14 +59,14 @@ const WeekLabels = ({ weekdays }) => {
   ));
 }
 
-const DaysInMonth = ({ totalDaysInMonth, updateCalendarPeriod, updateDashPanel }) => {
+const DaysInMonth = ({ isMobile, totalDaysInMonth, updateCalendarPeriod, updateDashPanel }) => {
   return totalDaysInMonth.map((date, index) => {
     const handleClick = () => {
       updateCalendarPeriod(dayjs(date).format('YYYY-MM'));
       updateDashPanel(); // close it first to allow pretty opening animation
       setTimeout(() => {
         updateDashPanel('data', { date });
-      }, 100);
+      }, isMobile ? 0 : 100);
     }
     const dayNumber = () => {
       if (date === '') return null;
