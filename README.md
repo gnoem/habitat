@@ -56,33 +56,6 @@ If you like Habitat and you actually want to use it, feel free to [contact me](m
 
 ## notes to self
 
-### todo
-
-- [x] add delete account feature
-- [x] password recovery!
-- [x] cuter 404 page
-- [x] add option to rearrange habits!
-- [x] rearrange habits needs to work on mobile
-- [x] when rearranging habits create a little clone to drag around or at least the habit icon + name, especially needed on mobile
-- [x] add screenshots to readme
-- [x] figure out situation with dash panel calendar, are you doing that or not
 - [ ] dash panel idea - 'help'/tutorial section for dashboard and habit pages, togglable in settings
-- [x] fix habit graph when only tracking simple habits, something weird is happening
-- [x] graph should adjust when page resizes but make it performant
-- [x] better explanation of demo data for demo visitors
-- [x] demo settings should follow the same pattern as habits, entries, and records
-- [x] popup when visiting homepage with /?demo like with pianopet portfolio link
-- [x] clear demo data on logout
-- [x] like 1 hour cookie for demo sessions but since that looks surprisingly difficult to implement using next iron session, if demo && cookie is older than 1hour (or whatever), then log out
-- [x] cuter "wipe demo account" message, maybe a corner button?
-- [x] add explanation of demo stuff to readme
-- [x] let users configure "create new habit" emoji in settings (currently 🐛)
-- [x] prevent duplicate entries (more than one for a given date)
-- [x] better unhandledFormError message
-- [x] instead of just blocking duplicate entries, warn and ask permission to overwrite
-- [x] clock date should change at midnight exactly
-- [x] if cookie is invalid user, log out
-- [x] emoji picker for habit icons ([use this maybe?](https://github.com/iamcal/emoji-data))
-- [x] instructions for label template for complex habits + regex validation error if no handlebars are found in string
-- [ ] figure out switching from simple -> complex habits - should maybe prompt the user for an amount to put in for entries that record that habit as completed
-- [x] figure out better system for demo habits/data - unlikely scenario but what if someone logs into the demo account when someone else is already in there, don't want their data to suddenly get deleted - maybe demo flag should be a unique string for each session/logged in user, rather than a bool, and instead of getting cleared on login, they're deleted after 24 hours? bummer that prisma doesn't let you add a ttl index though
+- [ ] character limit on habit names
+- [ ] figure out switching from simple -> complex habits - should maybe prompt the user for an amount to put in for entries that record that habit as completed?
