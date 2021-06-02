@@ -30,7 +30,7 @@ const Login = () => {
         <Input
           type="text"
           name="email"
-          label="email address:"
+          label="username / email address:"
           {...inputProps}
         />
         <Input
